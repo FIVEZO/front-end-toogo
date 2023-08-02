@@ -1,5 +1,6 @@
 import axios from "axios";
 import { LoginFormValues, SignupFormValues } from "../types/login";
+
 import { useNavigate } from "react-router-dom";
 
 function getCookie(cookieName: string) {
@@ -14,7 +15,7 @@ function getCookie(cookieName: string) {
   return cookieValue;
   }
 
-  
+
 
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
@@ -72,7 +73,8 @@ const addUsers = async (newUser: SignupFormValues) => {
   }
 
 
-// 카카오 인가번호 보내기
+
+
   const getKakaoToken = async (code: string | null) => {
     try {
       const response = await instance.get(`/api/auth/kakao?code=${code}`)
