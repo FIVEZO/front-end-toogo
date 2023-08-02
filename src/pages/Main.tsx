@@ -1,8 +1,5 @@
 import React from 'react'
-
 import Button from '../conponents/Button'
-import { Input } from '../conponents/Input'
-
 
 
 export const Main = () => {
@@ -21,3 +18,4 @@ export const Main = () => {
     </div>
   )
 }
+
