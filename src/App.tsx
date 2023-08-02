@@ -4,14 +4,18 @@ import { Provider } from 'react-redux';
 import store from './redux/config/configStore';
 import { Router } from './shared/Router';
 import { Reset } from 'styled-reset'
+import { ThemeProvider } from 'styled-components';
+import { theme } from './theme';
 
 function App() {
   return (
     <div>
+       <ThemeProvider theme={theme}>
         <Reset />
       <Provider store={store}>
         <Router />
       </Provider>
+      </ThemeProvider>
     </div>
   );
 }
