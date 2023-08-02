@@ -14,22 +14,6 @@ useEffect(() => {
   
 }, []);
 
-// const { isLoading, isError, data } = useQuery("post", () => getKakaoToken(code)
-// ,{
-//   enabled: false,
-// });
-
-// const kakaoMutation = useMutation(getKakaoToken, {
-//   onSuccess: () => {
-//     alert("로그인을 완료하였습니다.");
-//     Navigate('/')
-//   }
-// });
-
-// useEffect(() => {c
-//   kakaoMutation.mutate(code);
-// }, []);
-
     console.log("code",code)
   return (
     <div>Redirection</div> 
