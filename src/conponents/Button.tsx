@@ -4,10 +4,10 @@ import { css, styled } from 'styled-components';
 type ButtonProps = {
   backgroundColor?: string;
   fontWeight?: string;
-  onClick?: () => void;
+  onClick?: (event: React.FormEvent) => void; 
   type?: "primary" | "medium" | "small";
   color?: string; 
-  children?: string; 
+  children?: React.ReactNode;
   fontSize?: string; 
 };
 
@@ -31,6 +31,7 @@ const Button: React.FC<ButtonProps> = ({
       fontSize={fontSize}
     >
 {children} 
+
     </StyledButton>
   );
 };
