@@ -6,6 +6,7 @@ import useInput from '../hooks/useInput';
 import { useMutation } from 'react-query';
 import { login } from '../api/api';
 import InputBox from '../conponents/InputBox';
+import Button from '../conponents/Button';
 
   type ButtonProps = {
     backgroundColor?: string;
@@ -84,10 +85,23 @@ function Login() {
         </LoginLabel>
 
         <LoginButton>
-          <Button color={"green"} fontColor={"#ffffff"} fontWeight={"bold"} onClick={loginHandler}>로그인</Button>
-          <Button color={"yellow"}  fontColor={"#292832"} onClick={kakaoLoginHandler}>
-          <ButtonImage src="https://cdn.zeplin.io/64c908915ce80e21fa43ed1f/assets/2bcf4a12-c983-4f43-b56d-52c6d9ab73ac-3x.png" alt="Kakao Icon" />
-          Kakao로 시작하기</Button>
+          
+          <Button  
+          backgroundColor={"#00ce7c"} 
+          color={"#ffffff"} 
+          fontWeight={"bold"} 
+          onClick={loginHandler}>
+            로그인</Button>
+          
+          <Button  
+          backgroundColor={"#ffe500"} 
+          color={"#292832"} 
+          fontWeight={"bold"} 
+          onClick={kakaoLoginHandler}>
+            <ButtonImage src="https://cdn.zeplin.io/64c908915ce80e21fa43ed1f/assets/2bcf4a12-c983-4f43-b56d-52c6d9ab73ac-3x.png" alt="Kakao Icon" />
+            Kakao로 시작하기</Button>
+
+  
         </LoginButton>
 
         <LoginAccountText>
@@ -156,7 +170,7 @@ const ButtonImage = styled.img`
   margin-right: 9.7px;
 `;
 
-const Button = styled.div<ButtonProps>`
+const ButtonSt = styled.div<ButtonProps>`
 font-family: Pretendard;
 font-stretch: normal;
 font-style: normal;
