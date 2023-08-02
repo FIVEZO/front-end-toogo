@@ -10,8 +10,6 @@ import { LuEyeOff } from "react-icons/lu";
   };
 
 
-
-
 function Login() {
 
   
@@ -110,8 +108,6 @@ const ButtonImage = styled.img`
   object-fit: contain;
   margin-right: 9.7px;
 `;
-
-
 
 const Button = styled.div<ButtonProps>`
 font-family: Pretendard;
@@ -220,6 +216,7 @@ const LoginForm = styled.form`
  
 `;
 
+
 const LoginButton = styled.div`
   display: flex;
   flex-direction: column;
@@ -230,8 +227,6 @@ const LoginButton = styled.div`
 const LoginAccountText = styled.div`
   display: flex;
   justify-content: center;
-  
-
 `;
 
 const IdText = styled.div`
