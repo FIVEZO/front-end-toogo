@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginFormValues, SignupFormValues } from "../namgyu/Namgyutype";
+import { LoginFormValues, SignupFormValues } from "../types/login";
 
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
@@ -55,7 +55,7 @@ const addUsers = async (newUser: SignupFormValues) => {
     return response.data;
   }
 
-// 카카오 인가번호 보내기
+//카카오 인가번호 보내기
   const getKakaoToken = async (code: string | null) => {
     const response = await instance.post(`/api/auth/kakao`, code)
     console.log("카카오 토큰", response)
