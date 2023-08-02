@@ -1,11 +1,11 @@
 import React from 'react';
 import { css, styled } from 'styled-components';
-import { LuEyeOff } from "react-icons/lu";
 import { LoginFormValues } from '../types/login';
 import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput';
 import { useMutation } from 'react-query';
 import { login } from '../api/api';
+import InputBox from '../conponents/InputBox';
 
   type ButtonProps = {
     backgroundColor?: string;
@@ -53,16 +53,29 @@ function Login() {
         <LoginText>로그인</LoginText>
         <LoginForm >
           <Label>아이디</Label>
-          <InputBox>
-            <Input    type="text" placeholder="아이디를 입력하세요" autoFocus  value={email} onChange={handleEmailChange}/>
-          </InputBox>
+          <InputBox
+            type="text"
+            placeholder="아이디를 입력하세요"
+            value={email}
+            onChange={handleEmailChange}
+            width="384px" 
+            height="46px" 
+            color="grey"
+            showEyeIcon={false} 
+          />
         </LoginForm>
         <LoginForm>
           <Label>비밀번호</Label>
-          <InputBox>
-            <Input type="password" placeholder="비밀번호를 입력하세요" value={password} onChange={handlePasswordChange}/>
-            <CustomEyeOffIcon />
-          </InputBox>
+          <InputBox
+            type="password"
+            placeholder="비밀번호를 입력하세요"
+            value={password}
+            onChange={handlePasswordChange}
+            width="384px" 
+            height="46px" 
+            color="grey"
+            showEyeIcon 
+          />
         </LoginForm>
 
         <LoginLabel>
@@ -189,37 +202,6 @@ const Label = styled.label`
   letter-spacing: normal;
 `;
 
-const Input = styled.input`
-  margin-left: 16px;
-  font-size: 16px;
-  color: #000000;
-  border: none;
-  outline: none;
-  flex: 1;
-  
-  &::placeholder {
-    color: #dddce3;
-  }
-`;
-
-const InputBox = styled.div`
-  width: 384px;
-  height: 46px;
-  border: 1px solid #ccc;
-  border-radius: 8.53px;
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 16px;
-  position: relative;
-`;
-
-const CustomEyeOffIcon = styled(LuEyeOff)`
-cursor: pointer;
-color: #cfced7;
-margin-right: 16px;
-width: 19.8px;
-  height: 17.6px;
-`;
 const CenteredContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -261,6 +243,7 @@ const LoginButton = styled.div`
 const LoginAccountText = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 24px;
 `;
 
 const IdText = styled.div`
