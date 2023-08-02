@@ -1,8 +1,11 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Main } from "../pages/Main";
-import  Login  from "../pages/Login";
 import {Account} from "../pages/Account";
+import Login from "../pages/Login";
+
+
+
 
 
 
