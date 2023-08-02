@@ -1,18 +1,36 @@
 import axios from "axios";
 import { LoginFormValues, SignupFormValues } from "../types/login";
 
+import { useNavigate } from "react-router-dom";
+
+function getCookie(cookieName: string) {
+  var cookieValue = null;
+  if (document.cookie) {
+  var array = document.cookie.split(escape(cookieName) + "=");
+  if (array.length >= 2) {
+  var arraySub = array[1].split(";");
+  cookieValue = unescape(arraySub[0]);
+  }
+  }
+  return cookieValue;
+  }
+
+
+
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
 });
 
 instance.interceptors.request.use(
   function (config) {
-    // 로컬 스토리지에서 토큰 값 가져오기
-    const token = localStorage.getItem("token");
+    // 쿠키에서 토큰 값 가져오기
+    const accessToken = getCookie("access_token");
+    const refreshToken = getCookie("refresh_token");
 
     // 토큰이 존재하면 헤더에 담아서 요청 보내기
-    if (token) {
-      config.headers.Authorization = `${token}`;
+    if (accessToken && refreshToken) {
+      config.headers.accessToken = `${accessToken}`;
+      config.headers.refreshToken = `${refreshToken}`;
     }
 
     console.log("요청 완료", config)
@@ -27,7 +45,6 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   function (response) {
     console.log("응답 완료", response)
-    // const token = response.headers.authorization
 
     return response;
   },
@@ -50,16 +67,27 @@ const addUsers = async (newUser: SignupFormValues) => {
 // 로그인
   const login = async (loginInformation:LoginFormValues) => {
     const response = await instance.post(`/api/auth/login`, loginInformation)
-    const token = response.headers.authorization
-    localStorage.setItem('token', token);
+    // console.log("로그인", response)
+    
     return response.data;
   }
 
-//카카오 인가번호 보내기
+
+
+
   const getKakaoToken = async (code: string | null) => {
-    const response = await instance.post(`/api/auth/kakao`, code)
-    console.log("카카오 토큰", response)
+    try {
+      const response = await instance.get(`/api/auth/kakao?code=${code}`)
+    // console.log("카카오 토큰", response)
+    document.cookie = `accessToken=${response.headers.accesstoken}; path=/;`;
+    document.cookie = `refreshToken=${response.headers.refreshtoken}; path=/`;
+    
     return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+
 
 export { addUsers, login, getKakaoToken }  

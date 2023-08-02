@@ -1,8 +1,15 @@
 import React from 'react'
 
+import Button from '../conponents/Button'
+
+
 
 export const Main = () => {
-  console.log("hi")
+
+  const kakaoLoginHandler = ()=>{
+      console.log("hi")
+  }
+
   return (
     <div>
     <h1>Main</h1>

@@ -1,6 +1,11 @@
 import React from 'react';
 import { css, styled } from 'styled-components';
 import { LuEyeOff } from "react-icons/lu";
+import { LoginFormValues } from '../types/login';
+import { useNavigate } from 'react-router-dom';
+import useInput from '../hooks/useInput';
+import { useMutation } from 'react-query';
+import { login } from '../api/api';
 
   type ButtonProps = {
     backgroundColor?: string;
@@ -12,6 +17,35 @@ import { LuEyeOff } from "react-icons/lu";
 
 function Login() {
 
+  const [email, handleEmailChange] = useInput();
+  const [password, handlePasswordChange] = useInput();
+
+  const navigate = useNavigate();
+
+  const loginMutation = useMutation(login, {
+    onSuccess: () => {
+      alert("로그인을 완료하였습니다.");
+      navigate('/')
+    }
+  });
+
+  const loginHandler = (event: React.FormEvent) => {
+    event.preventDefault(); 
+    const loginInformation: LoginFormValues = {
+      email,
+      password,
+    }
+    loginMutation.mutate(loginInformation)
+  };
+
+  const REST_API_KEY = '564f00b46533ce881c7fe7c870c83458';
+  const REDIRECT_URI = 'http://localhost:3000/api/auth/kakao';
+  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+  const kakaoLoginHandler = () => {
+    window.location.href = link;
+  };
+
   
   return (
     <CenteredContainer>
@@ -20,13 +54,13 @@ function Login() {
         <LoginForm >
           <Label>아이디</Label>
           <InputBox>
-            <Input    type="text" placeholder="아이디를 입력하세요" autoFocus/>
+            <Input    type="text" placeholder="아이디를 입력하세요" autoFocus  value={email} onChange={handleEmailChange}/>
           </InputBox>
         </LoginForm>
         <LoginForm>
           <Label>비밀번호</Label>
           <InputBox>
-            <Input type="password" placeholder="비밀번호를 입력하세요" />
+            <Input type="password" placeholder="비밀번호를 입력하세요" value={password} onChange={handlePasswordChange}/>
             <CustomEyeOffIcon />
           </InputBox>
         </LoginForm>
@@ -37,8 +71,8 @@ function Login() {
         </LoginLabel>
 
         <LoginButton>
-          <Button color={"green"} fontColor={"#ffffff"} fontWeight={"bold"}>로그인</Button>
-          <Button color={"yellow"}  fontColor={"#292832"}>
+          <Button color={"green"} fontColor={"#ffffff"} fontWeight={"bold"} onClick={loginHandler}>로그인</Button>
+          <Button color={"yellow"}  fontColor={"#292832"} onClick={kakaoLoginHandler}>
           <ButtonImage src="https://cdn.zeplin.io/64c908915ce80e21fa43ed1f/assets/2bcf4a12-c983-4f43-b56d-52c6d9ab73ac-3x.png" alt="Kakao Icon" />
           Kakao로 시작하기</Button>
         </LoginButton>

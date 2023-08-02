@@ -1,10 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const storedToken = localStorage.getItem("token"); // 토큰 가져오기
+function getCookie(cookieName: string) {
+  var cookieValue = null;
+  if (document.cookie) {
+  var array = document.cookie.split(escape(cookieName) + "=");
+  if (array.length >= 2) {
+  var arraySub = array[1].split(";");
+  cookieValue = unescape(arraySub[0]);
+  }
+  }
+  return cookieValue;
+  }
+
+  function deleteCookie(name: string) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
+
+  const accessToken = getCookie("access_token");
+  const refreshToken = getCookie("refresh_token");
 
 
 const initialState = {
-  isLogin: !!storedToken,
+  isLogin: !!accessToken,
 };
 
 const isLoginSlice = createSlice({
@@ -16,7 +33,8 @@ const isLoginSlice = createSlice({
     },
     logOut: (state, action) => {
         state.isLogin = false;
-        localStorage.removeItem("token"); // 토큰 삭제
+        deleteCookie("accessToken"); // 엑세스 토큰 삭제
+        deleteCookie("refreshToken"); // 리프레쉬 토큰 삭제
     },
   },
 });
