@@ -6,7 +6,7 @@ export const Signup: React.FC = () => {
     <CenteredContainer>
       <SignupLayout>
       <SignupText>로그인</SignupText>
-      <SignupForm >
+      <SignupForm>
 
 
 
