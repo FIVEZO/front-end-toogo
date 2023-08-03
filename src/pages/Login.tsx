@@ -174,7 +174,6 @@ const AccountLien = styled.span`
   font-style: normal;
   line-height: 1;
   letter-spacing: normal;
-
   color: #636363;
 `
 
@@ -186,7 +185,6 @@ const ButtonImage = styled.img`
 `;
 
 const Label = styled.label`
-
   align-self: flex-start;
   margin-bottom: 8px;
   font-size: 16px;
