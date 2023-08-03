@@ -50,7 +50,7 @@ function Login() {
   };
 
   // ----------------------------------------카카오 로그인
-  const REST_API_KEY = '564f00b46533ce881c7fe7c870c83458';
+  const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   const REDIRECT_URI = 'http://localhost:3000/api/auth/kakao';
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
