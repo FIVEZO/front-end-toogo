@@ -100,7 +100,8 @@ function Login() {
           backgroundColor={"#00ce7c"} 
           color={"#ffffff"} 
           fontWeight={"bold"} 
-          onClick={loginHandler}>
+          onClick={loginHandler}
+          margin={"0 0 16px 0"}>
             로그인</Button>
           
           <Button  

@@ -1,21 +1,243 @@
-import React from 'react'
+import React, { useState, FormEvent } from 'react';
 import { styled } from 'styled-components';
+import {  SignupFormValues } from '../types/login';
+import { useNavigate } from 'react-router-dom';
+import useInput from '../hooks/useInput';
+import { useMutation } from 'react-query';
+import InputBox from '../conponents/InputBox';
+import Button from '../conponents/Button';
+import { emailCheck ,addUsers, nickCheck } from '../api/api';
 
-export const Signup: React.FC = () => {
+
+type ButtonProps = {
+  backgroundColor?: string;
+  fontColor?: string;
+  fontWeight?: string;
+
+};
+
+function Signup() {
+
+  const [email, handleEmailChange] = useInput();
+  const [password, handlePasswordChange] = useInput();
+  const [nickname, handleNicknameChange] = useInput();
+  const [passwordConfirm, handlePasswordConfirmChange] = useInput();
+  
+  const [emailChecks, setEmailChecks] = useState<boolean | string>(false)
+  const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false)
+  const [passwordConfirmCheck, setPasswordConfirmCheck] = useState<boolean | string>(false);
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  const navigate = useNavigate();
+
+  // ---------------------------------------회원가입
+  const signupMutation = useMutation(addUsers, {
+    onSuccess: () => {
+      alert("회원가입을 완료하였습니다.");
+      navigate('/')
+    }
+  });
+
+  const signupHandler = (event: React.FormEvent) => {
+    event.preventDefault(); 
+  
+    let hasError = false;
+  
+    if (!emailRegex.test(email)) {
+      setEmailChecks("유효한 이메일 주소를 입력해주세요.");
+      hasError = true;
+    } else {
+      setEmailChecks(false);
+    }
+  
+    if (!passwordRegex.test(password)) {
+      setPasswordCheck("비밀번호는 8자리 이상, 영문과 숫자를 포함해주세요.");
+      hasError = true;
+    } else {
+      setPasswordCheck(false);
+    }
+  
+    if (password !== passwordConfirm) {
+      setPasswordConfirmCheck("비밀번호가 일치하지 않습니다");
+      hasError = true;
+    } else {
+      setPasswordConfirmCheck(false);
+    }
+  
+    if (hasError) {
+      return;
+    }
+  
+    const newUser: SignupFormValues = {
+      email,
+      nickname,
+      password,
+      
+    }
+    signupMutation.mutate(newUser);
+  };
+  
+// -------------------------------------------------이메일 중복확인
+const emailCheckMutation = useMutation(emailCheck, {
+  onSuccess: (data) => {
+    if (data.duplicate) {
+      alert("이미 사용 중인 이메일입니다.");
+    }
+  },
+  onError: (error) => {
+    console.error("이메일 중복 확인 오류:", error);
+  },
+});
+
+const emailCheckHandler = (event: FormEvent<Element>) => {
+  event.preventDefault();
+
+  console.log("클릭")
+  if (emailCheckMutation.data?.duplicate) {
+    setEmailChecks("이미 사용 중인 이메일입니다.");
+  } else {
+    setEmailChecks("사용 가능한 이메일입니다.");
+  }
+
+  emailCheckMutation.mutate(email);
+};
+
+// -------------------------------------------------닉네임 중복확인
+const nickCheckMutation = useMutation(nickCheck, {
+  onSuccess: (data) => {
+    if (data.duplicate) {
+      alert("이미 사용 중인 닉네임입니다.");
+    }
+  },
+  onError: (error) => {
+    console.error("닉네임 중복 확인 오류:", error);
+  },
+});
+
+const nickCheckHandler = (event: FormEvent<Element>) => {
+  event.preventDefault();
+
+  console.log("클릭")
+  if (nickCheckMutation.data?.duplicate) {
+    setEmailChecks("이미 사용 중인 닉네임입니다.");
+  } else {
+    setEmailChecks("사용 가능한 닉네임입니다.");
+  }
+
+  nickCheckMutation.mutate(nickname);
+};
+
   return (
     <CenteredContainer>
-      <SignupLayout>
-      <SignupText>로그인</SignupText>
-      <SignupForm >
+    <LoginLayout>
+      <LoginText>회원가입</LoginText>
+      <LoginForm >
+        <Label>아이디</Label>
+        <InputBox
+          type="text"
+          placeholder="이메일을 입력하세요"
+          value={email}
+          onChange={handleEmailChange}
+          width="384px" 
+          height="46px" 
+          color="grey"
+          showEyeIcon={false} 
+          showButton
+          onButtonClick={emailCheckHandler} // 클릭 이벤트 핸들러 전달
+        />
+        {emailChecks&& <StCheckMassage>{emailChecks}</StCheckMassage>}
+      </LoginForm>
+      
+      <LoginForm>
+        <Label>비밀번호</Label>
+        <InputBox
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+          value={password}
+          onChange={handlePasswordChange}
+          width="384px" 
+          height="46px" 
+          color="grey"
+          showEyeIcon 
+        />
+        {passwordCheck&& <StCheckMassage>{passwordCheck}</StCheckMassage>}
+      </LoginForm>
+
+      <LoginForm>
+        <Label>비밀번호 확인</Label>
+        <InputBox
+          type="password"
+          placeholder="비밀번호를 확인하세요"
+          value={passwordConfirm}
+          onChange={handlePasswordConfirmChange}
+          width="384px" 
+          height="46px" 
+          color="grey"
+          showEyeIcon 
+        />
+         {passwordConfirmCheck&& <StCheckMassage>{passwordConfirmCheck}</StCheckMassage>}
+      </LoginForm>
+
+      <LoginForm>
+        <Label>닉네임</Label>
+        <InputBox
+          type="text"
+          placeholder="닉네임을 입력하세요"
+          value={nickname}
+          onChange={handleNicknameChange}
+          width="384px" 
+          height="46px" 
+          color="grey"
+          showButton
+          onButtonClick={nickCheckHandler} // 클릭 이벤트 핸들러 전달
+     
+        />
+      </LoginForm>
+
+
+      <LoginButton>
+        
+        <Button  
+        backgroundColor={"#CFCED7"} 
+        color={"#ffffff"} 
+        fontWeight={"bold"} 
+        onClick={signupHandler}
+        margin='32px 0 0 0'>
+          회원가입</Button>
+
+      </LoginButton>
+
+
+    </LoginLayout>
+  </CenteredContainer>
+);
+  }
+
+export default Signup
+
+const StCheckMassage = styled.div`
+  font-size: 14px;
+  margin: 0 auto 16px 0;
+  color: red;
+`
 
 
 
-      </SignupForm>
+const Label = styled.label`
 
-      </SignupLayout>
-    </CenteredContainer>
-  )
-}
+  align-self: flex-start;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-family: Pretendard;
+  color: #403f4e;
+   font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+   line-height: 1;
+  letter-spacing: normal;
+`;
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -24,11 +246,11 @@ const CenteredContainer = styled.div`
   height: 100vh;
 `;
 
-const SignupLayout = styled.div`
+const LoginLayout = styled.div`
   text-align: center;
 `;
 
-const SignupText = styled.div`
+const LoginText = styled.div`
   font-family: Pretendard;
   font-size: 32px;
   font-weight: 900;
@@ -36,11 +258,24 @@ const SignupText = styled.div`
   letter-spacing: 0.96px;
   margin-bottom: 40px;
   color: #403f4e;
+
 `;
 
-const SignupForm = styled.form`
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+ 
+`;
+
+
+const LoginButton = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
+
+
+
