@@ -71,10 +71,23 @@ const addUsers = async (newUser: SignupFormValues) => {
     
     return response.data;
   }
+// 이메일 중복확인
+  const emailCheck = async (writtenEmail:string) => {
+    const response = await instance.post(`/api/auth/email`, writtenEmail)
+    // console.log("이메일 중복확인", response)
+    
+    return response.data;
+  }
 
+// 닉네임 중복확인
+  const nickCheck = async (writtenNickname:string) => {
+    const response = await instance.post(`/api/auth/nickname`, writtenNickname)
+    // console.log("닉네임 중복확인", response)
+    
+    return response.data;
+  }
 
-
-
+// 카카오 토큰 받아오기
   const getKakaoToken = async (code: string | null) => {
     try {
       const response = await instance.get(`/api/auth/kakao?code=${code}`)
@@ -90,4 +103,10 @@ const addUsers = async (newUser: SignupFormValues) => {
 
 
 
-export { addUsers, login, getKakaoToken }  
+export { 
+  // 로그인, 회원가입
+  addUsers, 
+  login, 
+  getKakaoToken, 
+  emailCheck, 
+  nickCheck }  
