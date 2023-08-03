@@ -15,8 +15,6 @@ function getCookie(cookieName: string) {
   return cookieValue;
   }
 
-
-
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
 });
@@ -56,7 +54,6 @@ instance.interceptors.response.use(
 
 export default instance;
 
-
 // 회원가입
 const addUsers = async (newUser: SignupFormValues) => {
     const response = await instance.post(`/api/auth/signup`, newUser)
@@ -68,14 +65,13 @@ const addUsers = async (newUser: SignupFormValues) => {
   const login = async (loginInformation:LoginFormValues) => {
     const response = await instance.post(`/api/auth/login`, loginInformation)
     // console.log("로그인", response)
-    
     return response.data;
   }
+
 // 이메일 중복확인
   const emailCheck = async (writtenEmail:string) => {
     const response = await instance.post(`/api/auth/email`, writtenEmail)
     // console.log("이메일 중복확인", response)
-    
     return response.data;
   }
 
@@ -83,7 +79,6 @@ const addUsers = async (newUser: SignupFormValues) => {
   const nickCheck = async (writtenNickname:string) => {
     const response = await instance.post(`/api/auth/nickname`, writtenNickname)
     // console.log("닉네임 중복확인", response)
-    
     return response.data;
   }
 
@@ -100,8 +95,6 @@ const addUsers = async (newUser: SignupFormValues) => {
       console.error(error);
     }
   }
-
-
 
 export { 
   // 로그인, 회원가입
