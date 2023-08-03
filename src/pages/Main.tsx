@@ -6,18 +6,12 @@ import Map from '../conponents/Map';
 
 export const Main: React.FC = () => {
 
-
-
-  const kakaoLoginHandler = ()=>{
-      console.log("hi")
-  }
-
   return (
     <div>
     <h1>Main</h1>
     <div>Main</div>
     <button>버튼입니다.</button>
-    <Map googleMapApiKey="" />
+    <Map/>
     </div>
   )
 }

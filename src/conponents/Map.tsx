@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 
-interface MapProps {
-  googleMapApiKey: string;
-}
 
-const Map: React.FC<MapProps> = ({ googleMapApiKey }) => {
+
+const Map: React.FC = () => {
+  const googleMapApiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY
   const mapRef = useRef<HTMLDivElement | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
