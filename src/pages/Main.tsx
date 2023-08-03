@@ -6,12 +6,6 @@ import Map from '../conponents/Map';
 
 export const Main: React.FC = () => {
 
-
-
-  const kakaoLoginHandler = ()=>{
-      console.log("hi")
-  }
-
   return (
     <div>
     <h1>Main</h1>
