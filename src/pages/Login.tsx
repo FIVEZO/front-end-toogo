@@ -15,14 +15,13 @@ import Button from '../conponents/Button';
  
   };
 
-
 function Login() {
 
   const [email, handleEmailChange] = useInput();
   const [password, handlePasswordChange] = useInput();
   const [emailCheck, setEmailCheck] = useState<boolean | string>(false)
+  const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false)
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
   const navigate = useNavigate();
 
   // ----------------------------------------로그인 로직
@@ -35,10 +34,13 @@ function Login() {
 
   const loginHandler = (event: React.FormEvent) => {
     event.preventDefault(); 
-
     if (!emailRegex.test(email)) {
       setEmailCheck("유효한 이메일 주소를 입력해주세요.");
-      return; // Stop the login process if the email format is invalid
+      return;
+    }
+    if (password.length == 0) {
+      setPasswordCheck("비밀번호를 입력해주세요.");
+      return;
     }
     const loginInformation: LoginFormValues = {
       email,
@@ -48,7 +50,7 @@ function Login() {
   };
 
   // ----------------------------------------카카오 로그인
-  const REST_API_KEY = '564f00b46533ce881c7fe7c870c83458';
+  const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   const REDIRECT_URI = 'http://localhost:3000/api/auth/kakao';
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
@@ -56,7 +58,6 @@ function Login() {
     window.location.href = link;
   };
 
-  
   return (
     <CenteredContainer>
       <LoginLayout>
@@ -70,7 +71,7 @@ function Login() {
             onChange={handleEmailChange}
             width="384px" 
             height="46px" 
-            color="grey"
+            color={emailCheck? "#E32D2D" : "grey"}
             showEyeIcon={false} 
           />
           {emailCheck&& <StCheckMassage>{emailCheck}</StCheckMassage>}
@@ -84,9 +85,10 @@ function Login() {
             onChange={handlePasswordChange}
             width="384px" 
             height="46px" 
-            color="grey"
+            color={passwordCheck? "#E32D2D" : "grey"}
             showEyeIcon 
           />
+          {passwordCheck && <StCheckMassage>{passwordCheck}</StCheckMassage>}
         </LoginForm>
 
         <LoginLabel>
@@ -96,7 +98,7 @@ function Login() {
 
         <LoginButton>
           
-          <Button  
+          <Button
           backgroundColor={"#00ce7c"} 
           color={"#ffffff"} 
           fontWeight={"bold"} 
@@ -104,15 +106,14 @@ function Login() {
           margin={"0 0 16px 0"}>
             로그인</Button>
           
-          <Button  
+          <Button
+           
           backgroundColor={"#ffe500"} 
           color={"#292832"} 
           fontWeight={"bold"} 
           onClick={kakaoLoginHandler}>
-            <ButtonImage src="https://cdn.zeplin.io/64c908915ce80e21fa43ed1f/assets/2bcf4a12-c983-4f43-b56d-52c6d9ab73ac-3x.png" alt="Kakao Icon" />
-            Kakao로 시작하기</Button>
+          <ButtonImage src="https://cdn.zeplin.io/64c908915ce80e21fa43ed1f/assets/2bcf4a12-c983-4f43-b56d-52c6d9ab73ac-3x.png" alt="Kakao Icon"/>Kakao로 시작하기</Button>
 
-  
         </LoginButton>
 
         <LoginAccountText>
@@ -138,8 +139,6 @@ const InputCheck = styled.input`
   border: 1.5px solid gainsboro;
   border-radius: 2px;
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='rgb(221,220,227)' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e" );
-
-
   &:checked {
     border-color: transparent;
     background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e" );
@@ -148,7 +147,6 @@ const InputCheck = styled.input`
     background-repeat: no-repeat;
     background-color: #00ce7c;
   }
-  
 `
 
 const StCheckMassage = styled.div`
@@ -180,45 +178,12 @@ const AccountLien = styled.span`
   color: #636363;
 `
 
-
 const ButtonImage = styled.img`
    width: 20px;
   height: 20px;
   object-fit: contain;
   margin-right: 9.7px;
 `;
-
-const ButtonSt = styled.div<ButtonProps>`
-font-family: Pretendard;
-font-stretch: normal;
-font-style: normal;
-line-height: 1.1;
-letter-spacing: normal;
-text-align: left;
-font-size: 16px;
-width: 384px;
-height: 46px;
-border-radius: 8.53px;
-display: inline-flex;
-align-items: center;
-margin-bottom: 16px;
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
-cursor: pointer;
-background-color: ${({ theme, color }) =>
-    color === "green" ? theme.color.green : theme.color.yellow};
-
-color: ${({ fontColor }) => fontColor};
-font-weight: ${({ fontWeight }) => fontWeight};
-
-&:active {
-    background-color: ${({ theme, color }) =>
-      color === "green" ? theme.color.darkGreen : theme.color.darkYellow};
-  }
-  
- `
 
 const Label = styled.label`
 

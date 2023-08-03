@@ -21,8 +21,12 @@ const Button: React.FC<ButtonProps> = ({
   color, 
   children,
   fontSize, 
+
   margin,
+
 }) => {
+
+
   return (
     <StyledButton
       backgroundColor={backgroundColor}
@@ -31,7 +35,9 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       color={color} 
       fontSize={fontSize}
+
       margin={margin}
+
     >
 {children} 
 

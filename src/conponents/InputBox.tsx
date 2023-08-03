@@ -73,7 +73,7 @@ const InputBoxContainer = styled.div<{ width?: string; height?: string; color?: 
 const Input = styled.input<{ color?: string }>`
   margin-left: 16px;
   font-size: 16px;
-  color: ${({ color }) => (color ? color : '#000000')};
+  color: #403F4E;
   border: none;
   outline: none;
   flex: 1;

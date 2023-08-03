@@ -131,6 +131,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
 
   return (
     <CenteredContainer>
+
     <LoginLayout>
       <LoginText>회원가입</LoginText>
       <LoginForm >
@@ -206,6 +207,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
         onClick={signupHandler}
         margin='32px 0 0 0'>
           회원가입</Button>
+
 
       </LoginButton>
 
