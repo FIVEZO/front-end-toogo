@@ -13,6 +13,32 @@ type InputBoxProps = {
   showEyeIcon?: boolean;
 };
 
+const InputBox: React.FC<InputBoxProps> = ({
+  placeholder,
+  type,
+  value,
+  onChange,
+  width,
+  height,
+  color,
+  showEyeIcon,
+}) => {
+  return (
+    <InputBoxContainer width={width} height={height} color={color}>
+      <Input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        color={color}
+      />
+      {showEyeIcon && <CustomEyeOffIcon />}
+    </InputBoxContainer>
+  );
+};
+
+export default InputBox;
+
 const InputBoxContainer = styled.div<{ width?: string; height?: string; color?: string }>`
   width: ${({ width }) => (width ? width : '384px')};
   height: ${({ height }) => (height ? height : '46px')};
@@ -44,29 +70,3 @@ const CustomEyeOffIcon = styled(LuEyeOff)`
   width: 19.8px;
   height: 17.6px;
 `;
-
-const InputBox: React.FC<InputBoxProps> = ({
-  placeholder,
-  type,
-  value,
-  onChange,
-  width,
-  height,
-  color,
-  showEyeIcon,
-}) => {
-  return (
-    <InputBoxContainer width={width} height={height} color={color}>
-      <Input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        color={color}
-      />
-      {showEyeIcon && <CustomEyeOffIcon />}
-    </InputBoxContainer>
-  );
-};
-
-export default InputBox;

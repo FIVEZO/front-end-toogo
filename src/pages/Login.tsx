@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { css, styled } from 'styled-components';
 import { LoginFormValues } from '../types/login';
 import { useNavigate } from 'react-router-dom';
@@ -19,9 +19,12 @@ function Login() {
 
   const [email, handleEmailChange] = useInput();
   const [password, handlePasswordChange] = useInput();
+  const [emailCheck, setEmailCheck] = useState<boolean | string>(false)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const navigate = useNavigate();
 
+  // ----------------------------------------로그인 로직
   const loginMutation = useMutation(login, {
     onSuccess: () => {
       alert("로그인을 완료하였습니다.");
@@ -31,6 +34,11 @@ function Login() {
 
   const loginHandler = (event: React.FormEvent) => {
     event.preventDefault(); 
+
+    if (!emailRegex.test(email)) {
+      setEmailCheck("유효한 이메일 주소를 입력해주세요.");
+      return; // Stop the login process if the email format is invalid
+    }
     const loginInformation: LoginFormValues = {
       email,
       password,
@@ -38,6 +46,7 @@ function Login() {
     loginMutation.mutate(loginInformation)
   };
 
+  // ----------------------------------------카카오 로그인
   const REST_API_KEY = '564f00b46533ce881c7fe7c870c83458';
   const REDIRECT_URI = 'http://localhost:3000/api/auth/kakao';
   const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
@@ -52,10 +61,10 @@ function Login() {
       <LoginLayout>
         <LoginText>로그인</LoginText>
         <LoginForm >
-          <Label>아이디</Label>
+          <Label>이메일</Label>
           <InputBox
             type="text"
-            placeholder="아이디를 입력하세요"
+            placeholder="이메일을 입력하세요"
             value={email}
             onChange={handleEmailChange}
             width="384px" 
@@ -63,6 +72,7 @@ function Login() {
             color="grey"
             showEyeIcon={false} 
           />
+          {emailCheck&& <StCheckMassage>{emailCheck}</StCheckMassage>}
         </LoginForm>
         <LoginForm>
           <Label>비밀번호</Label>
@@ -125,6 +135,13 @@ const InputCheck = styled.input`
   }
   
 `
+
+const StCheckMassage = styled.div`
+  font-size: 14px;
+  margin: 0 auto 16px 0;
+  color: red;
+`
+
 const LoginLabel = styled.div`
   height: 49.1px;
   flex-grow: 0;
@@ -258,3 +275,5 @@ cursor: pointer;
   text-align: right;
   color: #403f4e;
 `
+
+
