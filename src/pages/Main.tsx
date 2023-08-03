@@ -17,7 +17,7 @@ export const Main: React.FC = () => {
     <h1>Main</h1>
     <div>Main</div>
     <button>버튼입니다.</button>
-    <Map googleMapApiKey="AIzaSyBDNsgMQVGY3zcAzHleutND1NTI-lf07y8" />
+    <Map googleMapApiKey="" />
     </div>
   )
 }
