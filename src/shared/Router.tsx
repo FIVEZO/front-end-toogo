@@ -4,6 +4,7 @@ import { Main } from "../pages/Main";
 import Login from "../pages/Login";
 import {Account} from "../pages/Account";
 import Redirection from "../pages/Redirection";
+import Signup from "../pages/Signup";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ export const Router = () => {
             <Route path="/login" element={<Login />} />
 
             <Route path="/api/auth/kakao" element={<Redirection />} />
+            <Route path="/singup" element={<Signup />} />
 
             <Route path="/account" element={<Account />} />
 

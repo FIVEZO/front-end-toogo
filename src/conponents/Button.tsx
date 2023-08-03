@@ -7,6 +7,7 @@ type ButtonProps = {
   onClick?: (event: React.FormEvent) => void; 
   type?: "primary" | "medium" | "small";
   color?: string; 
+  margin?: string;
   children?: React.ReactNode;
   fontSize?: string; 
 };
@@ -20,7 +21,9 @@ const Button: React.FC<ButtonProps> = ({
   color, 
   children,
   fontSize, 
- 
+
+  margin,
+
 }) => {
 
 
@@ -32,6 +35,8 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       color={color} 
       fontSize={fontSize}
+
+      margin={margin}
 
     >
 {children} 
@@ -54,7 +59,7 @@ const StyledButton = styled.div<ButtonProps>`
   border-radius: 8.53px;
   display: inline-flex;
   align-items: center;
-  margin-bottom: 16px;
+  margin: ${({ margin }) => margin};
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -64,7 +69,7 @@ const StyledButton = styled.div<ButtonProps>`
   color: ${({ color }) => color}; 
   font-weight: ${({ fontWeight }) => fontWeight};
   font-size: ${({ fontSize }) => fontSize};
-
+  
   ${({ type }) =>
     type === "primary"
       ? css`

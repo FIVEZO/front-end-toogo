@@ -1,6 +1,9 @@
-import React from 'react';
+
 import styled from 'styled-components';
 import { LuEyeOff } from 'react-icons/lu';
+import Button from './Button';
+import React, { FormEvent } from 'react';
+
 
 type InputBoxProps = {
   placeholder: string;
@@ -11,6 +14,8 @@ type InputBoxProps = {
   height?: string;
   color?: string;
   showEyeIcon?: boolean;
+  showButton?: boolean;
+  onButtonClick?: (event: React.FormEvent<Element>) => void; 
 };
 
 const InputBox: React.FC<InputBoxProps> = ({
@@ -18,10 +23,12 @@ const InputBox: React.FC<InputBoxProps> = ({
   type,
   value,
   onChange,
-  width,
+  width,  
   height,
   color,
   showEyeIcon,
+  showButton,
+  onButtonClick,
 }) => {
   return (
     <InputBoxContainer width={width} height={height} color={color}>
@@ -32,7 +39,19 @@ const InputBox: React.FC<InputBoxProps> = ({
         onChange={onChange}
         color={color}
       />
-      {showEyeIcon && <CustomEyeOffIcon />}
+     {showEyeIcon && <CustomEyeOffIcon />}
+      {showButton &&  onButtonClick && ( 
+        <CustomButton 
+          type='small'
+          color="#ffffff" 
+          fontWeight='bold'
+          margin='0 6px 0 0'
+          onClick={onButtonClick}
+        >
+          중복확인
+        </CustomButton>
+      )}
+
     </InputBoxContainer>
   );
 };
@@ -44,8 +63,9 @@ const InputBoxContainer = styled.div<{ width?: string; height?: string; color?: 
   height: ${({ height }) => (height ? height : '46px')};
   border: 1px solid ${({ color }) => (color ? color : '#ccc')};
   border-radius: 8.53px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: space-between; 
   margin-bottom: 16px;
   position: relative;
 `;
@@ -70,3 +90,8 @@ const CustomEyeOffIcon = styled(LuEyeOff)`
   width: 19.8px;
   height: 17.6px;
 `;
+
+const CustomButton = styled(Button)`
+   margin-right: 16px;
+`;
+

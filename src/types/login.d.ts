@@ -14,5 +14,4 @@ export type LoginFormValues = {
 
 // 이메일 중복확인
 
-
 // 닉네임 중복확인
