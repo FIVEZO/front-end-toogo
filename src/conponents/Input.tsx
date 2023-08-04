@@ -12,6 +12,7 @@ type InputProps = {
   size: string;
   color?: string;
   variant?: 'default' | 'eyeIcon' | 'button';
+  name?: string;
   onButtonClick?: (event: React.FormEvent<Element>) => void;
 };
 
@@ -30,8 +31,9 @@ const Input: React.FC<InputProps> = ({
   value,
   onChange,
   size,
-  color,
   variant = 'default',
+  name,
+  color,
   onButtonClick,
 }) => {
 
@@ -73,11 +75,11 @@ const Input: React.FC<InputProps> = ({
       {onButtonClick && (
         <CustomButton
           type='small'
-          color='#ffffff'
+          color={value? "on" : 'negative'}
           margin='0 6px 0 0'
           onClick={onButtonClick}
           size={"small"}
-          name={"중복확인"}
+          name={name}
         />
         
         
@@ -102,6 +104,7 @@ const Input: React.FC<InputProps> = ({
 export default Input;
 
 const InputContainer = styled.div<{ size: string , color?: string }>`
+
   ${({ size }) => sizeHandler(size)};
   border: 1px solid ${({ color }) => (color)};
   border-radius: 8.53px;

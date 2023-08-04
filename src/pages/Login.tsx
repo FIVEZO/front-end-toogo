@@ -110,11 +110,14 @@ function Login() {
           size={'large'}
           name={"로그인"}
           />
+            
           <Button
-          color={"kakaoLogin"} 
+          color={'kakaoLogin'} 
           onClick={kakaoLoginHandler}
           size={'large'}
-          name={"kakao로 시작하기"} />
+          name={"Kakao로 시작하기"}
+          kakao={true}
+          />
         </LoginButton>
 
         <LoginAccountText>
