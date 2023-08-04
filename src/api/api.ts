@@ -2,6 +2,7 @@ import axios from "axios";
 import { LoginFormValues, SignupFormValues } from "../types/login";
 
 import { useNavigate } from "react-router-dom";
+import { postFormValues } from "../types/posts";
 
 function getCookie(cookieName: string) {
   var cookieValue = null;
@@ -70,14 +71,14 @@ const addUsers = async (newUser: SignupFormValues) => {
 
 // 이메일 중복확인
   const emailCheck = async (writtenEmail:string) => {
-    const response = await instance.post(`/api/auth/email`, writtenEmail)
+    const response = await instance.post(`/api/auth/email?email=${writtenEmail}`)
     // console.log("이메일 중복확인", response)
     return response.data;
   }
 
 // 닉네임 중복확인
   const nickCheck = async (writtenNickname:string) => {
-    const response = await instance.post(`/api/auth/nickname`, writtenNickname)
+    const response = await instance.post(`/api/auth/nickname?nickname=${writtenNickname}`)
     // console.log("닉네임 중복확인", response)
     return response.data;
   }
@@ -103,7 +104,7 @@ const addUsers = async (newUser: SignupFormValues) => {
     return response.data;
   }
 
-
+  // ------------------------------------------- 게시글
 
   //  전체 게시글 조회 - 메인페이지 - 최신글 순으로 12개
 const getHomePosts = async () => {
@@ -127,8 +128,8 @@ const getDetailPosts = async (category: number, postId: number ) => {
 }
 
 // 게시글 등록
-const addPost = async (category: number) => {
-  const response = await instance.post(`/api/post/${category}`)
+const addPost = async (category: number, postData : postFormValues) => {
+  const response = await instance.post(`/api/post/${category}`, postData)
   // console.log("게시글 등록", response)
   return response.data;
 }
@@ -154,12 +155,12 @@ const postScrap = async (category: number, postId: number) => {
   return response.data;
 }
 
-// // 게시글 검색
-// const getSearchPosts = async () => {
-//   const response = await instance.get(`api/post/{category}/search/{pageNum}`);
-//   // console.log("게시글 검색", response)
-//   return response.data;
-// }
+// // 게시글 검색  ex) api/post/1/search/1?keyword=에펠탑
+const getSearchPosts = async (category: number, pageNum: number, keyword : string) => {
+  const response = await instance.get(`api/post/${category}/search/${pageNum}?keyword=${keyword}`);
+  // console.log("게시글 검색", response)
+  return response.data;
+}
 
 // 댓글 등록
 const addComment = async (category: number, postId: number, comment : string) => {
@@ -171,16 +172,53 @@ const addComment = async (category: number, postId: number, comment : string) =>
 // 댓글 수정
 const editComment = async (category: number, postId: number, commentId : number, comment : string) => {
   const response = await instance.patch(`api/post/${category}/${postId}/comment/${commentId}`, comment)
-  // console.log("게시글 수정", response)
+  // console.log("댓글 수정", response)
   return response.data;
 }
 
-// 게시글 삭제
-const deleteComment = async (category: number, postId: number) => {
-  const response = await instance.delete(`api/post/${category}/${postId}`)
-  // console.log("게시글 삭제", response)
+// 댓글 삭제
+const deleteComment = async (category: number, postId: number, commentId : number) => {
+  const response = await instance.delete(`api/post/${category}/${postId}/comment/${commentId}`)
+  // console.log("댓글 삭제", response)
   return response.data;
 }
+
+// --------------------------------------------------- 마이 페이지
+
+// 마이페이지 화면구성 필요함 스크렙한
+
+
+
+
+// 회원 탈퇴
+const deleteUser = async () => {
+  const response = await instance.delete(`api/mypage/delete`)
+  // console.log("회원 탈퇴", response)
+  return response.data;
+}
+
+// 내정보 수정
+const editUser = async (userInformation : string) => {
+  const response = await instance.patch(`api/mypage/update`, userInformation)
+  // console.log("내정보 수정", response)
+  return response.data;
+}
+
+ // 마이페이지 스크렙 게시글
+ const getScrapPosts = async () => {
+  const response = await instance.get(`api/mypage/scrap`);
+  // console.log("스크렙한 게시글 조회", response)
+  return response.data;
+}
+
+ // 마이페이지 내가받은 쪽지
+ const getNote = async () => {
+  const response = await instance.get(`api/mypage/note`);
+  // console.log("내가받은 쪽지 조회", response)
+  return response.data;
+}
+
+
 
 
 
@@ -188,5 +226,5 @@ export {
   // 로그인, 회원가입
   addUsers, login, getKakaoToken, emailCheck, nickCheck, logout, 
   // 게시글
-  getHomePosts, getCategoryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment
+  getHomePosts, getCategoryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment, deleteComment, deleteUser, editUser
 }  
