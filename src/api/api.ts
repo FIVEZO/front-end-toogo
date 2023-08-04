@@ -69,14 +69,15 @@ const addUsers = async (newUser: SignupFormValues) => {
     return response.data;
   }
 
-// 이메일 중복확인
+  // 이메일 중복확인
   const emailCheck = async (writtenEmail:string) => {
+
     const response = await instance.post(`/api/auth/email?email=${writtenEmail}`)
     // console.log("이메일 중복확인", response)
     return response.data;
   }
-
-// 닉네임 중복확인
+  
+  // 닉네임 중복확인
   const nickCheck = async (writtenNickname:string) => {
     const response = await instance.post(`/api/auth/nickname?nickname=${writtenNickname}`)
     // console.log("닉네임 중복확인", response)
