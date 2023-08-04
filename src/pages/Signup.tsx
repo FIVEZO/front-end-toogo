@@ -6,6 +6,7 @@ import useInput from '../hooks/useInput';
 import { useMutation, useQueryClient } from 'react-query';
 import InputBox from '../conponents/InputBox';
 import Button from '../conponents/Button';
+import ButtonBox from '../conponents/ButtonBox';
 import { emailCheck ,addUsers, nickCheck } from '../api/api';
 
 
@@ -194,19 +195,13 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
 
 
       <LoginButton>
-        
-        <Button  
-        backgroundColor={"#CFCED7"} 
-        color={"#ffffff"} 
-        fontWeight={"bold"} 
-        onClick={signupHandler}
-        margin='32px 0 0 0'>
-          회원가입</Button>
-
+      
+      <ButtonBox  onClick={signupHandler} margin='32px 0 0 0' size="large" color="negative" name="회원가입" />
+ 
 
       </LoginButton>
 
-
+    
     </LoginLayout>
   </CenteredContainer>
 );
