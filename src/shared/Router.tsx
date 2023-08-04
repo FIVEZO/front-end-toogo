@@ -18,7 +18,7 @@ export const Router = () => {
             <Route path="/login" element={<Login />} />
 
             <Route path="/api/auth/kakao" element={<Redirection />} />
-            <Route path="/singup" element={<Signup />} />
+            <Route path="/signup" element={<Signup />} />
 
             <Route path="/account" element={<Account />} />
 
