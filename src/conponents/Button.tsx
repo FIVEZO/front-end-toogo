@@ -8,8 +8,9 @@ type ButtonProps = {
   margin?: string;
   children?: React.ReactNode;
   size: 'small' | 'medium' | 'large';
-  color: 'primary' | 'negative' | 'default' | 'custom';
+  color: 'primary' | 'negative' | 'default' | 'custom' | 'kakaoLogin';
   name?: string; 
+  kakao?: boolean;
 };
 
 const sizeHandler = (size: ButtonProps['size']) => {
@@ -29,12 +30,14 @@ const colorHandler = (color: ButtonProps['color']) => {
   switch (color) {
     case 'negative':
       return `border: 1px solid #CFCED7; color: #ffffff; background-color: #CFCED7;  font-weight: bold; font-size: 16px;`; 
+      case 'kakaoLogin':
+        return `border: 1px solid #FFE500; color: #292832; background-color: #FFE500; font-size: 16px;`;
     default:
-      return `border: 1px solid rgb(85, 239, 196); background-color: rgb(85, 239, 196)`;
+      return `border: 1px solid #1FEC9B; color: #ffffff; background-color: #1FEC9B; font-weight: bold; font-size: 16px;`;
   }
 };
 
-function Button({ size, color, onClick, name, margin }: ButtonProps) {
+function Button({ size, color, onClick, name, margin, kakao }: ButtonProps) {
   return (
     <StyledButton
       onClick={onClick}
@@ -42,7 +45,9 @@ function Button({ size, color, onClick, name, margin }: ButtonProps) {
       size={size}   
       margin={margin}
     >
+      {kakao && <ButtonImage src="https://cdn.zeplin.io/64c908915ce80e21fa43ed1f/assets/2bcf4a12-c983-4f43-b56d-52c6d9ab73ac-3x.png" alt="Kakao Icon"/>}
       {name}
+      
     </StyledButton>
   );
 }
@@ -51,8 +56,6 @@ const StyledButton = styled.button<ButtonProps>`
   font-family: Pretendard;
   font-stretch: normal;
   font-style: normal;
-  line-height: 1.1;
-  letter-spacing: normal;
   text-align: center;
   border-radius: 8.53px;
   display: inline-flex;
@@ -68,3 +71,10 @@ const StyledButton = styled.button<ButtonProps>`
 `;
 
 export default Button;
+
+const ButtonImage = styled.img`
+   width: 20px;
+  height: 20px;
+  object-fit: contain;
+  margin-right: 9.7px;
+`;
