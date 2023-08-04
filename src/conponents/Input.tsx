@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { LuEyeOff } from 'react-icons/lu';
-import Button from './Button';
+
 import React from 'react';
+import Button from './Button';
 
 type InputProps = {
   placeholder: string;
@@ -17,7 +18,7 @@ type InputProps = {
 
 const sizeHandler = (size: InputProps['size']) => {
   switch (size) {
-    case '회원가입':
+    case 'signup':
         return `width: 384px; height: 46px`;
     default:
         return `width: 384px; height: 46px;`;
@@ -75,12 +76,13 @@ const Input: React.FC<InputProps> = ({
         <CustomButton
           type='small'
           color='#ffffff'
-          fontWeight='bold'
           margin='0 6px 0 0'
           onClick={onButtonClick}
-        >
-          중복확인
-        </CustomButton>
+          size={"small"}
+          name={"중복확인"}
+        />
+        
+        
       )}
     </InputContainer>
   );

@@ -1,61 +1,59 @@
+import { styled } from "styled-components";
 import React from 'react';
-import { css, styled } from 'styled-components';
 
 type ButtonProps = {
-  backgroundColor?: string;
-  fontWeight?: string;
+
   onClick?: (event: React.FormEvent) => void; 
   type?: "primary" | "medium" | "small";
-  color?: string; 
   margin?: string;
   children?: React.ReactNode;
-  fontSize?: string; 
+  size: 'small' | 'medium' | 'large';
+  color: 'primary' | 'negative' | 'default' | 'custom';
+  name?: string; 
 };
 
+const sizeHandler = (size: ButtonProps['size']) => {
+  switch (size) {
+    case 'large':
+      return `width: 384px; height: 46px; `;
+    case 'medium':
+      return `width: 180px; height: 46px;`;
+     case 'small':
+        return `width: 72px; height: 36px;`;
+    default:
+      return `width: 72px; height: 36px;`;
+  }
+};
 
-const Button: React.FC<ButtonProps> = ({
-  backgroundColor = "#CFCED7",
-  fontWeight,
-  onClick,
-  type,
-  color, 
-  children,
-  fontSize, 
+const colorHandler = (color: ButtonProps['color']) => {
+  switch (color) {
+    case 'negative':
+      return `border: 1px solid #CFCED7; color: #ffffff; background-color: #CFCED7;  font-weight: bold; font-size: 16px;`; 
+    default:
+      return `border: 1px solid rgb(85, 239, 196); background-color: rgb(85, 239, 196)`;
+  }
+};
 
-  margin,
-
-}) => {
-
-
+function Button({ size, color, onClick, name, margin }: ButtonProps) {
   return (
     <StyledButton
-      backgroundColor={backgroundColor}
-      fontWeight={fontWeight}
       onClick={onClick}
-      type={type}
       color={color} 
-      fontSize={fontSize}
-
+      size={size}   
       margin={margin}
-
     >
-{children} 
-
+      {name}
     </StyledButton>
   );
-};
+}
 
-export default Button;
-
-const StyledButton = styled.div<ButtonProps>`
+const StyledButton = styled.button<ButtonProps>`
   font-family: Pretendard;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.1;
   letter-spacing: normal;
   text-align: center;
-  width: 384px;
-  height: 46px;
   border-radius: 8.53px;
   display: inline-flex;
   align-items: center;
@@ -65,27 +63,8 @@ const StyledButton = styled.div<ButtonProps>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  color: ${({ color }) => color}; 
-  font-weight: ${({ fontWeight }) => fontWeight};
-  font-size: ${({ fontSize }) => fontSize};
-  
-  ${({ type }) =>
-    type === "primary"
-      ? css`
-          width: 384px;
-          height: 46px;
-        `
-      : type === "medium"
-      ? css`
-          width: 180px;
-          height: 46px;
-        `
-      : type === "small"
-      ? css`
-          width: 72px;
-          height: 36px;
-        `
-      : css``}; 
-
+  ${({ color }) => colorHandler(color)};
+  ${({ size }) => sizeHandler(size)};
 `;
+
+export default Button;
