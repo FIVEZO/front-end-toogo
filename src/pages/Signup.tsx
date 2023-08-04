@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import {  SignupFormValues } from '../types/login';
 import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import InputBox from '../conponents/InputBox';
 import Button from '../conponents/Button';
 import { emailCheck ,addUsers, nickCheck } from '../api/api';
@@ -26,6 +26,7 @@ function Signup() {
   const [emailChecks, setEmailChecks] = useState<boolean | string>(false)
   const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false)
   const [passwordConfirmCheck, setPasswordConfirmCheck] = useState<boolean | string>(false);
+  const [nicknameChecks, setNicknameChecks] = useState<string>("")
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -46,6 +47,7 @@ function Signup() {
     let hasError = false;
   
     if (!emailRegex.test(email)) {
+      setEmailChecks(true)
       setEmailChecks("유효한 이메일 주소를 입력해주세요.");
       hasError = true;
     } else {
@@ -79,11 +81,15 @@ function Signup() {
     signupMutation.mutate(newUser);
   };
   
+
 // -------------------------------------------------이메일 중복확인
 const emailCheckMutation = useMutation(emailCheck, {
   onSuccess: (data) => {
-    if (data.duplicate) {
-      alert("이미 사용 중인 이메일입니다.");
+    console.log("data",data)
+     if (data) {
+      setEmailChecks("사용 가능한 이메일입니다.");
+    } else {
+      setEmailChecks("이미 사용 중인 이메일입니다.");
     }
   },
   onError: (error) => {
@@ -93,22 +99,18 @@ const emailCheckMutation = useMutation(emailCheck, {
 
 const emailCheckHandler = (event: FormEvent<Element>) => {
   event.preventDefault();
-
-  console.log("클릭")
-  if (emailCheckMutation.data?.duplicate) {
-    setEmailChecks("이미 사용 중인 이메일입니다.");
-  } else {
-    setEmailChecks("사용 가능한 이메일입니다.");
-  }
-
-  emailCheckMutation.mutate(email);
+  console.log("클릭") 
+  email && emailCheckMutation.mutate(email);
 };
 
 // -------------------------------------------------닉네임 중복확인
 const nickCheckMutation = useMutation(nickCheck, {
   onSuccess: (data) => {
-    if (data.duplicate) {
-      alert("이미 사용 중인 닉네임입니다.");
+    console.log(data);
+    if (data) {
+      setNicknameChecks("사용 가능한 닉네임입니다.");
+    } else {
+      setNicknameChecks("이미 사용 중인 닉네임입니다.");
     }
   },
   onError: (error) => {
@@ -118,14 +120,7 @@ const nickCheckMutation = useMutation(nickCheck, {
 
 const nickCheckHandler = (event: FormEvent<Element>) => {
   event.preventDefault();
-
   console.log("클릭")
-  if (nickCheckMutation.data?.duplicate) {
-    setEmailChecks("이미 사용 중인 닉네임입니다.");
-  } else {
-    setEmailChecks("사용 가능한 닉네임입니다.");
-  }
-
   nickCheckMutation.mutate(nickname);
 };
 
@@ -193,8 +188,8 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           color="grey"
           showButton
           onButtonClick={nickCheckHandler} // 클릭 이벤트 핸들러 전달
-     
         />
+        {!!nicknameChecks && <StCheckMassage>{nicknameChecks}</StCheckMassage>}
       </LoginForm>
 
 
