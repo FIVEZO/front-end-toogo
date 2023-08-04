@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput';
 import { useMutation } from 'react-query';
 import { login } from '../api/api';
-import InputBox from '../conponents/InputBox';
 import Button from '../conponents/Button';
+import Input from '../conponents/Input';
 
   type ButtonProps = {
     backgroundColor?: string;
@@ -64,29 +64,27 @@ function Login() {
         <LoginText>로그인</LoginText>
         <LoginForm >
           <Label>이메일</Label>
-          <InputBox
-            type="text"
-            placeholder="이메일을 입력하세요"
-            value={email}
-            onChange={handleEmailChange}
-            width="384px" 
-            height="46px" 
-            color={emailCheck? "#E32D2D" : "grey"}
-            showEyeIcon={false} 
+          <Input 
+          type="text"
+          placeholder="이메일을 입력하세요"
+          value={email}
+          onChange={handleEmailChange}
+          size={"signup"}
+          color={emailCheck? "#E32D2D" : "grey"}
+          variant={'default'}
           />
           {emailCheck&& <StCheckMassage>{emailCheck}</StCheckMassage>}
         </LoginForm>
         <LoginForm>
           <Label>비밀번호</Label>
-          <InputBox
-            type="password"
-            placeholder="비밀번호를 입력하세요"
-            value={password}
-            onChange={handlePasswordChange}
-            width="384px" 
-            height="46px" 
-            color={passwordCheck? "#E32D2D" : "grey"}
-            showEyeIcon 
+          <Input 
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+          value={password}
+          onChange={handlePasswordChange}
+          size={"signup"}
+          color={emailCheck? "#E32D2D" : "grey"}
+          variant={'eyeIcon'}
           />
           {passwordCheck && <StCheckMassage>{passwordCheck}</StCheckMassage>}
         </LoginForm>
@@ -99,19 +97,19 @@ function Login() {
         <LoginButton>
           
           <Button
-          backgroundColor={"#00ce7c"} 
-          color={"#ffffff"} 
-          fontWeight={"bold"} 
+          color={"negative"} 
           onClick={loginHandler}
-          margin={"0 0 16px 0"}>
-            로그인</Button>
+          margin={"0 0 16px 0"}
+          size={'large'}
+          name={"로그인"}
+          />
+            
+            
           
           <Button
-           
-          backgroundColor={"#ffe500"} 
-          color={"#292832"} 
-          fontWeight={"bold"} 
-          onClick={kakaoLoginHandler}>
+          color={"negative"} 
+          onClick={kakaoLoginHandler}
+          size={'large'}>
           <ButtonImage src="https://cdn.zeplin.io/64c908915ce80e21fa43ed1f/assets/2bcf4a12-c983-4f43-b56d-52c6d9ab73ac-3x.png" alt="Kakao Icon"/>Kakao로 시작하기</Button>
 
         </LoginButton>
