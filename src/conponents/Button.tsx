@@ -8,7 +8,7 @@ type ButtonProps = {
   margin?: string;
   children?: React.ReactNode;
   size: 'small' | 'medium' | 'large';
-  color: 'primary' | 'negative' | 'default' | 'custom';
+  color: 'primary' | 'negative' | 'default' | 'custom'  | 'loginOn'| 'kakaoLogin';
   name?: string; 
 };
 
@@ -29,6 +29,10 @@ const colorHandler = (color: ButtonProps['color']) => {
   switch (color) {
     case 'negative':
       return `border: 1px solid #CFCED7; color: #ffffff; background-color: #CFCED7;  font-weight: bold; font-size: 16px;`; 
+    case 'loginOn':
+      return `border: 1px solid #1FEC9B; color: #ffffff; background-color: #1FEC9B;  font-weight: bold; font-size: 16px;`;
+    case 'kakaoLogin':
+      return `border: 1px solid #FFE500; color: #292832; background-color: #FFE500;  font-size: 16px;`;
     default:
       return `border: 1px solid rgb(85, 239, 196); background-color: rgb(85, 239, 196)`;
   }

@@ -27,7 +27,6 @@ function Login() {
   // ----------------------------------------로그인 로직
   const loginMutation = useMutation(login, {
     onSuccess: () => {
-      alert("로그인을 완료하였습니다.");
       navigate('/')
     }
   });
@@ -58,6 +57,15 @@ function Login() {
     window.location.href = link;
   };
 
+  // 입력값에 따라 로그인 버튼의 색상을 업데이트하는 함수
+  const updateLoginButtonColor = () => {
+    if (email && password) {
+      return "loginOn"; // 두 입력값이 모두 채워져 있을 때
+    } else {
+      return "negative"; // 두 입력값 중 하나라도 
+    }
+  };
+
   return (
     <CenteredContainer>
       <LoginLayout>
@@ -73,7 +81,7 @@ function Login() {
           color={emailCheck? "#E32D2D" : "grey"}
           variant={'default'}
           />
-          {emailCheck&& <StCheckMassage>{emailCheck}</StCheckMassage>}
+          {emailCheck && <StCheckMassage>{emailCheck}</StCheckMassage>}
         </LoginForm>
         <LoginForm>
           <Label>비밀번호</Label>
@@ -83,7 +91,7 @@ function Login() {
           value={password}
           onChange={handlePasswordChange}
           size={"signup"}
-          color={emailCheck? "#E32D2D" : "grey"}
+          color={passwordCheck? "#E32D2D" : "grey"}
           variant={'eyeIcon'}
           />
           {passwordCheck && <StCheckMassage>{passwordCheck}</StCheckMassage>}
@@ -95,23 +103,18 @@ function Login() {
         </LoginLabel>
 
         <LoginButton>
-          
           <Button
-          color={"negative"} 
+          color={updateLoginButtonColor()} 
           onClick={loginHandler}
           margin={"0 0 16px 0"}
           size={'large'}
           name={"로그인"}
           />
-            
-            
-          
           <Button
-          color={"negative"} 
+          color={"kakaoLogin"} 
           onClick={kakaoLoginHandler}
-          size={'large'}>
-          <ButtonImage src="https://cdn.zeplin.io/64c908915ce80e21fa43ed1f/assets/2bcf4a12-c983-4f43-b56d-52c6d9ab73ac-3x.png" alt="Kakao Icon"/>Kakao로 시작하기</Button>
-
+          size={'large'}
+          name={"kakao로 시작하기"} />
         </LoginButton>
 
         <LoginAccountText>
@@ -174,13 +177,6 @@ const AccountLien = styled.span`
   letter-spacing: normal;
   color: #636363;
 `
-
-const ButtonImage = styled.img`
-   width: 20px;
-  height: 20px;
-  object-fit: contain;
-  margin-right: 9.7px;
-`;
 
 const Label = styled.label`
   align-self: flex-start;
@@ -251,5 +247,3 @@ cursor: pointer;
   text-align: right;
   color: #403f4e;
 `
-
-
