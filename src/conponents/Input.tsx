@@ -103,7 +103,8 @@ const Input: React.FC<InputProps> = ({
 
 export default Input;
 
-const InputContainer = styled.div<{ size: string , color?:string }>`
+const InputContainer = styled.div<{ size: string , color?: string }>`
+
   ${({ size }) => sizeHandler(size)};
   border: 1px solid ${({ color }) => (color)};
   border-radius: 8.53px;

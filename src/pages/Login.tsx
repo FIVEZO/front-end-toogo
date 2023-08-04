@@ -27,7 +27,6 @@ function Login() {
   // ----------------------------------------로그인 로직
   const loginMutation = useMutation(login, {
     onSuccess: () => {
-      alert("로그인을 완료하였습니다.");
       navigate('/')
     }
   });
@@ -58,6 +57,15 @@ function Login() {
     window.location.href = link;
   };
 
+  // 입력값에 따라 로그인 버튼의 색상을 업데이트하는 함수
+  const updateLoginButtonColor = () => {
+    if (email && password) {
+      return "loginOn"; // 두 입력값이 모두 채워져 있을 때
+    } else {
+      return "negative"; // 두 입력값 중 하나라도 
+    }
+  };
+
   return (
     <CenteredContainer>
       <LoginLayout>
@@ -73,7 +81,7 @@ function Login() {
           color={emailCheck? "#E32D2D" : "grey"}
           variant={'default'}
           />
-          {emailCheck&& <StCheckMassage>{emailCheck}</StCheckMassage>}
+          {emailCheck && <StCheckMassage>{emailCheck}</StCheckMassage>}
         </LoginForm>
         <LoginForm>
           <Label>비밀번호</Label>
@@ -95,9 +103,8 @@ function Login() {
         </LoginLabel>
 
         <LoginButton>
-          
           <Button
-          color={"negative"} 
+          color={updateLoginButtonColor()} 
           onClick={loginHandler}
           margin={"0 0 16px 0"}
           size={'large'}
@@ -111,9 +118,6 @@ function Login() {
           name={"Kakao로 시작하기"}
           kakao={true}
           />
-          
-          
-
         </LoginButton>
 
         <LoginAccountText>
@@ -176,8 +180,6 @@ const AccountLien = styled.span`
   letter-spacing: normal;
   color: #636363;
 `
-
-
 
 const Label = styled.label`
   align-self: flex-start;
@@ -248,5 +250,3 @@ cursor: pointer;
   text-align: right;
   color: #403f4e;
 `
-
-
