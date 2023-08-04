@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput';
 import { useMutation, useQueryClient } from 'react-query';
 import Button from '../conponents/Button';
-import ButtonBox from '../conponents/Button';
 import { emailCheck ,addUsers, nickCheck } from '../api/api';
 import Input from '../conponents/Input';
 
@@ -27,7 +26,7 @@ function Signup() {
   const [emailChecks, setEmailChecks] = useState<boolean | string>(false)
   const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false)
   const [passwordConfirmCheck, setPasswordConfirmCheck] = useState<boolean | string>(false);
-  const [nicknameChecks, setNicknameChecks] = useState<string>("")
+  const [nicknameChecks, setNicknameChecks] = useState<boolean | string>(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -67,6 +66,13 @@ function Signup() {
     } else {
       setPasswordConfirmCheck(false);
     }
+
+    if (nickname.length < 2) {
+      setNicknameChecks("닉네임을 2글자 이상 입력해주세요");
+      hasError = true;
+    } else {
+      setNicknameChecks(false);
+    }
   
     if (hasError) {
       return;
@@ -99,7 +105,6 @@ const emailCheckMutation = useMutation(emailCheck, {
 
 const emailCheckHandler = (event: FormEvent<Element>) => {
   event.preventDefault();
-  console.log("클릭") 
   if (!emailRegex.test(email)) {
     setEmailChecks("유효한 이메일 주소를 입력해주세요.");
     return
@@ -139,22 +144,23 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
         <Label>이메일</Label>
         <Input 
         type="text"
-          placeholder="이메일을 입력하세요"
+          placeholder="이메일"
           value={email}
           onChange={handleEmailChange}
           size={"signup"}
           color={emailChecks? "#E32D2D" : "grey"}
           variant={'button'}
+          name={"인증하기"}
           onButtonClick={emailCheckHandler}
           />
-        {emailChecks&& <StCheckMassage>{emailChecks}</StCheckMassage>}
+        {emailChecks&& <StCheckMassage color={emailChecks=="사용 가능한 이메일입니다."?"black":"red"}>{emailChecks}</StCheckMassage>}
       </LoginForm>
       
       <LoginForm>
         <Label>비밀번호</Label>
         <Input 
         type="password"
-          placeholder="비밀번호를 입력하세요"
+          placeholder="영문,숫자 조합 8자 이상 15자 이하"
           value={password}
           onChange={handlePasswordChange}
           size={"signup"}
@@ -168,11 +174,11 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
         <Label>비밀번호 확인</Label>
         <Input 
         type="password"
-          placeholder="비밀번호를 확인하세요"
+          placeholder="비밀번호 확인"
           value={passwordConfirm}
           onChange={handlePasswordConfirmChange}
           size={"signup"}
-          color={passwordCheck? "#E32D2D" : "grey"}
+          color={passwordConfirmCheck? "#E32D2D" : "grey"}
           variant={'eyeIcon'}
           />
          {passwordConfirmCheck&& <StCheckMassage>{passwordConfirmCheck}</StCheckMassage>}
@@ -182,12 +188,13 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
         <Label>닉네임</Label>
         <Input 
           type="text"
-          placeholder="닉네임을 입력하세요"
+          placeholder="2자 이상 10자 이하"
           value={nickname}
           onChange={handleNicknameChange}
           size={"signup"}
-          color={passwordCheck? "#E32D2D" : "grey"}
+          color={nicknameChecks? "#E32D2D" : "grey"}
           variant={'button'}
+          name={"중복확인"}
           onButtonClick={nickCheckHandler}
           />
         {!!nicknameChecks && <StCheckMassage>{nicknameChecks}</StCheckMassage>}
@@ -212,7 +219,7 @@ export default Signup
 const StCheckMassage = styled.div`
   font-size: 14px;
   margin: 0 auto 16px 0;
-  color: red;
+  color: ${({ color }) => (color)};
 `
 
 
@@ -246,7 +253,6 @@ const LoginText = styled.div`
   font-family: Pretendard;
   font-size: 32px;
   font-weight: 900;
-  line-height: 1;
   letter-spacing: 0.96px;
   margin-bottom: 40px;
   color: #403f4e;

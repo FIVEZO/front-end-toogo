@@ -12,7 +12,7 @@ type InputProps = {
   size: string;
   color?: string;
   variant?: 'default' | 'eyeIcon' | 'button';
-  error?: boolean;
+  name?: string;
   onButtonClick?: (event: React.FormEvent<Element>) => void;
 };
 
@@ -31,16 +31,16 @@ const Input: React.FC<InputProps> = ({
   value,
   onChange,
   size,
-  color,
   variant = 'default',
-  error,
+  name,
+  color,
   onButtonClick,
 }) => {
 
     
  // 일반 인풋
   const renderInput = () => (
-    <InputContainer size={size} error={error}>
+    <InputContainer size={size} color={color}>
       <InputField
         type={type}
         placeholder={placeholder}
@@ -52,7 +52,7 @@ const Input: React.FC<InputProps> = ({
 
   // 눈 버튼이 들어간 인풋
   const renderEyeIcon = () => (
-    <InputContainer size={size} error={error}>
+    <InputContainer size={size} color={color}>
       <InputField
         type={type}
         placeholder={placeholder}
@@ -65,7 +65,7 @@ const Input: React.FC<InputProps> = ({
 
     // 인풋안에 버튼
   const renderButton = () => (
-    <InputContainer size={size} error={error}>
+    <InputContainer size={size} color={color}>
       <InputField
         type={type}
         placeholder={placeholder}
@@ -75,11 +75,11 @@ const Input: React.FC<InputProps> = ({
       {onButtonClick && (
         <CustomButton
           type='small'
-          color='#ffffff'
+          color={value? "on" : 'negative'}
           margin='0 6px 0 0'
           onClick={onButtonClick}
           size={"small"}
-          name={"중복확인"}
+          name={name}
         />
         
         
@@ -103,9 +103,9 @@ const Input: React.FC<InputProps> = ({
 
 export default Input;
 
-const InputContainer = styled.div<{ size: string , error?: boolean }>`
+const InputContainer = styled.div<{ size: string , color?:string }>`
   ${({ size }) => sizeHandler(size)};
-  border: 1px solid ${({ error }) => (error ? 'red' : '#ccc')};
+  border: 1px solid ${({ color }) => (color)};
   border-radius: 8.53px;
   display: flex;
   align-items: center;
