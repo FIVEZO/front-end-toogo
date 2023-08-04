@@ -71,7 +71,6 @@ const InputBoxContainer = styled.div<{ width?: string; height?: string; color?: 
   justify-content: space-between; 
   margin-bottom: 16px;
   position: relative;
-  border-color: ${({ error, theme }) => (error ? 'red' : theme.color.grey)};
 `;
 
 const Input = styled.input<{ color?: string}>`

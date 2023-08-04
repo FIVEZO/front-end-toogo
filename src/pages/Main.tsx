@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from '../conponents/Button'
 import Map from '../conponents/Map';
+import Input from '../conponents/Input';
 
 
 
@@ -12,6 +13,7 @@ export const Main: React.FC = () => {
     <div>Main</div>
     <button>버튼입니다.</button>
     <Map/>
+    
     </div>
   )
 }

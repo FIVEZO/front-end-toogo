@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import InputBox from '../conponents/InputBox';
 import Button from '../conponents/Button';
 import { emailCheck ,addUsers, nickCheck } from '../api/api';
+import Input from '../conponents/Input';
 
 
 type ButtonProps = {
@@ -40,14 +41,13 @@ function Signup() {
       navigate('/')
     }
   });
-
+  //----------------------------------------- 회원가입 유효성 검사
   const signupHandler = (event: React.FormEvent) => {
     event.preventDefault(); 
   
     let hasError = false;
   
     if (!emailRegex.test(email)) {
-      setEmailChecks(true)
       setEmailChecks("유효한 이메일 주소를 입력해주세요.");
       hasError = true;
     } else {
@@ -100,6 +100,10 @@ const emailCheckMutation = useMutation(emailCheck, {
 const emailCheckHandler = (event: FormEvent<Element>) => {
   event.preventDefault();
   console.log("클릭") 
+  if (!emailRegex.test(email)) {
+    setEmailChecks("유효한 이메일 주소를 입력해주세요.");
+    return
+  }
   email && emailCheckMutation.mutate(email);
 };
 
@@ -121,6 +125,7 @@ const nickCheckMutation = useMutation(nickCheck, {
 const nickCheckHandler = (event: FormEvent<Element>) => {
   event.preventDefault();
   console.log("클릭")
+  
   nickCheckMutation.mutate(nickname);
 };
 
@@ -130,7 +135,17 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
     <LoginLayout>
       <LoginText>회원가입</LoginText>
       <LoginForm >
-        <Label>아이디</Label>
+        {/* <Input 
+        type="text"
+          placeholder="이메일을 입력하세요"
+          value={email}
+          onChange={handleEmailChange}
+          size={"회원가입"}
+          color={emailChecks? "#E32D2D" : "grey"}
+          variant={'default'}
+          onButtonClick={emailCheckHandler}
+          /> */}
+        <Label>이메일</Label>
         <InputBox
           type="text"
           placeholder="이메일을 입력하세요"
@@ -138,7 +153,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           onChange={handleEmailChange}
           width="384px" 
           height="46px" 
-          color="grey"
+          color={emailChecks? "#E32D2D" : "grey"}
           showEyeIcon={false} 
           showButton
           onButtonClick={emailCheckHandler} // 클릭 이벤트 핸들러 전달
@@ -155,7 +170,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           onChange={handlePasswordChange}
           width="384px" 
           height="46px" 
-          color="grey"
+          color={passwordCheck? "#E32D2D" : "grey"}
           showEyeIcon 
         />
         {passwordCheck&& <StCheckMassage>{passwordCheck}</StCheckMassage>}
@@ -170,7 +185,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           onChange={handlePasswordConfirmChange}
           width="384px" 
           height="46px" 
-          color="grey"
+          color={passwordConfirmCheck? "#E32D2D" : "grey"}
           showEyeIcon 
         />
          {passwordConfirmCheck&& <StCheckMassage>{passwordConfirmCheck}</StCheckMassage>}
@@ -185,7 +200,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           onChange={handleNicknameChange}
           width="384px" 
           height="46px" 
-          color="grey"
+          color={nicknameChecks? "#E32D2D" : "grey"}
           showButton
           onButtonClick={nickCheckHandler} // 클릭 이벤트 핸들러 전달
         />
