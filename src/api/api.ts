@@ -75,7 +75,14 @@ const addUsers = async (newUser: SignupFormValues) => {
     // console.log("이메일 인증하기", response)
     return response.data;
   }
-  
+
+  // 인증코드 확인
+  const authCodeCheck = async (code : string) => {
+    const response = await instance.post(`/api/auth/email/confirm?code=${code}`)
+    // console.log("인증코드 확인", response)
+    return response.data;
+  }
+
   // 닉네임 중복확인
   const nickCheck = async (writtenNickname:string) => {
     const response = await instance.post(`/api/auth/nickname?nickname=${writtenNickname}`)
@@ -224,7 +231,7 @@ const editUser = async (userInformation : string) => {
 
 export { 
   // 로그인, 회원가입
-  addUsers, login, getKakaoToken, emailCheck, nickCheck, logout, 
+  addUsers, login, getKakaoToken, emailCheck, authCodeCheck, nickCheck, logout, 
   // 게시글
   getHomePosts, getCategoryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment, deleteComment, deleteUser, editUser
 }  
