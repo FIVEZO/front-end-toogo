@@ -5,6 +5,9 @@ import Login from "../pages/Login";
 import {Account} from "../pages/Account";
 import Redirection from "../pages/Redirection";
 import Signup from "../pages/Signup";
+import PostWriting from "../pages/PostWriting";
+import ChatRoom from "../pages/ChatRoom";
+import ChatRoomList from "../pages/ChatRoomList";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +22,9 @@ export const Router = () => {
             <Route path="/api/auth/kakao" element={<Redirection />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/account" element={<Account />} />
-
+            <Route path="/postwriting" element={<PostWriting />} />
+            <Route path="/chatroom/:id" element={<ChatRoom />} />
+            <Route path="/chatroomlist" element={<ChatRoomList />} />
             </Routes> 
         </BrowserRouter>
     </QueryClientProvider>

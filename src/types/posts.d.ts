@@ -10,3 +10,16 @@ export type locationFormValues = {
     longitude: number
 }
 
+export type cardItem={
+    id: number,
+    nickname: string,
+    title: string,
+    country: string,
+    contents: string,
+    createdAt: string,
+    meetDate: string,
+}
+
+export type cardData ={
+    item: cardItem[]
+}
