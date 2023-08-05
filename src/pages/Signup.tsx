@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput';
 import { useMutation, useQueryClient } from 'react-query';
 import Button from '../conponents/Button';
-import { emailCheck ,addUsers, nickCheck } from '../api/api';
+import { emailCheck ,addUsers, nickCheck, authCodeCheck } from '../api/api';
 import Input from '../conponents/Input';
 
 
@@ -16,22 +16,39 @@ type ButtonProps = {
 
 };
 
+ 
 function Signup() {
 
   const [email, handleEmailChange] = useInput();
   const [password, handlePasswordChange] = useInput();
   const [nickname, handleNicknameChange] = useInput();
   const [passwordConfirm, handlePasswordConfirmChange] = useInput();
+  const [authCode, handleAuthCodeChange] = useInput();
+  
   
   const [emailChecks, setEmailChecks] = useState<boolean | string>(false)
   const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false)
   const [passwordConfirmCheck, setPasswordConfirmCheck] = useState<boolean | string>(false);
   const [nicknameChecks, setNicknameChecks] = useState<boolean | string>(false);
+  const [authCodeChecks, setAuthCodeChecks] = useState<boolean | string>(false);
+  const [authCodeView, setAuthCodeView] = useState<boolean>(false)
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   const navigate = useNavigate();
+
+ // 입력값에 따라 로그인 버튼의 색상을 업데이트하는 함수
+ const updateLoginButtonColor = () => {
+  if (email && password && nickname) {
+    return "loginOn"; // 두 입력값이 모두 채워져 있을 때
+  } else {
+    return "negative"; // 두 입력값 중 하나라도 
+  }
+};
+
+
+
 
   // ---------------------------------------회원가입
   const signupMutation = useMutation(addUsers, {
@@ -88,28 +105,49 @@ function Signup() {
   };
   
 
-// -------------------------------------------------이메일 중복확인
+// -------------------------------------------------이메일 확인
 const emailCheckMutation = useMutation(emailCheck, {
   onSuccess: (data) => {
     console.log("data",data)
-     if (data) {
-      setEmailChecks("사용 가능한 이메일입니다.");
-    } else {
-      setEmailChecks("이미 사용 중인 이메일입니다.");
+     if (data.status="OK") {
+      setAuthCodeView(true)
+      setEmailChecks(false)
     }
   },
   onError: (error) => {
+    setEmailChecks("이미 사용 중인 이메일입니다.");
     console.error("이메일 중복 확인 오류:", error);
   },
 });
 
 const emailCheckHandler = (event: FormEvent<Element>) => {
   event.preventDefault();
+  console.log("클릭")
   if (!emailRegex.test(email)) {
     setEmailChecks("유효한 이메일 주소를 입력해주세요.");
     return
   }
+  setEmailChecks("잠시만 기다려 주십시오.");
   email && emailCheckMutation.mutate(email);
+};
+
+// --------------------------------------------------이메일 인증코드 확인
+const authCodeCheckMutation = useMutation(authCodeCheck, {
+  onSuccess: (data) => {
+    console.log("인증코드 확인",data)
+    setAuthCodeView(false)
+    setEmailChecks("사용 가능한 이메일입니다.");
+  },
+  onError: (error) => {
+    console.error("인증코드 에러", error);
+    setAuthCodeChecks("인증코드가 일치하지 않습니다.");
+  },
+});
+
+const authCodeCheckHandler = (event: FormEvent<Element>) => {
+  event.preventDefault();
+  console.log("인증코드클릭")
+  authCode && authCodeCheckMutation.mutate(authCode);
 };
 
 // -------------------------------------------------닉네임 중복확인
@@ -148,14 +186,30 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           value={email}
           onChange={handleEmailChange}
           size={"signup"}
-          color={emailChecks? "#E32D2D" : "grey"}
+          color={emailChecks=="사용 가능한 이메일입니다." ||emailChecks=="잠시만 기다려 주십시오."|| emailChecks == false ? "gray" : "#E32D2D"}
           variant={'button'}
           name={"인증하기"}
           onButtonClick={emailCheckHandler}
           />
-        {emailChecks&& <StCheckMassage color={emailChecks=="사용 가능한 이메일입니다."?"black":"red"}>{emailChecks}</StCheckMassage>}
+        {emailChecks&& <StCheckMassage color={emailChecks=="사용 가능한 이메일입니다." ||emailChecks=="잠시만 기다려 주십시오."?"black":"#E32D2D"}>{emailChecks}</StCheckMassage>}
       </LoginForm>
-      
+      {authCodeView&&
+        <LoginForm>
+        
+        <Label>인증코드</Label>
+        <Input 
+          type="text"
+          placeholder="이메일에 있는 인증코드를 입력해주세요"
+          value={authCode}
+          onChange={handleAuthCodeChange}
+          size={"signup"}
+          color={authCodeChecks? "#E32D2D" : "grey"}
+          variant={'button'}
+          name={"코드확인"}
+          onButtonClick={authCodeCheckHandler}
+          />
+        {authCodeChecks&& <StCheckMassage color={"#E32D2D"}>{authCodeChecks}</StCheckMassage>}
+      </LoginForm>}
       <LoginForm>
         <Label>비밀번호</Label>
         <Input 
@@ -167,7 +221,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           color={passwordCheck? "#E32D2D" : "grey"}
           variant={'eyeIcon'}
           />
-        {passwordCheck&& <StCheckMassage>{passwordCheck}</StCheckMassage>}
+        {passwordCheck&& <StCheckMassage color={"#E32D2D"}>{passwordCheck}</StCheckMassage>}
       </LoginForm>
 
       <LoginForm>
@@ -181,7 +235,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           color={passwordConfirmCheck? "#E32D2D" : "grey"}
           variant={'eyeIcon'}
           />
-         {passwordConfirmCheck&& <StCheckMassage>{passwordConfirmCheck}</StCheckMassage>}
+         {passwordConfirmCheck&& <StCheckMassage color={"#E32D2D"}>{passwordConfirmCheck}</StCheckMassage>}
       </LoginForm>
 
       <LoginForm>
@@ -195,15 +249,16 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           color={nicknameChecks? "#E32D2D" : "grey"}
           variant={'button'}
           name={"중복확인"}
+          required
           onButtonClick={nickCheckHandler}
           />
-        {!!nicknameChecks && <StCheckMassage>{nicknameChecks}</StCheckMassage>}
+        {!!nicknameChecks && <StCheckMassage color={"red"}>{nicknameChecks}</StCheckMassage>}
       </LoginForm>
 
 
       <LoginButton>
       
-      <Button  onClick={signupHandler} margin='32px 0 0 0' size="large" color="negative" name="회원가입" />
+      <Button  color={updateLoginButtonColor()} onClick={signupHandler} margin='32px 0 0 0' size="large" name="회원가입" />
  
 
       </LoginButton>

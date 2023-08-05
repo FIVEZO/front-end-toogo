@@ -123,7 +123,7 @@ function Login() {
         <LoginAccountText>
           <IdText>아이디 / 비밀번호찾기</IdText>
           <AccountLien>|</AccountLien>
-          <IdText>회원가입</IdText>
+          <IdText onClick={()=>navigate('/signup')} >회원가입</IdText>
         </LoginAccountText>
       </LoginLayout>
     </CenteredContainer>

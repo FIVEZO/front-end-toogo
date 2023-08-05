@@ -13,6 +13,7 @@ type InputProps = {
   color?: string;
   variant?: 'default' | 'eyeIcon' | 'button';
   name?: string;
+  required?: boolean;
   onButtonClick?: (event: React.FormEvent<Element>) => void;
 };
 
@@ -34,6 +35,7 @@ const Input: React.FC<InputProps> = ({
   variant = 'default',
   name,
   color,
+  required,
   onButtonClick,
 }) => {
 
