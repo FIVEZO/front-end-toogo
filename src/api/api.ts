@@ -1,7 +1,6 @@
 import axios from "axios";
 import { LoginFormValues, SignupFormValues } from "../types/login";
 
-import { useNavigate } from "react-router-dom";
 import { postFormValues } from "../types/posts";
 
 function getCookie(cookieName: string) {
@@ -225,6 +224,26 @@ const editUser = async (userInformation : string) => {
   return response.data;
 }
 
+// 채팅방 목록 가져오기
+const fetchChatRooms = async () => {
+    const accessToken = getCookie("access_token");
+    const refreshToken = getCookie("refresh_token");
+  try{
+    const response = await axios.get(`${process.env.REACT_APP_CHAT_SERVER}/message/rooms`,{
+      headers:{
+        accessToken,
+        refreshToken,
+      }
+    });
+    // console.log("채팅방 목록 조회", response)
+  return response.data;
+  }
+  catch (error) {
+    console.error(error);
+  }
+  
+}
+
 
 
 
@@ -233,5 +252,7 @@ export {
   // 로그인, 회원가입
   addUsers, login, getKakaoToken, emailCheck, authCodeCheck, nickCheck, logout, 
   // 게시글
-  getHomePosts, getCategoryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment, deleteComment, deleteUser, editUser
+  getHomePosts, getCategoryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment, deleteComment, 
+  // 마이페이지
+  deleteUser, editUser, getScrapPosts, getNote, fetchChatRooms
 }  
