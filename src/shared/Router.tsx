@@ -10,6 +10,8 @@ import ChatRoom from "../pages/ChatRoom";
 import ChatRoomList from "../pages/ChatRoomList";
 import CreateChatRoomPage from "../pages/CreateChatRoomPage";
 import FindPassword from "../pages/FindPassword";
+import { CategoryPage } from "../pages/CategoryPage";
+import { DetailPage } from "../pages/DetailPage";
 
 const queryClient = new QueryClient();
 
@@ -24,11 +26,13 @@ export const Router = () => {
             <Route path="/api/auth/kakao" element={<Redirection />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/account" element={<Account />} />
-            <Route path="/postwriting" element={<PostWriting />} />
+            <Route path="/postwriting/:id" element={<PostWriting />} />
             <Route path="/chatroom/:id" element={<ChatRoom />} />
             <Route path="/chatroomlist" element={<ChatRoomList />} />
             <Route path="/createchatroompage" element={<CreateChatRoomPage />} />
             <Route path="/findPassword" element={<FindPassword />} />
+            <Route path="/categorypage/:id" element={<CategoryPage />} />
+            <Route path="/detailpage/:id" element={<DetailPage />} />
             </Routes> 
         </BrowserRouter>
     </QueryClientProvider>
