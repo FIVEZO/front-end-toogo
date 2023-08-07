@@ -89,13 +89,20 @@ const addUsers = async (newUser: SignupFormValues) => {
     return response.data;
   }
 
+  // 비밀번호 찾기
+  const findPassword = async (writtenEmail:string) => {
+    const response = await instance.post(`/api/auth/email/find/password?email=${writtenEmail}`)
+    // console.log("비밀번호 찾기", response)
+    return response.data;
+  }
+
 // 카카오 토큰 받아오기
   const getKakaoToken = async (code: string | null) => {
     try {
       const response = await instance.get(`/api/auth/kakao?code=${code}`)
     // console.log("카카오 토큰", response)
-    document.cookie = `accessToken=${response.headers.accesstoken}; path=/;`;
-    document.cookie = `refreshToken=${response.headers.refreshtoken}; path=/`;
+    document.cookie = `access_token=${response.headers.accesstoken}; path=/;`;
+    document.cookie = `refresh_token=${response.headers.refreshtoken}; path=/`;
     
     return response.data;
     } catch (error) {
@@ -224,25 +231,10 @@ const editUser = async (userInformation : string) => {
   return response.data;
 }
 
-// 채팅방 목록 가져오기
-const fetchChatRooms = async () => {
-    const accessToken = getCookie("access_token");
-    const refreshToken = getCookie("refresh_token");
-  try{
-    const response = await axios.get(`${process.env.REACT_APP_CHAT_SERVER}/message/rooms`,{
-      headers:{
-        accessToken,
-        refreshToken,
-      }
-    });
-    // console.log("채팅방 목록 조회", response)
-  return response.data;
-  }
-  catch (error) {
-    console.error(error);
-  }
-  
-}
+
+
+
+
 
 
 
@@ -250,9 +242,9 @@ const fetchChatRooms = async () => {
 
 export { 
   // 로그인, 회원가입
-  addUsers, login, getKakaoToken, emailCheck, authCodeCheck, nickCheck, logout, 
+  addUsers, login, getKakaoToken, emailCheck, authCodeCheck, nickCheck, logout, findPassword,
   // 게시글
   getHomePosts, getCategoryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment, deleteComment, 
   // 마이페이지
-  deleteUser, editUser, getScrapPosts, getNote, fetchChatRooms
+  deleteUser, editUser, getScrapPosts, getNote,
 }  

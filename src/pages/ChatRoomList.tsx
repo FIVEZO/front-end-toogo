@@ -3,7 +3,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { fetchChatRooms } from '../api/api';
+import { fetchChatRooms } from '../api/chatApi';
 
 
 interface ChatRoom {
@@ -11,13 +11,13 @@ interface ChatRoom {
   roomName : string,
   sender : string,
   roomId : string,
-  receiver : string
+  receiver : string,
 }
 
 const ChatRoomList: React.FC = () => {
   const navigate = useNavigate();
 
-  const { isLoading, isError, data: chatRooms } = useQuery<ChatRoom[]>('chatRooms', fetchChatRooms);
+  const { isLoading, isError, data: chatRooms } = useQuery<ChatRoom[]>('chatRoomlist', fetchChatRooms);
   
  
 
@@ -34,9 +34,14 @@ const ChatRoomList: React.FC = () => {
     navigate(`/chatroom/${roomId}`);
   };
 
+  const handleCreateChatRoom = () => {
+    navigate('/createchatroompage'); 
+  };
+
   return (
     <ChatRoomListContainer>
       <h2>Chat Room List</h2>
+      <button onClick={handleCreateChatRoom}>Create New Chat Room</button>
       <ul>
         {chatRooms?.map(room => (
           <ChatRoomItem key={room.id} onClick={() => handleEnterChatRoom(room.id)}>
