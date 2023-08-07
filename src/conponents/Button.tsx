@@ -39,7 +39,7 @@ const colorHandler = (color: ButtonProps['color']) => {
   }
 };
 
-function Button({ size, color, onClick, name, margin, kakao }: ButtonProps) {
+function Button({ size, color, onClick, name, margin, kakao,  }: ButtonProps) {
   return (
     <StyledButton
       onClick={onClick}

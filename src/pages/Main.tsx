@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import { getHomePosts } from '../api/api';
 import { Cards } from '../conponents/Cards';
 import { cardItem } from '../types/posts';
-import Sockjs from '../conponents/Sockjs';
+;
 
 export const Main: React.FC = () => {
   const { isLoading, isError, data } = useQuery("mainPost", getHomePosts);
@@ -24,10 +24,20 @@ export const Main: React.FC = () => {
 
   return (
     <div>
-      <Sockjs/>
-      {data.map((item : cardItem)=>(
+   
+      <StCardContainer>
+      {data?.map((item : cardItem)=>(
         <Cards items={item}/>
       ))}
+      </StCardContainer>
     </div>
   )
 }
+
+const StCardContainer = styled.div`
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+`

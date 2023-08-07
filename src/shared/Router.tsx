@@ -8,6 +8,8 @@ import Signup from "../pages/Signup";
 import PostWriting from "../pages/PostWriting";
 import ChatRoom from "../pages/ChatRoom";
 import ChatRoomList from "../pages/ChatRoomList";
+import CreateChatRoomPage from "../pages/CreateChatRoomPage";
+import FindPassword from "../pages/FindPassword";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,8 @@ export const Router = () => {
             <Route path="/postwriting" element={<PostWriting />} />
             <Route path="/chatroom/:id" element={<ChatRoom />} />
             <Route path="/chatroomlist" element={<ChatRoomList />} />
+            <Route path="/createchatroompage" element={<CreateChatRoomPage />} />
+            <Route path="/findPassword" element={<FindPassword />} />
             </Routes> 
         </BrowserRouter>
     </QueryClientProvider>

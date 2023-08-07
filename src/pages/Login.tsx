@@ -70,7 +70,7 @@ function Login() {
     <CenteredContainer>
       <LoginLayout>
         <LoginText>로그인</LoginText>
-        <LoginForm >
+        <LoginForm onSubmit={loginHandler} >
           <Label>이메일</Label>
           <Input 
           type="text"
@@ -83,7 +83,7 @@ function Login() {
           />
           {emailCheck && <StCheckMassage>{emailCheck}</StCheckMassage>}
         </LoginForm>
-        <LoginForm>
+        <LoginForm onSubmit={loginHandler} >
           <Label>비밀번호</Label>
           <Input 
           type="password"
@@ -121,7 +121,7 @@ function Login() {
         </LoginButton>
 
         <LoginAccountText>
-          <IdText>아이디 / 비밀번호찾기</IdText>
+          <IdText onClick={()=>navigate('/findPassword')}>비밀번호찾기</IdText>
           <AccountLien>|</AccountLien>
           <IdText onClick={()=>navigate('/signup')} >회원가입</IdText>
         </LoginAccountText>

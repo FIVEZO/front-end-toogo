@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import { styled } from 'styled-components';
+import useInput from '../hooks/useInput';
 
 interface Message {
   id: number;
@@ -12,9 +13,9 @@ interface Message {
 const ChatRoom: React.FC = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const [messages, setMessages] = useState<Message[]>([]);
-  const [messageInput, setMessageInput] = useState('');
+  const [messageInput, handleMessageChange, resetMessage] = useInput();
 
-  const socket = new SockJS(`${process.env.REACT_APP_CHAT_SERVER}/chat/${roomId}`); // WebSocket 연결
+  const socket = new SockJS(`${process.env.REACT_APP_CHAT_SERVER}/ws-stomp/${roomId}`); // WebSocket 연결
 
   useEffect(() => {
     socket.onopen = () => {
@@ -42,7 +43,7 @@ const ChatRoom: React.FC = () => {
         text: messageInput,
       };
       socket.send(JSON.stringify(newMessage));
-      setMessageInput('');
+      resetMessage();
     }
   };
 
@@ -58,7 +59,7 @@ const ChatRoom: React.FC = () => {
         <input
           type="text"
           value={messageInput}
-          onChange={e => setMessageInput(e.target.value)}
+          onChange={handleMessageChange}
         />
         <button onClick={handleSendMessage}>Send</button>
       </div>
