@@ -5,6 +5,7 @@ import { useQuery } from 'react-query';
 import { getHomePosts } from '../api/api';
 import { Cards } from '../conponents/Cards';
 import { cardItem } from '../types/posts';
+import Header from '../conponents/Header';
 ;
 
 export const Main: React.FC = () => {
@@ -24,7 +25,7 @@ export const Main: React.FC = () => {
 
   return (
     <div>
-   
+      <Header/>
       <StCardContainer>
       {data?.map((item : cardItem)=>(
         <Cards key={item.id} items={item}/>

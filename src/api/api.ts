@@ -64,6 +64,8 @@ const addUsers = async (newUser: SignupFormValues) => {
 // 로그인
   const login = async (loginInformation:LoginFormValues) => {
     const response = await instance.post(`/api/auth/login`, loginInformation)
+    document.cookie = `access_token=${response.headers.accesstoken}; path=/;`;
+    document.cookie = `refresh_token=${response.headers.refreshtoken}; path=/`;
     // console.log("로그인", response)
     return response.data;
   }

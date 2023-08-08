@@ -1,13 +1,17 @@
 import React from 'react'
 import Container from 'react-bootstrap/Container';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 function Header() {
+
+  const navigate = useNavigate();
+
   return (
     <NavbarRayout>
       <Container>
-        <NavbarBrand >OE</NavbarBrand>
-      
+        <NavbarBrand onClick={()=>navigate('/')}>OE</NavbarBrand>
+        <StloginButton onClick={()=>navigate('/login')}>로그인</StloginButton>
       </Container>
     </NavbarRayout>
   );
@@ -16,15 +20,17 @@ function Header() {
 export default Header
 
 const NavbarRayout = styled.div`
-   width: 100%;
+  width: 100%;
   max-width: 1200px;
   height: 100px;
   margin: 0 auto;
-  align-items: center;
-  justify-content: center;
   display: flex;
+  align-items: center;
+  justify-content:space-between;
+  flex-direction: row;
   border: solid 1px gray;
   background-color: #fff;
+  padding: 20px;
 `
 
 const NavbarBrand = styled.span`
@@ -32,11 +38,12 @@ const NavbarBrand = styled.span`
   height: 40px;
   font-family: Inter;
   font-size: 40px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
+
   letter-spacing: normal;
-  text-align: left;
   color: #000;
+  cursor: pointer;
+`
+
+const StloginButton = styled.div`
+  font-size: 40px;
 `
