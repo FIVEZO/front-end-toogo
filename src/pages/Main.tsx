@@ -27,7 +27,7 @@ export const Main: React.FC = () => {
    
       <StCardContainer>
       {data?.map((item : cardItem)=>(
-        <Cards items={item}/>
+        <Cards key={item.id} items={item}/>
       ))}
       </StCardContainer>
     </div>

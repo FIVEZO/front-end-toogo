@@ -3,8 +3,10 @@ import { styled } from 'styled-components'
 import Card from 'react-bootstrap/Card';
 import { cardData, cardItem } from '../types/posts';
 import 일본 from "../img/일본.jpg"
+
 import { Avatar } from '@mui/material';
 import { formatTimeAgo } from './Time';
+
 
 
 const MySvg = () => (
@@ -20,11 +22,12 @@ export const Cards = ({items}: {items:cardItem}) => {
 
   // 내용이 26자가 넘어가면 자름
   const truncatedContents = contents.length > 26 ? contents.slice(0, 26) + "..." : contents;
-  
+  const navigate = useNavigate();
+
   return (
-  
-    <DivRayout>
+    <DivRayout onClick={()=>navigate(`/detailpage/${id}`)}>
       <StyledCardImg border-radius= "8px" variant="top" src={일본} />
+      {/* <StyledCardImg border-radius= "8px" variant="top" src={country} /> */}
       <DivContent>
 <AvatarLine>
   <AvatarPic>
