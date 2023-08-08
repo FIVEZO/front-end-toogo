@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 import Card from 'react-bootstrap/Card';
 import { cardData, cardItem } from '../types/posts';
 import { Avatar } from '@mui/material';
-import { formatTimeAgo } from './Time';
+import { formatDate, formatTimeAgo } from './Time';
 import { useNavigate } from 'react-router-dom';
 import { countryImages } from '../img/countryImages';
 
@@ -19,6 +19,7 @@ export const Cards = ({items}: {items:cardItem}) => {
   const {id, nickname, title, country, contents, createdAt, meetDate} = items
   const countryImage = countryImages[country] || countryImages['한국']
   const formattedCreatedDate = formatTimeAgo(createdAt); // createdAt을 문자열로 변환하여 formatTimeAgo 함수에 전달
+  const formattedMeetDate = formatDate(meetDate);
   // 내용이 26자가 넘어가면 자름
   const truncatedContents = contents.length > 26 ? contents.slice(0, 26) + "..." : contents;
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export const Cards = ({items}: {items:cardItem}) => {
 </AvatarLine>
         <CardTitle>{title}</CardTitle>
         <CardText>{truncatedContents}</CardText>
-        <DateFootter>{meetDate}</DateFootter>
+        <DateFootter>{formattedMeetDate}</DateFootter>
       </DivContent>
     </DivRayout>
   )
@@ -71,6 +72,9 @@ const AvatarLine = styled.div`
 `
 
 const CardText = styled.div`
+  width: 250px;
+  height: 39px;
+  margin: 10px 0 8px 0;
 font-size: 12px;
 font-weight: normal;
 font-stretch: normal;
@@ -110,8 +114,7 @@ const DivRayout = styled.div`
 width: 282px;
 height: 339px;
 flex-grow: 0;
-margin: 80px 18px 0 0;
-padding: 0 0 16px;
+margin: 80px 0px 0 0px;
 border-radius: 8px;
 border: solid 1px rgba(0, 0, 0, 0.1);
 background-color: #fff;
@@ -128,5 +131,8 @@ margin: 8px 0 0 0 ;
 `
 
 const StyledCardImg = styled(Card.Img)`
+  width: 100%;          
+  height: 180px;      
   border-radius: 8px 8px 0 0;
+
 `;

@@ -2,7 +2,8 @@ export type postFormValues = {
     title : string,
     contents: string
     country: string
-    location : locationFormValues
+    meetDate: string
+    // location : locationFormValues
     }
 
 export type locationFormValues = {
