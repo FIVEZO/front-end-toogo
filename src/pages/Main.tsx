@@ -13,6 +13,7 @@ export const Main: React.FC = () => {
   const [showData, setShowData] = useState(false);
   const { isLoading, isError, data } = useQuery("mainPost", getHomePosts);
 
+
   useEffect(() => {
     const delay = 300; 
     if (!isLoading && !isError) {
@@ -21,7 +22,7 @@ export const Main: React.FC = () => {
       }, delay);
     }
   }, [isLoading, isError]);
-  
+
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;
   }
@@ -39,6 +40,7 @@ export const Main: React.FC = () => {
     </div>
   )
 }
+
 
 
 const StCardContainer = styled.div`
