@@ -34,10 +34,12 @@ export const Main: React.FC = () => {
   )
 }
 
+
 const StCardContainer = styled.div`
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-`
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
