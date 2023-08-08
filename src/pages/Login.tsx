@@ -7,6 +7,7 @@ import { useMutation } from 'react-query';
 import { login } from '../api/api';
 import Button from '../conponents/Button';
 import Input from '../conponents/Input';
+import Header from '../conponents/Header';
 
   type ButtonProps = {
     backgroundColor?: string;
@@ -67,6 +68,8 @@ function Login() {
   };
 
   return (
+    <>
+    <Header/>
     <CenteredContainer>
       <LoginLayout>
         <LoginText>로그인</LoginText>
@@ -127,6 +130,7 @@ function Login() {
         </LoginAccountText>
       </LoginLayout>
     </CenteredContainer>
+    </>
   );
 }
 
