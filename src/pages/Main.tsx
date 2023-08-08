@@ -9,11 +9,19 @@ import Header from '../conponents/Header';
 ;
 
 export const Main: React.FC = () => {
+  const queryClient = useQueryClient();
+  const [showData, setShowData] = useState(false);
   const { isLoading, isError, data } = useQuery("mainPost", getHomePosts);
 
-  if (isLoading) {
-    return <p>로딩중...!</p>;
-  }
+
+  useEffect(() => {
+    const delay = 300; 
+    if (!isLoading && !isError) {
+      setTimeout(() => {
+        setShowData(true);
+      }, delay);
+    }
+  }, [isLoading, isError]);
 
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;
@@ -25,8 +33,8 @@ export const Main: React.FC = () => {
     <div>
       <Header/>
       <StCardContainer>
-        {data && data.map((item: cardItem) => (
-          <Cards key={item.id} items={item}/>
+      {showData && data?.map((item: cardItem) => (
+          <Cards key={item.id} items={item} />
         ))}
       </StCardContainer>
     </div>
