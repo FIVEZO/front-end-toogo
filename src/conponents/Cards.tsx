@@ -2,10 +2,10 @@ import React from 'react'
 import { styled } from 'styled-components'
 import Card from 'react-bootstrap/Card';
 import { cardData, cardItem } from '../types/posts';
-import 일본 from "../img/일본.jpg"
-
 import { Avatar } from '@mui/material';
 import { formatTimeAgo } from './Time';
+import { useNavigate } from 'react-router-dom';
+import { countryImages } from '../img/countryImages';
 
 
 
@@ -17,17 +17,15 @@ const MySvg = () => (
 
 export const Cards = ({items}: {items:cardItem}) => {
   const {id, nickname, title, country, contents, createdAt, meetDate} = items
-
+  const countryImage = countryImages[country] || countryImages['한국']
   const formattedCreatedDate = formatTimeAgo(createdAt); // createdAt을 문자열로 변환하여 formatTimeAgo 함수에 전달
-
   // 내용이 26자가 넘어가면 자름
   const truncatedContents = contents.length > 26 ? contents.slice(0, 26) + "..." : contents;
   const navigate = useNavigate();
 
   return (
     <DivRayout onClick={()=>navigate(`/detailpage/${id}`)}>
-      <StyledCardImg border-radius= "8px" variant="top" src={일본} />
-      {/* <StyledCardImg border-radius= "8px" variant="top" src={country} /> */}
+      <StyledCardImg border-radius= "8px" variant="top" src={countryImage} />
       <DivContent>
 <AvatarLine>
   <AvatarPic>
@@ -117,6 +115,7 @@ padding: 0 0 16px;
 border-radius: 8px;
 border: solid 1px rgba(0, 0, 0, 0.1);
 background-color: #fff;
+cursor: pointer;
 `
 
 
