@@ -10,13 +10,13 @@ import { countryImages } from '../img/countryImages';
 
 
 const MySvg = () => (
-    <svg viewBox="0 0 36 36" fill="none" role="img" xmlns="http://www.w3.org/2000/svg" width="80" height="80"><mask id=":r9:" maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="36"><rect width="36" height="36" rx="72" fill="#FFFFFF"></rect></mask><g mask="url(#:r9:)"><rect width="36" height="36" fill="#ff7d10"></rect><rect x="0" y="0" width="36" height="36" transform="translate(5 -1) rotate(155 18 18) scale(1.2)" fill="#70ff56" rx="6"></rect><g transform="translate(3 -4) rotate(-5 18 18)"><path d="M15 21c2 1 4 1 6 0" stroke="#000000" fill="none" stroke-linecap="round"></path><rect x="14" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#000000"></rect><rect x="20" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#000000"></rect></g></g></svg>
+    <svg viewBox="0 0 36 36" fill="none" role="img" xmlns="http://www.w3.org/2000/svg" width="80" height="80"><mask id=":r9:" maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="36"><rect width="36" height="36" rx="72" fill="#FFFFFF"></rect></mask><g mask="url(#:r9:)"><rect width="36" height="36" fill="#ff7d10"></rect><rect x="0" y="0" width="36" height="36" transform="translate(5 -1) rotate(155 18 18) scale(1.2)" fill="#70ff56" rx="6"></rect><g transform="translate(3 -4) rotate(-5 18 18)"><path d="M15 21c2 1 4 1 6 0" stroke="#000000" fill="none" strokeLinecap="round"></path><rect x="14" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#000000"></rect><rect x="20" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#000000"></rect></g></g></svg>
 
 );
 
 
 export const Cards = ({items}: {items:cardItem}) => {
-  const {id, nickname, title, country, contents, createdAt, meetDate} = items
+  const {id, nickname, title, country, contents, createdAt, meetDate, category} = items
   const countryImage = countryImages[country] || countryImages['한국']
   const formattedCreatedDate = formatTimeAgo(createdAt); // createdAt을 문자열로 변환하여 formatTimeAgo 함수에 전달
   // 내용이 26자가 넘어가면 자름
@@ -24,7 +24,7 @@ export const Cards = ({items}: {items:cardItem}) => {
   const navigate = useNavigate();
 
   return (
-    <DivRayout onClick={()=>navigate(`/detailpage/${id}`)}>
+    <DivRayout onClick={()=>navigate(`/detailpage/${category}&${id}`)}>
       <StyledCardImg border-radius= "8px" variant="top" src={countryImage} />
       <DivContent>
 <AvatarLine>

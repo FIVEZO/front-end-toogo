@@ -12,6 +12,7 @@ export type locationFormValues = {
 
 export type cardItem={
     id: number,
+    category: number,
     nickname: string,
     title: string,
     country: string,

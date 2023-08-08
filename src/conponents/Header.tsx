@@ -1,23 +1,24 @@
-import React from 'react'
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 function Header() {
-
   const navigate = useNavigate();
 
   return (
     <NavbarRayout>
       <Container>
-        <NavbarBrand onClick={()=>navigate('/')}>OE</NavbarBrand>
-        <StloginButton onClick={()=>navigate('/login')}>로그인</StloginButton>
+        <FlexWrapper>
+          <NavbarBrand onClick={() => navigate('/')}>OE</NavbarBrand>
+          <StloginButton onClick={() => navigate('/login')}>로그인</StloginButton>
+        </FlexWrapper>
       </Container>
     </NavbarRayout>
   );
 }
 
-export default Header
+export default Header;
 
 const NavbarRayout = styled.div`
   width: 100%;
@@ -26,24 +27,29 @@ const NavbarRayout = styled.div`
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content:space-between;
-  flex-direction: row;
+  justify-content: space-between;
   border: solid 1px gray;
   background-color: #fff;
   padding: 20px;
-`
+`;
+
+const FlexWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const NavbarBrand = styled.span`
-  width: 250px;
   height: 40px;
   font-family: Inter;
   font-size: 40px;
-
   letter-spacing: normal;
   color: #000;
   cursor: pointer;
-`
+`;
 
-const StloginButton = styled.div`
-  font-size: 40px;
-`
+const StloginButton = styled.span`
+  font-size: 25px;
+  cursor: pointer;
+  margin-left: auto;
+`;
+
