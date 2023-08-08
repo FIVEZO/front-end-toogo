@@ -18,3 +18,11 @@ export function formatTimeAgo(createdDate: string): string {
       return `${diffInMinutes}분 전`;
     }
   }
+
+  export function formatDate(dateStr: string) {
+    const date = new Date(dateStr);
+    const month = (date.getMonth() + 1).toString();
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${month}월 ${day}일`;
+  }
+  

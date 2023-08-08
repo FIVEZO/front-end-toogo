@@ -54,7 +54,7 @@ function Signup() {
   const signupMutation = useMutation(addUsers, {
     onSuccess: () => {
       alert("회원가입을 완료하였습니다.");
-      navigate('/')
+    
     }
   });
   //----------------------------------------- 회원가입 유효성 검사
@@ -99,6 +99,7 @@ function Signup() {
       email,
       nickname,
       password,
+      code : authCode
       
     }
     signupMutation.mutate(newUser);

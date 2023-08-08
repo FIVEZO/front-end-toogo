@@ -42,5 +42,7 @@ const StCardContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
+  text-align: center;
+  gap:24px;
 `;
 

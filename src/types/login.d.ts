@@ -4,6 +4,7 @@ export type SignupFormValues = {
   email : string;
   nickname: string;
   password: string;
+  code: string;
 }
 
 // 로그인
