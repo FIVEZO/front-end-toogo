@@ -1,13 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { locationFormValues } from '../types/posts';
 
-const Map: React.FC = () => {
+const Map: React.FC<{
+  onMarkerPosition: locationFormValues | null;
+  onMarkerPositionChange: (newPosition: locationFormValues) => void;
+}> = ({ onMarkerPosition, onMarkerPositionChange }) => {
+  
   const googleMapApiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
   const mapRef = useRef<HTMLDivElement | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [pinMarker, setPinMarker] = useState<google.maps.Marker | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [markerPosition, setMarkerPosition] = useState<google.maps.LatLng | null>(null);
-
+  
   useEffect(() => {
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapApiKey}&libraries=places`;
@@ -36,7 +41,13 @@ const Map: React.FC = () => {
           (position) => {
             const { latitude, longitude } = position.coords;
             const markerPosition = new google.maps.LatLng(latitude, longitude);
-  
+            if (markerPosition) {
+              const data = {
+                latitude: markerPosition.lat(),
+                longitude: markerPosition.lng(),
+              };
+              onMarkerPositionChange(data);
+            }
             const marker = new google.maps.Marker({
               position: markerPosition,
               map: newMap,
@@ -52,7 +63,6 @@ const Map: React.FC = () => {
                 geocoder.geocode({ location: updatedPosition }, (results, status) => {
                   if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
                     const address = results[0].formatted_address;
-                    // Update address state or send data to backend
                   } else {
                     console.error('Geocoding failed:', status);
                   }
@@ -134,7 +144,8 @@ const Map: React.FC = () => {
     }
   };
 
-  const handleSearch = () => {
+  const handleSearch = (event: React.FormEvent) => {
+    event.preventDefault();
     if (map && searchQuery) {
       const placesService = new google.maps.places.PlacesService(map);
       placesService.textSearch({ query: searchQuery }, (results, status) => {
@@ -150,31 +161,16 @@ const Map: React.FC = () => {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = (event: React.FormEvent) => {
+    
+    event.preventDefault(); 
     if (markerPosition) {
-      // Send marker position and address data to the backend server
-      const address = ''; // You can use a reverse geocoding service to get the address
       const data = {
         latitude: markerPosition.lat(),
         longitude: markerPosition.lng(),
-        address: address,
       };
-
-      // 백엔드 api 추가해야됩니다. 
-      fetch('YOUR_BACKEND_API_URL', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then(response => response.json())
-        .then(result => {
-          console.log('Data sent to backend:', result);
-        })
-        .catch(error => {
-          console.error('Error sending data to backend:', error);
-        });
+      
+      onMarkerPositionChange(data);
     }
   };
 

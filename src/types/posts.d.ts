@@ -3,7 +3,7 @@ export type postFormValues = {
     contents: string
     country: string
     meetDate: string
-    // location : locationFormValues
+    location : locationFormValues | null
     }
 
 export type locationFormValues = {
@@ -25,3 +25,4 @@ export type cardItem={
 export type cardData ={
     item: cardItem[]
 }
+
