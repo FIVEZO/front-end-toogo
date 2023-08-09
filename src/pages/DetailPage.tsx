@@ -54,7 +54,7 @@ export const DetailPage = () => {
         <StCommentButton type="submit">댓글작성</StCommentButton>
       </form>
       {commentList.map((item: any) => (
-        <StComment key={item.id}>{item}</StComment>
+        <StComment key={item.id}>{item.comment}</StComment>
       ))}
     </div>
   );

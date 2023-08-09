@@ -9,7 +9,7 @@ import { Cards } from '../conponents/Cards';
 export const CategoryPage = () => {
     const param = Number(useParams().id);
     const [page, setpage]= useState<number>(1)
-    const { isLoading, isError, data } = useQuery("categoryPost", ()=>getCategoryPosts(param, page));
+    const { isLoading, isError, data } = useQuery(["categoryPost", page], ()=>getCategoryPosts(param, page));
   
 
   if (isLoading) {
