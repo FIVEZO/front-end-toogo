@@ -2,19 +2,30 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { createChatRoom } from '../api/chatApi';
+import { useMutation } from 'react-query';
 
 const CreateChatRoomPage: React.FC = () => {
   const navigate = useNavigate();
   const [receiver, setReceiver] = useState('');
 
-  const handleCreateRoom = async () => {
-    try {
-      const newChatRoom = await createChatRoom( receiver );
-      navigate(`/chatroom/${newChatRoom.id}`);
-    } catch (error) {
-      console.error('Error creating chat room:', error);
-      // 오류 처리 로직 추가
-    }
+  const createChatRoomMutation = useMutation(createChatRoom, {
+    onSuccess: (data) => {
+      navigate(`/chatroom/${data.roomId}`)
+    },
+  });
+
+
+
+  const handleCreateRoom =  (event: React.FormEvent) => {
+    event.preventDefault(); 
+    // try {
+    //   const newChatRoom = await createChatRoom( receiver );
+    //   navigate(`/chatroom/${newChatRoom.id}`);
+    // } catch (error) {
+    //   console.error('Error creating chat room:', error);
+    //   // 오류 처리 로직 추가
+    // }
+    createChatRoomMutation.mutate(receiver);
   };
 
   return (

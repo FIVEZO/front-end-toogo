@@ -8,6 +8,8 @@ import { login } from '../api/api';
 import Button from '../conponents/Button';
 import Input from '../conponents/Input';
 import Header from '../conponents/Header';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../redux/modules/loginSlice';
 
   type ButtonProps = {
     backgroundColor?: string;
@@ -24,10 +26,11 @@ function Login() {
   const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false)
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   // ----------------------------------------로그인 로직
   const loginMutation = useMutation(login, {
     onSuccess: () => {
+      dispatch(logIn())
       navigate('/')
     }
   });

@@ -13,7 +13,7 @@ function getCookie(cookieName: string) {
     }
   
   export const chatInstance = axios.create({
-    baseURL: process.env.REACT_APP_CHAT_SERVER,
+    baseURL: process.env.REACT_APP_SERVER_URL,
   });
   
   chatInstance.interceptors.request.use(
@@ -53,7 +53,7 @@ function getCookie(cookieName: string) {
 
   // 채팅방 목록 가져오기
 const fetchChatRooms = async () => {
-    const response = await chatInstance.get(`/message/rooms`);
+    const response = await chatInstance.get(`/api/rooms`);
     // console.log("채팅방 목록 조회", response)
   return response.data;
   }
@@ -61,7 +61,7 @@ const fetchChatRooms = async () => {
   
   // 채팅방 개설
   const createChatRoom = async (receiver:string) => {
-      const response = await chatInstance.post(`/message/room`, receiver);
+      const response = await chatInstance.post(`/api/room`, {receiver});
       // console.log("채팅방 개설", response)
       return response.data; // 생성된 채팅방 정보를 반환
   };

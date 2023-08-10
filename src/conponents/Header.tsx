@@ -1,17 +1,39 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+import { logOff } from '../redux/modules/loginSlice';
+import { useMutation } from 'react-query';
+import { logout } from '../api/api';
+import { RootState } from '../types/login';
 
 function Header() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state.isLogin.isLogin)
+
+  const logoutMutation = useMutation(logout, {
+    onSuccess: () => {
+      dispatch(logOff())
+      navigate('/')
+    }
+  });
+
+
+  const logOutButton = () =>{
+    logoutMutation.mutate()
+  }
 
   return (
     <NavbarRayout>
       <Container>
         <FlexWrapper>
           <NavbarBrand onClick={() => navigate('/')}>OE</NavbarBrand>
-          <StloginButton onClick={() => navigate('/login')}>로그인</StloginButton>
+          {state
+          ? <StloginButton onClick={logOutButton}>로그아웃</StloginButton>
+          :
+          <StloginButton onClick={() => navigate('/login')}>로그인</StloginButton>}
         </FlexWrapper>
       </Container>
     </NavbarRayout>
