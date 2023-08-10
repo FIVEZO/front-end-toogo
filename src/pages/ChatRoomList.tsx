@@ -30,7 +30,7 @@ const ChatRoomList: React.FC = () => {
     return <p>오류가 발생하였습니다...!</p>;
   }
 
-  const handleEnterChatRoom = (roomId: number) => {
+  const handleEnterChatRoom = (roomId: string) => {
     navigate(`/chatroom/${roomId}`);
   };
 
@@ -44,7 +44,7 @@ const ChatRoomList: React.FC = () => {
       <button onClick={handleCreateChatRoom}>Create New Chat Room</button>
       <ul>
         {chatRooms?.map(room => (
-          <ChatRoomItem key={room.id} onClick={() => handleEnterChatRoom(room.id)}>
+          <ChatRoomItem key={room.roomId} onClick={() => handleEnterChatRoom(room.roomId)}>
             {room.sender}
           </ChatRoomItem>
         ))}

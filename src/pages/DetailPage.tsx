@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { addComment, getDetailPosts } from '../api/api';
+import { addComment, deleteComment, getDetailPosts } from '../api/api';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import useInput from '../hooks/useInput';
@@ -10,7 +10,7 @@ export const DetailPage = () => {
   let category = "";
   let postId = "";
   const queryClient = useQueryClient();
-  const [comment, handleCommentChange] = useInput();
+  const [comment, handleCommentChange, resetComment] = useInput();
 
   if (param?.includes("&")) {
     [category, postId] = param.split("&");
@@ -24,8 +24,17 @@ export const DetailPage = () => {
     onSuccess: () => {
       queryClient.invalidateQueries("detailPost")
       console.log('댓글 작성 완료!');
+      resetComment()
     },
   });
+
+  const deleteCommentMutation = useMutation((commentId:number) =>deleteComment(+category, +postId, commentId),{
+    onSuccess: () => {
+      queryClient.invalidateQueries('detailPost');
+      console.log('댓글 삭제 완료!');
+    },
+  }
+);
 
   if (isLoading) {
     return <p>로딩중...!</p>;
@@ -43,6 +52,10 @@ export const DetailPage = () => {
     commentMutation.mutate(comment); // 댓글 작성 함수 호출
   };
 
+  const handleDeleteComment = (commentId: number) => {
+    deleteCommentMutation.mutate(commentId);
+  };
+
   return (
     <div>
       <StTitle>제목: {title}</StTitle>
@@ -52,9 +65,13 @@ export const DetailPage = () => {
       <form onSubmit={commentHandler}>
         <StInput value={comment} onChange={handleCommentChange} />
         <StCommentButton type="submit">댓글작성</StCommentButton>
+        
       </form>
       {commentList.map((item: any) => (
+        <>
         <StComment key={item.id}>{item.comment}</StComment>
+        <StDeleteButton onClick={()=>handleDeleteComment(item.id)}>댓글 삭제하기</StDeleteButton>
+        </>
       ))}
     </div>
   );
@@ -80,4 +97,8 @@ const StCommentButton = styled.button`
 `;
 const StComment = styled.div`
   font-size: 40px;
+`;
+const StDeleteButton = styled.div`
+  font-size: 40px;
+  border: 1px solid #1FEC9B;
 `;

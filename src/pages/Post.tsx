@@ -60,6 +60,7 @@ console.log("MarkerPosition",MarkerPosition)
       <input type='date' value={meetDate} onChange={handleMeetDateChange} />
 
       <button onClick={postHandler}>Submit</button>
+      <input type='time'/>
 
       {/* Render the Map component with location */}
       <Map

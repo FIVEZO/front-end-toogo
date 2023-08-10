@@ -28,10 +28,10 @@ const isLoginSlice = createSlice({
   name: "isLogin",
   initialState,
   reducers: {
-    logIn: (state, action) => {
+    logIn: (state) => {
         state.isLogin = true;
     },
-    logOut: (state, action) => {
+    logOff: (state) => {
         state.isLogin = false;
         deleteCookie("access_token"); // 엑세스 토큰 삭제
         deleteCookie("refresh_token"); // 리프레쉬 토큰 삭제
@@ -39,5 +39,5 @@ const isLoginSlice = createSlice({
   },
 });
 
-export const { logIn, logOut } = isLoginSlice.actions;
+export const { logIn, logOff } = isLoginSlice.actions;
 export default isLoginSlice.reducer;

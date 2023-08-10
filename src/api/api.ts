@@ -179,14 +179,14 @@ const getSearchPosts = async (category: number, pageNum: number, keyword : strin
 
 // 댓글 등록
 const addComment = async (category: number, postId: number, comment : string) => {
-  const response = await instance.post(`api/post/${category}/${postId}/comment`, comment)
+  const response = await instance.post(`api/post/${category}/${postId}/comment`, {comment})
   // console.log("댓글 등록", response)
   return response.data;
 }
 
 // 댓글 수정
 const editComment = async (category: number, postId: number, commentId : number, comment : string) => {
-  const response = await instance.patch(`api/post/${category}/${postId}/comment/${commentId}`, comment)
+  const response = await instance.patch(`api/post/${category}/${postId}/comment/${commentId}`, {comment})
   // console.log("댓글 수정", response)
   return response.data;
 }
