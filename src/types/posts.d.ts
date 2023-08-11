@@ -3,8 +3,11 @@ export type postFormValues = {
     contents: string
     country: string
     meetDate: string
-    location : locationFormValues | null
-    }
+    latitude: number
+    longitude: number
+    // location : locationFormValues | null
+    
+}
 
 export type locationFormValues = {
     latitude: number,

@@ -7,8 +7,8 @@ type ButtonProps = {
   type?: "primary" | "medium" | "small";
   margin?: string;
   children?: React.ReactNode;
-  size: 'small' | 'medium' | 'large';
-  color: 'primary' | 'negative' | 'default' | 'custom'  | 'loginOn'| 'kakaoLogin';
+  size: 'small' | 'medium' | 'large'| 'detail';
+  color: 'primary' | 'negative' | 'default' | 'custom'  | 'loginOn'| 'kakaoLogin'|'detailBtn'
   name?: string; 
   kakao?: boolean;
 };
@@ -21,6 +21,8 @@ const sizeHandler = (size: ButtonProps['size']) => {
       return `width: 180px; height: 46px;`;
      case 'small':
         return `width: 72px; height: 36px;`;
+     case 'detail':
+        return `width: 324px; height: 60px;`;
     default:
       return `width: 72px; height: 36px;`;
   }
@@ -34,6 +36,8 @@ const colorHandler = (color: ButtonProps['color']) => {
       return `border: 1px solid #1FEC9B; color: #ffffff; background-color: #1FEC9B;  font-weight: bold; font-size: 16px;`;
     case 'kakaoLogin':
       return `border: 1px solid #FFE500; color: #292832; background-color: #FFE500;  font-size: 16px;`;
+    case 'detailBtn':
+      return `border: 1px solid rgba(0, 0, 0, 0.1) color: #292832; background-color:  #484848;  font-size: 16px;`;
     default:
       return `border: 1px solid #1FEC9B; color: #ffffff; background-color: #1FEC9B; font-weight: bold; font-size: 16px;`;
   }
