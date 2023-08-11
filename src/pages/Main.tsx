@@ -58,5 +58,6 @@ const StCardContainer = styled.div`
 
 const StButton = styled.button`
 font-size: 20px;
+margin-top: 20px;
 `
   
