@@ -15,7 +15,7 @@ export const Main: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const delay = 300; 
+    const delay = 100; 
     if (!isLoading && !isError) {
       setTimeout(() => {
         setShowData(true);

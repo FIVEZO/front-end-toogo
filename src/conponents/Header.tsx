@@ -31,9 +31,10 @@ function Header() {
         <FlexWrapper>
           <NavbarBrand onClick={() => navigate('/')}>OE</NavbarBrand>
           {state
-          ? <StloginButton onClick={logOutButton}>로그아웃</StloginButton>
+          ? <StloginButton onClick={logOutButton}>로그아웃</StloginButton>// 로그인 되엇을때
           :
-          <StloginButton onClick={() => navigate('/login')}>로그인</StloginButton>}
+          <StloginButton onClick={() => navigate('/login')}>로그인</StloginButton>// 로그아웃 상태일때
+          }
         </FlexWrapper>
       </Container>
     </NavbarRayout>

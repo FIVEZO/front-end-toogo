@@ -6,11 +6,11 @@ import {Account} from "../pages/Account";
 import Redirection from "../pages/Redirection";
 import Signup from "../pages/Signup";
 import PostWriting from "../pages/PostWriting";
+import ChatRoom from "../pages/ChatRoom";
 import FindPassword from "../pages/FindPassword";
 import { CategoryPage } from "../pages/CategoryPage";
 import { DetailPage } from "../pages/DetailPage";
 import Post from "../pages/Post";
-import { ChatRoom } from "../pages/ChatRoom";
 
 const queryClient = new QueryClient();
 
