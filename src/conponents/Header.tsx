@@ -7,6 +7,8 @@ import { logOff } from '../redux/modules/loginSlice';
 import { useMutation } from 'react-query';
 import { logout } from '../api/api';
 import { RootState } from '../types/login';
+import "../fonts/Font.css";
+import { LuSearch } from 'react-icons/lu';
 
 function Header() {
   const navigate = useNavigate();
@@ -20,59 +22,132 @@ function Header() {
     }
   });
 
-
-  const logOutButton = () =>{
+  const logOutButton = () => {
     logoutMutation.mutate()
   }
 
   return (
-    <NavbarRayout>
-      <Container>
-        <FlexWrapper>
-          <NavbarBrand onClick={() => navigate('/')}>OE</NavbarBrand>
-          {state
-          ? <StloginButton onClick={logOutButton}>로그아웃</StloginButton>// 로그인 되엇을때
-          :
-          <StloginButton onClick={() => navigate('/login')}>로그인</StloginButton>// 로그아웃 상태일때
-          }
-        </FlexWrapper>
-      </Container>
-    </NavbarRayout>
+
+    <HeaderContainer>
+      <HeaderContainer2>
+      <Logo onClick={() => navigate('/')}>오이여행</Logo>
+      <SearchContainer>
+        <SearchInput type="text" placeholder="검색어를 입력해주세요." />
+        <SearchButton><LuSearch color='white' size='17px'/></SearchButton>
+      </SearchContainer>
+      {state ? (
+        <LogoutConditionButtons>
+          <LoginButton onClick={logOutButton}>로그아웃</LoginButton>
+        </LogoutConditionButtons>
+      ) : (
+        <LogoutConditionButtons>
+          <SignupButton onClick={() => navigate('/signup')}>회원가입</SignupButton>
+          <Line>|</Line>
+          <LoginButton onClick={() => navigate('/login')}>로그인</LoginButton>
+        </LogoutConditionButtons>
+      )}
+      </HeaderContainer2>
+    </HeaderContainer>
+
   );
 }
 
 export default Header;
 
-const NavbarRayout = styled.div`
+const HeaderContainer = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  max-width: 1200px;
   height: 100px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: solid 1px gray;
-  background-color: #fff;
-  padding: 20px;
+  background-color: white;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: #d1d5db;
 `;
 
-const FlexWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const HeaderContainer2 = styled.div`
+display: flex;
+align-items: center;
+justify-content: space-between;
+width: 100%;
+max-width: 1920px;
 `;
 
-const NavbarBrand = styled.span`
-  height: 40px;
-  font-family: Inter;
-  font-size: 40px;
-  letter-spacing: normal;
-  color: #000;
+const Logo = styled.button`
+  background-color: white;
+  border: none;
+  color: #2BDE97;
+  font-family: 'Cafe24 Ssurround';
+  font-size: 30px;
+  font-weight: 700;
+`;
+
+const SearchContainer = styled.div`
+  width: 334px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 16px;
+  border-radius: 1000px;
+  border: 1px solid  #CFCED7;
+  background: white;
+`;
+
+const SearchInput = styled.input`
+  width: 254px;
+  height: 20px;
+  margin-left: 24px;
+  border: none;
+  font-family: 'Pretendard';
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+  &::placeholder {
+       color: #DDDCE3;
+   }
+`;
+
+const SearchButton = styled.button`
+  position: absolute;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background-color: #2BDE97;
+  border: none;
+  border-radius: 1000px;
+  padding-bottom: 4px;
+`;
+
+const LogoutConditionButtons = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const SignupButton = styled.button`
+  background-color: white;
+  border: none;
+  font-family: 'Pretendard';
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
 `;
 
-const StloginButton = styled.span`
-  font-size: 25px;
+const LoginButton = styled.button`
+  background-color: white;
+  border: none;
+  color: #9A9A9A;
+  font-family: 'Pretendard';
+  font-size: 16px;
+  font-weight: 400;
   cursor: pointer;
-  margin-left: auto;
 `;
 
+const Line = styled.div`
+  color: #9A9A9A;
+  font-family: 'Pretendard';
+  font-size: 16px;
+  font-weight: 400;
+  cursor: default;
+`;
