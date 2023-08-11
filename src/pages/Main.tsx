@@ -7,6 +7,7 @@ import { Cards } from '../conponents/Cards';
 import { cardItem } from '../types/posts';
 import Header from '../conponents/Header';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../conponents/Footer';
 
 
 export const Main: React.FC = () => {
@@ -40,6 +41,7 @@ export const Main: React.FC = () => {
           <Cards key={item.id} items={item} />
         ))}
       </StCardContainer>
+      <Footer/>
     </div>
   )
 }
@@ -58,5 +60,6 @@ const StCardContainer = styled.div`
 
 const StButton = styled.button`
 font-size: 20px;
+margin-top: 20px;
 `
   
