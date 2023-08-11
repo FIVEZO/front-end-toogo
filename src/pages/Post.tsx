@@ -14,10 +14,15 @@ function Post() {
   const [meetDate, handleMeetDateChange] =  useInput();
   const [selectedCountry, setSelectedCountry] = useState<string>(""); 
   const [MarkerPosition, setMarkerPosition] = useState<null | locationFormValues>(null);
-console.log("MarkerPosition",MarkerPosition)
-  const handleMarkerPositionChange = (newPosition: locationFormValues) => {
-    setMarkerPosition(newPosition);
+  const [latitudeMarkerPosition, setLatitudeMarkerPosition] = useState<number>(0);
+  const [longitudeMarkerPosition, setLongitudeMarkerPosition] = useState<number>(0);
 
+  const handleMarkerPositionChange = (newPosition: locationFormValues) => {
+    if (newPosition) {
+      setLatitudeMarkerPosition(newPosition.latitude);
+      setLongitudeMarkerPosition(newPosition.longitude);
+      setMarkerPosition(newPosition); // Update the MarkerPosition state as well
+    }
   }
 
   // ----------------------------------------게시글 등록
@@ -35,7 +40,8 @@ console.log("MarkerPosition",MarkerPosition)
       contents,
       country: selectedCountry,
       meetDate,
-      location: MarkerPosition
+      latitude: latitudeMarkerPosition, 
+      longitude: longitudeMarkerPosition,
     };
     postMutation.mutate(postData);
   };
