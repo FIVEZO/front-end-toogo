@@ -6,7 +6,6 @@ import {Account} from "../pages/Account";
 import Redirection from "../pages/Redirection";
 import Signup from "../pages/Signup";
 import PostWriting from "../pages/PostWriting";
-
 import FindPassword from "../pages/FindPassword";
 import { CategoryPage } from "../pages/CategoryPage";
 import { DetailPage } from "../pages/DetailPage";
