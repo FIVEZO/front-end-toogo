@@ -6,13 +6,11 @@ import {Account} from "../pages/Account";
 import Redirection from "../pages/Redirection";
 import Signup from "../pages/Signup";
 import PostWriting from "../pages/PostWriting";
-import ChatRoom from "../pages/ChatRoom";
-import ChatRoomList from "../pages/ChatRoomList";
-import CreateChatRoomPage from "../pages/CreateChatRoomPage";
 import FindPassword from "../pages/FindPassword";
 import { CategoryPage } from "../pages/CategoryPage";
 import { DetailPage } from "../pages/DetailPage";
 import Post from "../pages/Post";
+import { ChatRoom } from "../pages/ChatRoom";
 
 const queryClient = new QueryClient();
 
@@ -30,8 +28,6 @@ export const Router = () => {
             <Route path="/post/:id" element={<Post />} />
             <Route path="/postwriting/:id" element={<PostWriting />} />
             <Route path="/chatroom/:id" element={<ChatRoom />} />
-            <Route path="/chatroomlist" element={<ChatRoomList />} />
-            <Route path="/createchatroompage" element={<CreateChatRoomPage />} />
             <Route path="/findPassword" element={<FindPassword />} />
             <Route path="/categorypage/:id" element={<CategoryPage />} />
             <Route path="/detailpage/:id" element={<DetailPage />} />
