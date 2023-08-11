@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { locationFormValues } from '../types/posts';
+import Input from './Input';
 
 const Map: React.FC<{
   onMarkerPosition: locationFormValues | null;
@@ -24,6 +25,17 @@ const Map: React.FC<{
       document.head.removeChild(script);
     };
   }, [googleMapApiKey]);
+
+  useEffect(() => {
+    if (markerPosition) {
+      const data = {
+        latitude: markerPosition.lat(),
+        longitude: markerPosition.lng(),
+      };
+      
+      onMarkerPositionChange(data);
+    }
+  }, [markerPosition]);
 
   const initializeMap = () => {
     if (mapRef.current) {
@@ -161,39 +173,13 @@ const Map: React.FC<{
     }
   };
 
-  const handleSave = (event: React.FormEvent) => {
-    
-    event.preventDefault(); 
-    if (markerPosition) {
-      const data = {
-        latitude: markerPosition.lat(),
-        longitude: markerPosition.lng(),
-      };
-      
-      onMarkerPositionChange(data);
-    }
-  };
-
-
   return (
     <div>
       <div>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search for a place"
-        />
+      <Input type="text" placeholder="위치에 대한 설명을 적어주세요" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} size={"postTitle"} color={'#cfced7'}/>
         <button onClick={handleSearch}>Search</button>
       </div>
-      <div ref={mapRef} style={{ width: '600px', height: '400px' }} />
-      {markerPosition && (
-        <div>
-          <p>Latitude: {markerPosition.lat()}</p>
-          <p>Longitude: {markerPosition.lng()}</p>
-          <button onClick={handleSave}>Save Marker</button>
-        </div>
-      )}
+      <div ref={mapRef} style={{ width: '100%', height: '480px' }} />
     </div>
   );
 };
