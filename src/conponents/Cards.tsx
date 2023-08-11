@@ -119,7 +119,13 @@ border-radius: 8px;
 border: solid 1px rgba(0, 0, 0, 0.1);
 background-color: #fff;
 cursor: pointer;
+box-shadow: 5px 5px 5px #c1c1c1;
+transition: transform 0.2s ease;
+&:hover {
+transform: translateY(-10px);
+}
 `
+
 
 
 const DateFootter = styled.div`
