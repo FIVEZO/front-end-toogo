@@ -9,6 +9,8 @@ import { logout } from '../api/api';
 import { RootState } from '../types/login';
 import "../fonts/Font.css";
 import { LuSearch } from 'react-icons/lu';
+import { HiOutlineBell } from 'react-icons/hi';
+import { RxAvatar } from 'react-icons/rx';
 
 function Header() {
   const navigate = useNavigate();
@@ -35,9 +37,10 @@ function Header() {
         <SearchButton><LuSearch color='white' size='17px'/></SearchButton>
       </SearchContainer>
       {state ? (
-        <LogoutConditionButtons>
-          <LoginButton onClick={logOutButton}>로그아웃</LoginButton>
-        </LogoutConditionButtons>
+        <LoginConditionButtons>
+          <Bell><HiOutlineBell color='#403F4E' size='24px'/></Bell>
+          <Profile><RxAvatar color='#403F4E' size='26px'/></Profile>
+        </LoginConditionButtons>
       ) : (
         <LogoutConditionButtons>
           <SignupButton onClick={() => navigate('/signup')}>회원가입</SignupButton>
@@ -148,4 +151,30 @@ const Line = styled.div`
   font-size: 16px;
   font-weight: 400;
   cursor: default;
+`;
+
+const LoginConditionButtons = styled.div`
+  width: 88px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  gap: 8px;
+  padding: 8px 8px 8px 8px;
+  border-radius: 1000px;
+  border: 1px solid  #CFCED7;
+  background: white;
+`;
+
+const Bell = styled.button`
+  border: none;
+  padding: 0px;
+  background-color: white;
+`;
+
+const Profile  = styled.button`
+  border: none;
+  padding: 0px;
+  background-color: white;
 `;
