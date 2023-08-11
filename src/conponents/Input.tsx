@@ -20,7 +20,11 @@ type InputProps = {
 const sizeHandler = (size: InputProps['size']) => {
   switch (size) {
     case 'signup':
-        return `width: 384px; height: 46px`;
+        return `width: 384px; height: 46px; margin-bottom: 16px;`;
+    case 'postTitle':
+        return `width: 100%; height: 70px; margin: 40px 0`;
+    case 'postContents':
+        return `width: 100%; height: 190px; margin: 40px 0`;
     default:
         return `width: 384px; height: 46px;`;
     }
@@ -76,7 +80,6 @@ const Input: React.FC<InputProps> = ({
       />
       {onButtonClick && (
         <CustomButton
-          type='small'
           color={value? "on" : 'negative'}
           margin='0 6px 0 0'
           onClick={onButtonClick}
@@ -113,8 +116,8 @@ const InputContainer = styled.div<{ size: string , color?: string }>`
   display: flex;
   align-items: center;
   justify-content: space-between; 
-  margin-bottom: 16px;
   position: relative;
+  /* box-shadow: 3px 0px 15px #c1c1c1; */
 `;
 
 const InputField = styled.input`

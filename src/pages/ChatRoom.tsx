@@ -89,13 +89,13 @@ console.log("hi")
 //   setChat("");
 // };
 
-useEffect(() => {
-  // 최초 렌더링 시 , 웹소켓에 연결
-  // 우리는 사용자가 방에 입장하자마자 연결 시켜주어야 하기 때문에,,
-  connect();
+// useEffect(() => {
+//   // 최초 렌더링 시 , 웹소켓에 연결
+//   // 우리는 사용자가 방에 입장하자마자 연결 시켜주어야 하기 때문에,,
+//   connect();
 
-  // return () => disConnect();
-}, []);
+//   // return () => disConnect();
+// }, []);
 
 
   return (
