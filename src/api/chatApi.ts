@@ -11,6 +11,7 @@ function getCookie(cookieName: string) {
     }
     return cookieValue;
     }
+
   
   export const chatInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
