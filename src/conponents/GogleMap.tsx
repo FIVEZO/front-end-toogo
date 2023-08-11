@@ -9,7 +9,7 @@ interface GogleMapProps {
 const googleMapApiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
 const GogleMap: React.FC<GogleMapProps> = ({ latitude, longitude }) => {
-  const [zoomLevel, setZoomLevel] = useState(12);
+  const [zoomLevel, setZoomLevel] = useState(15);
   const coordinates = { lat: latitude, lng: longitude };
   const mapRef = useRef<google.maps.Map | null>(null);
 

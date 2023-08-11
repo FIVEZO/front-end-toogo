@@ -10,6 +10,7 @@ import GogleMap from '../conponents/GogleMap';
 import Header from '../conponents/Header';
 import Button from '../conponents/Button';
 
+
 export const DetailPage = () => {
   const param = useParams().id;
   let category = "";
@@ -87,7 +88,17 @@ export const DetailPage = () => {
         <StTitle>{title}</StTitle>
         <StCountry>[{continentMapping[+category]}] {country}</StCountry>
       </StTitleBox>
-    <DateBox/>
+    <DateBox>
+      <DateBoxSpanBox> 
+        <DateBoxSpan margin={'39px 16px 21px 40px'}>지역</DateBoxSpan>
+        {/* <DateBoxSpan margin={'39px 16px 21px 40px'}>지역</DateBoxSpan> */}
+        <DateBoxSpan margin={'39px 16px 21px 232px'}>날짜</DateBoxSpan>
+        {/* <DateBoxSpan margin={'39px 16px 21px 232px'}>날짜</DateBoxSpan> */}
+      </DateBoxSpanBox>
+     
+      <DateBoxSpan margin={'90px 16px 40px 40px'} >날짜</DateBoxSpan>
+      {/* <DateBoxSpan margin={'90px 16px 40px 40px'} >날짜</DateBoxSpan> */}
+    </DateBox>
     <ContentBox>
         {contents}
     </ContentBox>
@@ -96,14 +107,14 @@ export const DetailPage = () => {
 
 <NickBox>
         <StNickname>{nickname} <div className="Line" />
-        {/* <Button
-        color={updateLoginButtonColor()} 
-        onClick={loginHandler}
-        margin={"0 0 16px 0"}
+        
+      </StNickname>
+      <Button
+        color={'detailBtn'} 
+        margin={"119px 0 16px 0"}
         size={'detail'}
         name={"쪽지 보내기"}
-        /> */}
-      </StNickname>
+        />
 </NickBox>
 
 </NickContainer>
@@ -114,9 +125,6 @@ export const DetailPage = () => {
     </MapBox>
       
     
-    
-      <StContents>latitude: {latitude}</StContents>
-      <StContents>longitude: {longitude}</StContents>
 
       <form onSubmit={commentHandler}>
         <StInput value={comment} onChange={handleCommentChange} />
@@ -132,6 +140,26 @@ export const DetailPage = () => {
     </Layout>
   );
 };
+
+const DateBoxSpanBox = styled.div`
+  display: flex;
+`
+
+const DateBoxSpan = styled.span<{ margin: string }>`
+  margin: 0 16px 21px 0;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #9a9a9a;
+  margin: ${({ margin }) => margin};
+
+`
+
 
 const NickContainer =styled.div`
   display: flex;
@@ -200,8 +228,6 @@ const ContentBox = styled.div`
 const DateBox = styled.div`
  width: 753px;
   height: 160px;
-
-  padding: 59px 471px 60px 54px;
   border-radius: 8px;
   background-color: #f4f5f6;
 `
