@@ -114,7 +114,7 @@ const DivRayout = styled.div`
 width: 282px;
 height: 339px;
 flex-grow: 0;
-margin: 80px 0px 0 0px;
+margin: 0px 0px 0 0px;
 border-radius: 8px;
 border: solid 1px rgba(0, 0, 0, 0.1);
 background-color: #fff;

@@ -32,9 +32,10 @@
     "react-query": "^3.39.3",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.14.2",
-    "react-scripts": "^2.1.3",
+    "react-scripts": "^5.0.1",
     "react-slick": "^0.29.0",
     "redux": "^4.2.1",
+    "slick-carousel": "^1.8.1",
     "sockjs-client": "^1.6.1",
     "stomp-websocket": "^2.3.4-next",
     "stompjs": "^2.3.3",
@@ -69,6 +70,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-slick": "^0.23.10",
     "@types/stompjs": "^2.3.5"
   }
 }
