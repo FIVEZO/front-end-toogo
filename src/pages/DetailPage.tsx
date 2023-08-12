@@ -9,6 +9,8 @@ import Map from '../conponents/Map';
 import GogleMap from '../conponents/GogleMap';
 import Header from '../conponents/Header';
 import Button from '../conponents/Button';
+import Footer from '../conponents/Footer';
+
 
 export const DetailPage = () => {
   const param = useParams().id;
@@ -74,9 +76,10 @@ export const DetailPage = () => {
   };
 
   return (
+    <>
+      <Header/>
     <Layout>
      
-      <Header/>
       <MainImg src={countryImage} alt={country} />
 
       
@@ -87,23 +90,32 @@ export const DetailPage = () => {
         <StTitle>{title}</StTitle>
         <StCountry>[{continentMapping[+category]}] {country}</StCountry>
       </StTitleBox>
-    <DateBox/>
+    <DateBox>
+      <DateBoxSpanBox> 
+        <DateBoxSpan margin={'39px 16px 21px 40px'}>지역</DateBoxSpan>
+        <AreaBoxSpanBox margin={'39px 0 21px 0'}>프랑스</AreaBoxSpanBox>
+      </DateBoxSpanBox>
+      <DateBoxSpanBox>
+        <DateBoxSpan margin={'0 16px 0 40px'} >날짜</DateBoxSpan>
+        <AreaBoxSpanBox margin={'0 16px 0 0'} >2023.07.23</AreaBoxSpanBox>
+      </DateBoxSpanBox>
+    </DateBox>
     <ContentBox>
-        {contents}
+        {contents} 
     </ContentBox>
     <AreaBox>위치</AreaBox>
 </Container>
 
 <NickBox>
         <StNickname>{nickname} <div className="Line" />
-        {/* <Button
-        color={updateLoginButtonColor()} 
-        onClick={loginHandler}
-        margin={"0 0 16px 0"}
+        
+      </StNickname>
+      <Button
+        color={'detailBtn'} 
+        margin={"119px 0 16px 0"}
         size={'detail'}
         name={"쪽지 보내기"}
-        /> */}
-      </StNickname>
+        />
 </NickBox>
 
 </NickContainer>
@@ -113,25 +125,58 @@ export const DetailPage = () => {
     <GogleMap latitude={latitude} longitude={longitude} />
     </MapBox>
       
-    
-    
-      <StContents>latitude: {latitude}</StContents>
-      <StContents>longitude: {longitude}</StContents>
 
-      <form onSubmit={commentHandler}>
+      {/* <form onSubmit={commentHandler}>
         <StInput value={comment} onChange={handleCommentChange} />
         <StCommentButton type="submit">댓글작성</StCommentButton>
         
-      </form>
-      {commentList.map((item: any) => (
-        <>
-        <StComment key={item.id}>{item.comment}</StComment>
-        <StDeleteButton onClick={()=>handleDeleteComment(item.id)}>댓글 삭제하기</StDeleteButton>
-        </>
-      ))}
+        </form>
+        {commentList.map((item: any) => (
+          <>
+          <StComment key={item.id}>{item.comment}</StComment>
+          <StDeleteButton onClick={()=>handleDeleteComment(item.id)}>댓글 삭제하기</StDeleteButton>
+          </>
+        ))} */}
     </Layout>
+        <Footer/>
+        </>
   );
 };
+
+const DateBoxSpanBox = styled.div`
+   display: flex;
+ 
+`
+
+const AreaBoxSpanBox = styled.div<{ margin: string }>`
+  margin: ${({ margin }) => margin};
+  
+  font-family: Pretendard;
+  font-size: 24px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #484848;
+`
+
+const DateBoxSpan = styled.span<{ margin: string }>`
+  margin: 0 16px 21px 0;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #9a9a9a;
+  margin: ${({ margin }) => margin};
+
+`
+
 
 const NickContainer =styled.div`
   display: flex;
@@ -170,7 +215,7 @@ const MapBox = styled.div`
 const AreaBox =styled.div`
   width: 423px;
   height: 41px;
-
+  margin: 40px 0 0 0 ;
   font-family: Pretendard;
   font-size: 28px;
   font-weight: bold;
@@ -200,8 +245,7 @@ const ContentBox = styled.div`
 const DateBox = styled.div`
  width: 753px;
   height: 160px;
-
-  padding: 59px 471px 60px 54px;
+  margin: 20px 0 20px 0;
   border-radius: 8px;
   background-color: #f4f5f6;
 `

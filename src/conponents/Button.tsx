@@ -37,7 +37,7 @@ const colorHandler = (color: ButtonProps['color']) => {
     case 'kakaoLogin':
       return `border: 1px solid #FFE500; color: #292832; background-color: #FFE500;  font-size: 16px;`;
     case 'detailBtn':
-      return `border: 1px solid rgba(0, 0, 0, 0.1) color: #292832; background-color:  #484848;  font-size: 16px;`;
+      return `border: 1px solid #1FEC9B; color: #ffffff; background-color:  #1FEC9B;  font-weight: bold; font-size: 24px;`;
     default:
       return `border: 1px solid #1FEC9B; color: #ffffff; background-color: #1FEC9B; font-weight: bold; font-size: 16px;`;
   }
