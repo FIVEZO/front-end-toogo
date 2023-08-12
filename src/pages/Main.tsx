@@ -9,6 +9,9 @@ import Header from '../conponents/Header';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../conponents/Footer';
 
+import CardSlick from '../conponents/CardSlick';
+
+
 
 export const Main: React.FC = () => {
   const [showData, setShowData] = useState(false);
@@ -29,24 +32,70 @@ export const Main: React.FC = () => {
   }
 
   return (
-    <div>
+    <MainRayout>
+      
       <Header/>
-      <StButton onClick={()=>navigate(`/categorypage/1`)}>아시아</StButton>
+      <TopText>여행지를 선택하세요.</TopText>
+      <SecondText>대륙을 선택해서 동행글을 찾아보세요.</SecondText>
+      {/* <StButton onClick={()=>navigate(`/categorypage/1`)}>아시아</StButton>
       <StButton onClick={()=>navigate(`/categorypage/2`)}>아프리카</StButton>
       <StButton onClick={()=>navigate(`/categorypage/3`)}>유럽</StButton>
       <StButton onClick={()=>navigate(`/categorypage/4`)}>오세아니아</StButton>
-      <StButton onClick={()=>navigate(`/categorypage/5`)}>아메리카</StButton>
+      <StButton onClick={()=>navigate(`/categorypage/5`)}>아메리카</StButton> */}
+      <CardSlick/>
+      <TopText>오이여행 Talk</TopText>
+      <SecondText>나와 맞는 여행동행과 이야기를 나누어 보아요!</SecondText>
       <StCardContainer>
       {showData && data?.map((item: cardItem) => (
           <Cards key={item.id} items={item} />
         ))}
       </StCardContainer>
       <Footer/>
-    </div>
+    </MainRayout>
   )
 }
 
+const MainRayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  min-height: 100vh;
+`
+const SecondText = styled.div`
 
+  height: 24px;
+  margin-top: 20px;
+  margin-bottom: 80px;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #403f4e;
+`
+const TopText = styled.div`
+  width: 251px;
+  height: 36px;
+ margin-top: 80px;
+  font-family: Pretendard;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+
+  color: #403f4e;
+`
 
 const StCardContainer = styled.div`
   width: 100%;

@@ -29,6 +29,7 @@ function Header() {
   }
 
   return (
+
     <HeaderContainer>
       <HeaderContainer2>
       <Logo onClick={() => navigate('/')}>오이여행</Logo>
@@ -50,6 +51,7 @@ function Header() {
       )}
       </HeaderContainer2>
     </HeaderContainer>
+
   );
 }
 
@@ -108,6 +110,7 @@ const SearchInput = styled.input`
   &::placeholder {
        color: #DDDCE3;
    }
+
 `;
 
 const SearchButton = styled.button`
@@ -120,6 +123,7 @@ const SearchButton = styled.button`
   border-radius: 1000px;
   padding-bottom: 4px;
 `;
+
 
 const LogoutConditionButtons = styled.div`
   display: flex;
