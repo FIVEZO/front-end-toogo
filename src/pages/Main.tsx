@@ -8,7 +8,9 @@ import { cardItem } from '../types/posts';
 import Header from '../conponents/Header';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../conponents/Footer';
+
 import MainCard from '../conponents/MainCard';
+
 
 
 export const Main: React.FC = () => {

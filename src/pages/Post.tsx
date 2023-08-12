@@ -6,6 +6,14 @@ import { locationFormValues, postFormValues } from '../types/posts';
 import { useParams } from 'react-router-dom';
 import SelectCountry from '../conponents/SelectCountry';
 import Map from '../conponents/Map';
+import { styled } from 'styled-components';
+import Input from '../conponents/Input';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import { CustomCalendar } from '../conponents/CustomCalendar';
+import { PostButtons } from '../conponents/PostButtons';
+import Button from '../conponents/Button';
+
 
 function Post() {
   const param = Number(useParams().id);
@@ -16,12 +24,15 @@ function Post() {
   const [MarkerPosition, setMarkerPosition] = useState<null | locationFormValues>(null);
   const [latitudeMarkerPosition, setLatitudeMarkerPosition] = useState<number>(0);
   const [longitudeMarkerPosition, setLongitudeMarkerPosition] = useState<number>(0);
+  const [dateValue, dateValueChange] = useState(new Date());
+
 
   const handleMarkerPositionChange = (newPosition: locationFormValues) => {
     if (newPosition) {
       setLatitudeMarkerPosition(newPosition.latitude);
       setLongitudeMarkerPosition(newPosition.longitude);
       setMarkerPosition(newPosition); // Update the MarkerPosition state as well
+      console.log("마커", MarkerPosition)
     }
   }
 
@@ -47,33 +58,51 @@ function Post() {
   };
 
   return (
-    <form>
-      <div>title</div>
-      <input 
-      type="text"
-      value={title}
-      onChange={handleTitleChange}/>
-
-      <div>contents</div>
-      <input
-      type="text"
-      value={contents}
-      onChange={handleContentsChange}/>
-      <div>country</div>
+    <Layout>
+      <StInputLabel>country</StInputLabel>
       <SelectCountry id={param} onChange={setSelectedCountry} />
-
-      <div>meetDate</div>
       <input type='date' value={meetDate} onChange={handleMeetDateChange} />
-
-      <button onClick={postHandler}>Submit</button>
       <input type='time'/>
+      <StInputLabel>meetDate</StInputLabel>
+      <CustomCalendar/>
+      
+      <StInputLabel>제목</StInputLabel>
+      <Input type="text" placeholder="제목을 입력해주세요" value={title} onChange={handleTitleChange} size={"postTitle"} color={'#cfced7'}/>
 
-      {/* Render the Map component with location */}
-      <Map
-        onMarkerPosition={MarkerPosition} onMarkerPositionChange={handleMarkerPositionChange}
-      />
-    </form>
+      <StInputLabel>내용</StInputLabel>
+      <Input type="text" placeholder="내용을 입력해주세요" value={contents} onChange={handleContentsChange} size={'postContents'} color={'#cfced7'}/>
+
+      <StInputLabel>위치</StInputLabel>
+      <Map onMarkerPosition={MarkerPosition} onMarkerPositionChange={handleMarkerPositionChange}/>
+      
+      
+      <StButtonSet>
+        <Button name={"취소"} size={'post'} color={"negative"} onClick={postHandler}/>
+        <Button name={"작성완료"} size={'post'} color={""} onClick={postHandler}/>
+      </StButtonSet>
+      
+    </Layout>
   );
 }
 
 export default Post;
+
+
+const Layout = styled.div`
+  width: 100%;
+  max-width:1200px;
+  margin: 0 auto;
+  
+`
+
+const StInputLabel =styled.div`
+padding-top:20px;
+font-size: 28px;
+color: #484848;
+`
+const StButtonSet = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 80px 0 120px 0 ; 
+`

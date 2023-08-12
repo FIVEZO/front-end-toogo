@@ -2,13 +2,11 @@ import { styled } from "styled-components";
 import React from 'react';
 
 type ButtonProps = {
-
   onClick?: (event: React.FormEvent) => void; 
-  type?: "primary" | "medium" | "small";
   margin?: string;
   children?: React.ReactNode;
-  size: 'small' | 'medium' | 'large'| 'detail';
-  color: 'primary' | 'negative' | 'default' | 'custom'  | 'loginOn'| 'kakaoLogin'|'detailBtn'
+  size: string;
+  color: string;
   name?: string; 
   kakao?: boolean;
 };
@@ -23,6 +21,8 @@ const sizeHandler = (size: ButtonProps['size']) => {
         return `width: 72px; height: 36px;`;
      case 'detail':
         return `width: 324px; height: 60px;`;
+     case 'post':
+        return `width: 580px; height: 109px; font-size: 40px;`;
     default:
       return `width: 72px; height: 36px;`;
   }
@@ -84,3 +84,5 @@ const ButtonImage = styled.img`
   object-fit: contain;
   margin-right: 9.7px;
 `;
+
+

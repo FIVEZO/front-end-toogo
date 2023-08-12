@@ -110,6 +110,7 @@ const SearchInput = styled.input`
   &::placeholder {
        color: #DDDCE3;
    }
+
 `;
 
 const SearchButton = styled.button`
@@ -122,6 +123,7 @@ const SearchButton = styled.button`
   border-radius: 1000px;
   padding-bottom: 4px;
 `;
+
 
 const LogoutConditionButtons = styled.div`
   display: flex;

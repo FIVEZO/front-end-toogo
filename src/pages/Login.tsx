@@ -84,7 +84,7 @@ function Login() {
           value={email}
           onChange={handleEmailChange}
           size={"signup"}
-          color={emailCheck? "#E32D2D" : "grey"}
+          color={emailCheck? "#E32D2D" : '#cfced7'}
           variant={'default'}
           />
           {emailCheck && <StCheckMassage>{emailCheck}</StCheckMassage>}
@@ -97,7 +97,7 @@ function Login() {
           value={password}
           onChange={handlePasswordChange}
           size={"signup"}
-          color={passwordCheck? "#E32D2D" : "grey"}
+          color={passwordCheck? "#E32D2D" : '#cfced7'}
           variant={'eyeIcon'}
           />
           {passwordCheck && <StCheckMassage>{passwordCheck}</StCheckMassage>}

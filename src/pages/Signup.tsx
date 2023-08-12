@@ -187,7 +187,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           value={email}
           onChange={handleEmailChange}
           size={"signup"}
-          color={emailChecks=="사용 가능한 이메일입니다." ||emailChecks=="잠시만 기다려 주십시오."|| emailChecks == false ? "gray" : "#E32D2D"}
+          color={emailChecks=="사용 가능한 이메일입니다." ||emailChecks=="잠시만 기다려 주십시오."|| emailChecks == false ? '#cfced7' : "#E32D2D"}
           variant={'button'}
           name={"인증하기"}
           onButtonClick={emailCheckHandler}
@@ -204,7 +204,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           value={authCode}
           onChange={handleAuthCodeChange}
           size={"signup"}
-          color={authCodeChecks? "#E32D2D" : "grey"}
+          color={authCodeChecks? "#E32D2D" : '#cfced7'}
           variant={'button'}
           name={"코드확인"}
           onButtonClick={authCodeCheckHandler}
@@ -219,7 +219,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           value={password}
           onChange={handlePasswordChange}
           size={"signup"}
-          color={passwordCheck? "#E32D2D" : "grey"}
+          color={passwordCheck? "#E32D2D" : '#cfced7'}
           variant={'eyeIcon'}
           />
         {passwordCheck&& <StCheckMassage color={"#E32D2D"}>{passwordCheck}</StCheckMassage>}
@@ -233,7 +233,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           value={passwordConfirm}
           onChange={handlePasswordConfirmChange}
           size={"signup"}
-          color={passwordConfirmCheck? "#E32D2D" : "grey"}
+          color={passwordConfirmCheck? "#E32D2D" : '#cfced7'}
           variant={'eyeIcon'}
           />
          {passwordConfirmCheck&& <StCheckMassage color={"#E32D2D"}>{passwordConfirmCheck}</StCheckMassage>}
@@ -247,7 +247,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
           value={nickname}
           onChange={handleNicknameChange}
           size={"signup"}
-          color={nicknameChecks? "#E32D2D" : "grey"}
+          color={nicknameChecks? "#E32D2D" : '#cfced7'}
           variant={'button'}
           name={"중복확인"}
           required
