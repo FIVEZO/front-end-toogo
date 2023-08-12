@@ -23,6 +23,8 @@ const sizeHandler = (size: ButtonProps['size']) => {
         return `width: 324px; height: 60px;`;
      case 'post':
         return `width: 580px; height: 109px; font-size: 40px;`;
+     case 'main': 
+        return `width: 120px; height: 50px;`;
     default:
       return `width: 72px; height: 36px;`;
   }
@@ -38,6 +40,8 @@ const colorHandler = (color: ButtonProps['color']) => {
       return `border: 1px solid #FFE500; color: #292832; background-color: #FFE500;  font-size: 16px;`;
     case 'detailBtn':
       return `border: 1px solid #1FEC9B; color: #ffffff; background-color:  #1FEC9B;  font-weight: bold; font-size: 24px;`;
+    case 'mainCardBtn':
+      return `border: 1px solid#fff; color: #000; background-color:  #fff;  font-weight: bold; font-size: 20px;`;
     default:
       return `border: 1px solid #1FEC9B; color: #ffffff; background-color: #1FEC9B; font-weight: bold; font-size: 16px;`;
   }
