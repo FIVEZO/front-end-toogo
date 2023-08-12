@@ -8,11 +8,11 @@ import SelectCountry from '../conponents/SelectCountry';
 import Map from '../conponents/Map';
 import { styled } from 'styled-components';
 import Input from '../conponents/Input';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import { CustomCalendar } from '../conponents/CustomCalendar';
-import { PostButtons } from '../conponents/PostButtons';
 import Button from '../conponents/Button';
+import Header from '../conponents/Header';
+import Footer from '../conponents/Footer';
+import CustomTimer from '../conponents/CustomTimer';
 
 
 function Post() {
@@ -26,7 +26,7 @@ function Post() {
   const [longitudeMarkerPosition, setLongitudeMarkerPosition] = useState<number>(0);
   const [dateValue, dateValueChange] = useState(new Date());
 
-
+console.log("selectedCountry", selectedCountry)
   const handleMarkerPositionChange = (newPosition: locationFormValues) => {
     if (newPosition) {
       setLatitudeMarkerPosition(newPosition.latitude);
@@ -58,14 +58,14 @@ function Post() {
   };
 
   return (
+    <div>
+    <Header/>
     <Layout>
-      <StInputLabel>country</StInputLabel>
-      <SelectCountry id={param} onChange={setSelectedCountry} />
-      <input type='date' value={meetDate} onChange={handleMeetDateChange} />
-      <input type='time'/>
-      <StInputLabel>meetDate</StInputLabel>
+      <CustomTimer/>
+      <SelectCountry id={param} onClick={setSelectedCountry} />
+      <StCalendar>
       <CustomCalendar/>
-      
+      </StCalendar>
       <StInputLabel>제목</StInputLabel>
       <Input type="text" placeholder="제목을 입력해주세요" value={title} onChange={handleTitleChange} size={"postTitle"} color={'#cfced7'}/>
 
@@ -82,6 +82,8 @@ function Post() {
       </StButtonSet>
       
     </Layout>
+    <Footer/>
+    </div>
   );
 }
 
@@ -93,6 +95,9 @@ const Layout = styled.div`
   max-width:1200px;
   margin: 0 auto;
   
+`
+const StCalendar = styled.div`
+width:100%;
 `
 
 const StInputLabel =styled.div`

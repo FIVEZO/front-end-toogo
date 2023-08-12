@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { locationFormValues } from '../types/posts';
 import Input from './Input';
+import { styled } from 'styled-components';
 
 const Map: React.FC<{
   onMarkerPosition: locationFormValues | null;
@@ -176,7 +177,9 @@ const Map: React.FC<{
   return (
     <div>
       <div>
-      <Input type="text" placeholder="위치에 대한 설명을 적어주세요" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} size={"postTitle"} color={'#cfced7'}/>
+      <InputContainer>
+        <InputField type="text" placeholder="위치에 대한 설명을 적어주세요" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+      </InputContainer>
         <button onClick={handleSearch}>Search</button>
       </div>
       <div ref={mapRef} style={{ width: '100%', height: '480px' }} />
@@ -185,3 +188,29 @@ const Map: React.FC<{
 };
 
 export default Map;
+
+const InputContainer = styled.div`
+
+  width: 100%;
+  height: 70px;
+  margin: 40px 0;
+  border: 1px solid #cfced7;
+  border-radius: 8.53px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  position: relative;
+  /* box-shadow: 3px 0px 15px #c1c1c1; */
+`;
+
+const InputField = styled.input`
+  margin-left: 16px;
+  font-size: 16px;
+  color: #403F4E;
+  border: none;
+  outline: none;
+  flex: 1;
+  &::placeholder {
+    color: #dddce3; 
+  }
+`;
