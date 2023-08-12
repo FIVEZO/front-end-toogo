@@ -10,6 +10,7 @@ import { CategoryPage } from "../pages/CategoryPage";
 import { DetailPage } from "../pages/DetailPage";
 import Post from "../pages/Post";
 import { ChatRoom } from "../pages/ChatRoom";
+import { ChatListRoom } from "../pages/ChatListRoom";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ export const Router = () => {
             <Route path="/account" element={<Account />} />
             <Route path="/post/:id" element={<Post />} />
             <Route path="/chatroom/:id" element={<ChatRoom />} />
+            <Route path="/chatlistroom" element={<ChatListRoom />} />
             <Route path="/findPassword" element={<FindPassword />} />
             <Route path="/categorypage/:id" element={<CategoryPage />} />
             <Route path="/detailpage/:id" element={<DetailPage />} />

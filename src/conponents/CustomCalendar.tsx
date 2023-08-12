@@ -1,33 +1,66 @@
-import React, { useState } from 'react'
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import moment from "moment";
+import React, { useCallback, useState } from 'react'
 import { styled } from 'styled-components';
-
+import { Calendar } from 'react-date-range';
+import ko from 'date-fns/locale/ko';	     // 날짜 포맷 라이브러리 (한국어 기능을 임포트)
+import moment, { now } from 'moment';		     // 날짜 포맷 라이브러리
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 export const CustomCalendar = () => {
-    const [value, onChange] = useState<any>(new Date());
+
+    const [showCalendar, setShowCalendar] = useState<boolean>(false);   // 캘린더 여는 토글
+    const today = new Date()
+    const [date, setDate] = useState<Date>(today); 	// date 를 선언하고 기본값을 내일날짜로 지정
   
+    const onChangeDate = useCallback((date: Date): void | undefined => { // date 변경값을 받아오는 함수
+        
+      if (!date) {return;} // 날짜값이 없을 때 예외처리
+        setDate(date); 	   // 날짜값이 들어오면 date 를 set해준다
+    },[date]);
+
+    const inputDateString = date;
+    const inputDate = new Date(inputDateString);
+    const year = inputDate.getFullYear();
+    const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = inputDate.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}년 ${month}월 ${day}일`;
+    
+    console.log(formattedDate); // Output: 2023년 09월 26일
+ 
     return (
-      <div>
-        <StDateContainer>
-            {moment(value).format("YYYY년 MM월 DD일")} 
-        </StDateContainer>
-          <Calendar onChange={onChange} value={value} formatDay={(locale, date) => moment(date).format("DD")}></Calendar>
-      </div>
+    <div>
+      <div>{formattedDate}</div>
+      <CalendarContainer>
+        <StCalenderSize>
+        <Calendar
+          locale={ko}
+          months={2}
+          date={date}
+          onChange={onChangeDate}
+          dateDisplayFormat={'yyyy.MM.dd'}
+          direction={'horizontal'}
+          color='#1FEC9B'
+          minDate={today}
+        />
+        </StCalenderSize>
+      </CalendarContainer>
+    </div>
   )
 }
 
-const StDateContainer = styled.div`
-  width: 560px;
-  height: 70px;
-  padding: 0 20px;
-  border: 1px solid gray;
-  border-radius: 8.53px;
+
+const CalendarContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between; 
-  position: relative;
-  box-shadow: 5px 5px 5px #e0e0e0;
-`
+  justify-content: center;
+  border: 1px solid #cfced7;
+  border-radius: 8.53px;
+  width:100%;
+  height:560px;
 
+
+`
+const StCalenderSize =styled.div`
+transform: scale(1.7);
+margin-bottom:15px;
+`
 //#1FEC9B;

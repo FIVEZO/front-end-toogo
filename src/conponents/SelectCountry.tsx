@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { styled } from 'styled-components';
+import categorymarker from '../img/categorymarker.jpg'
 
-const SelectCountry = ({ id, onChange }: { id: number; onChange: (selectedValue: string) => void }) => {
+const SelectCountry = ({ id, onClick }: { id: number; onClick: (selectedValue: string) => void }) => {
 
     const countrySelect = (category:number) => {
   
@@ -20,19 +22,48 @@ const SelectCountry = ({ id, onChange }: { id: number; onChange: (selectedValue:
         }
       }
 
-      const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        onChange(e.target.value);
-	};
+      const handleClick = (selectedValue: string) => {
+        onClick(selectedValue);
+      };
+
+
 
   return (
     <div>
-        <select onChange={handleChange}>
-            {countrySelect(id).map((item, index)=>(
-                <option key={index} value={item}>{item}</option>
+        <SelectContainer>
+          {countrySelect(id).map((item, index)=>(
+          <StSelects key={index} onClick={() => handleClick(item)}>
+          <img src={categorymarker} />
+                <StCountry>{item}</StCountry>
+                </StSelects>
             ))}
-        </select>
+            </SelectContainer>
     </div>
   )
 }
 
 export default SelectCountry
+
+const SelectContainer = styled.div`
+  width: 100%;
+  border: 1px solid #cfced7;
+  border-radius: 8.53px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size:20px;
+  box-sizing: border-box;
+  padding: 32px;
+`
+
+const StSelects = styled.div`
+  display: flex;
+  align-items: center;
+  gap:12px;
+  width: 260px;
+  margin: 8px 0;
+`
+
+const StCountry = styled.div`
+
+`
