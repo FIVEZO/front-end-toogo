@@ -8,6 +8,7 @@ import { cardItem } from '../types/posts';
 import Header from '../conponents/Header';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../conponents/Footer';
+import MainCard from '../conponents/MainCard';
 
 
 export const Main: React.FC = () => {
@@ -31,11 +32,12 @@ export const Main: React.FC = () => {
   return (
     <div>
       <Header/>
-      <StButton onClick={()=>navigate(`/categorypage/1`)}>아시아</StButton>
+      {/* <StButton onClick={()=>navigate(`/categorypage/1`)}>아시아</StButton>
       <StButton onClick={()=>navigate(`/categorypage/2`)}>아프리카</StButton>
       <StButton onClick={()=>navigate(`/categorypage/3`)}>유럽</StButton>
       <StButton onClick={()=>navigate(`/categorypage/4`)}>오세아니아</StButton>
-      <StButton onClick={()=>navigate(`/categorypage/5`)}>아메리카</StButton>
+      <StButton onClick={()=>navigate(`/categorypage/5`)}>아메리카</StButton> */}
+      <MainCard/>
       <StCardContainer>
       {showData && data?.map((item: cardItem) => (
           <Cards key={item.id} items={item} />

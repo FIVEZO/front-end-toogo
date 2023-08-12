@@ -10,7 +10,7 @@ function Footer() {
                 <SecondLine>
                     <CompanyName>상호명 오이여행</CompanyName>
                     <DesignerName>디자인 송지은</DesignerName>
-                    <ProgrammersName>개발자 여러분 이름좀..</ProgrammersName>
+                    <ProgrammersName>개발자 백태준 | 이남규 | 이상준 | 박영준 | 김나영 | 장승연</ProgrammersName>
                 </SecondLine>
                 <CorporationName>©2023 오이여행</CorporationName>
             </FooterContainer2>
