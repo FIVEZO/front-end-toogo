@@ -8,11 +8,11 @@ import SelectCountry from '../conponents/SelectCountry';
 import Map from '../conponents/Map';
 import { styled } from 'styled-components';
 import Input from '../conponents/Input';
-import { CustomCalendar } from '../conponents/CustomCalendar';
+
 import Button from '../conponents/Button';
 import Header from '../conponents/Header';
 import Footer from '../conponents/Footer';
-import CustomTimer from '../conponents/CustomTimer';
+
 
 
 function Post() {
@@ -61,10 +61,10 @@ console.log("selectedCountry", selectedCountry)
     <div>
     <Header/>
     <Layout>
-      <CustomTimer/>
+
       <SelectCountry id={param} onClick={setSelectedCountry} />
       <StCalendar>
-      <CustomCalendar/>
+
       </StCalendar>
       <StInputLabel>제목</StInputLabel>
       <Input type="text" placeholder="제목을 입력해주세요" value={title} onChange={handleTitleChange} size={"postTitle"} color={'#cfced7'}/>
