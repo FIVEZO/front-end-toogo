@@ -246,7 +246,7 @@ export {
   // 로그인, 회원가입
   addUsers, login, getKakaoToken, emailCheck, authCodeCheck, nickCheck, logout, findPassword,
   // 게시글
-  getHomePosts, getCategoryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment, deleteComment, 
+  getHomePosts, getCategoryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment, deleteComment, getSearchPosts,
   // 마이페이지
   deleteUser, editUser, getScrapPosts, getNote,
 }  

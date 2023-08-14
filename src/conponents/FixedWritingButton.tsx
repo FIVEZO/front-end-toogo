@@ -1,18 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, } from 'react-router-dom';
 import { PiPencilSimpleLine } from 'react-icons/pi';
 
-const FixedWritingButton = () => {
+interface FixedWritingButtonProps {
+  id: number;
+}
+
+const FixedWritingButton: React.FC<FixedWritingButtonProps> = ({id}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/PostWriting/:id');
+    navigate(`/Post/${id}`);
   };
 
   return (
     <FixedWritingButtonWrapper>
-      <WritingButton onClick={handleClick}><PiPencilSimpleLine color='white' size='70px'/>
+      <WritingButton onClick={handleClick}>
+        <PiPencilSimpleLine color='white' size='70px'/>
       </WritingButton>
     </FixedWritingButtonWrapper>
   );

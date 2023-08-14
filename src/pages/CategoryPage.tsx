@@ -9,7 +9,8 @@ import Header from '../conponents/Header';
 import Footer from '../conponents/Footer';
 import Continent from '../conponents/ContinentImage';
 import FixedWritingButton from '../conponents/FixedWritingButton';
-import SelectCountry from '../conponents/SelectCountry';
+import ContinentPageSelectCountry from '../conponents/ContinentPageSelectCountryButton';
+import LoadMoreButton from '../conponents/LoadMoreButton';
 
 export const CategoryPage = () => {
     const param = Number(useParams().id);
@@ -26,16 +27,22 @@ export const CategoryPage = () => {
     return <p>오류가 발생하였습니다...!</p>;
   }
 
+  const loadMoreContent = () => {
+    setpage(page + 1);
+  };
+
   return (
     <div>
       <Header/>
       <Continent id={param}/>
+      <ContinentPageSelectCountry id={param}/>
         <StCardContainer>
       {data?.map((item : cardItem)=>(
         <Cards key={item.id} items={item}/>
       ))}
       </StCardContainer>
-      <FixedWritingButton/>
+      <FixedWritingButton id={param}/>
+      <LoadMoreButton onClick={loadMoreContent}/>
       <Footer/>
     </div>
   )
