@@ -73,9 +73,8 @@
     ]
   },
   "devDependencies": {
-
     "@types/react-date-range": "^1.4.4",
-
+    "@types/react-slick": "^0.23.10",
     "@types/stompjs": "^2.3.5"
   }
 }
