@@ -1,32 +1,34 @@
-import React from 'react';
-import Container from 'react-bootstrap/Container';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { logOff } from '../redux/modules/loginSlice';
-import { useMutation } from 'react-query';
-import { logout } from '../api/api';
 import { RootState } from '../types/login';
 import "../fonts/Font.css";
 import { LuSearch } from 'react-icons/lu';
 import { HiOutlineBell } from 'react-icons/hi';
 import { RxAvatar } from 'react-icons/rx';
+import HeaderSelect from './HeaderSelect';
 
 function Header() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const state = useSelector((state: RootState) => state.isLogin.isLogin)
 
-  const logoutMutation = useMutation(logout, {
-    onSuccess: () => {
-      dispatch(logOff())
-      navigate('/')
-    }
-  });
+  
+  const node = useRef<HTMLDivElement | null>(null); // 창의 바깥부분을 클릭하였을때 창이 사라짐
+  useEffect(() => { 
+    const clickOutside = (e: MouseEvent) => {
+    if (isSelectOpen && node.current && !node.current.contains(e.target as Node)) setIsSelectOpen(false);};
+    document.addEventListener("mousedown", clickOutside);
+    return () => {document.removeEventListener("mousedown", clickOutside);};
+  }, [isSelectOpen]);
 
-  const logOutButton = () => {
-    logoutMutation.mutate()
-  }
+  const handleBox2Click = () => {
+    setIsSelectOpen(!isSelectOpen);
+  };
+
+  
+
 
   return (
 
@@ -40,7 +42,10 @@ function Header() {
       {state ? (
         <LoginConditionButtons>
           <Bell><HiOutlineBell color='#403F4E' size='24px'/></Bell>
-          <Profile><RxAvatar color='#403F4E' size='26px'/></Profile>
+          <div ref={node}>
+          <Profile onClick={handleBox2Click}><RxAvatar color='#403F4E' size='26px'/></Profile>
+          <HeaderSelect position={"absolute"} isSelectOpen={isSelectOpen}/>
+          </div>
         </LoginConditionButtons>
       ) : (
         <LogoutConditionButtons>
