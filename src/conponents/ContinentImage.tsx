@@ -67,6 +67,7 @@ const ContinentContainer = styled.div`
   width: 100%;
   background-color: #1E414E;
   justify-content: center;
+  margin-bottom: 40px;
 `;
 
 const ImageContainer = styled.div`
