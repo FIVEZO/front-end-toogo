@@ -139,7 +139,7 @@ const getCategoryPosts = async (category: number, pageNum: number ) => {
   const getCategoryCountryPosts = async (category: number, country: string, pageNum: number ) => {
     const response = await instance.get(`api/post/${category}/${country}/list?page=${pageNum}`);
     // console.log("전체 게시글 조회", response)
-    return response.data;
+    return response.data.data;
   }
 
  // 게시글 상세페이지 조회
