@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import backgroundImage1 from '../img/한국.jpg';
+import backgroundImage1 from '../img/태국.jpg';
 import backgroundImage2 from '../img/영국.jpg';
 import backgroundImage3 from '../img/모로코.jpg';
 import backgroundImage4 from '../img/미국.jpg';
@@ -94,7 +94,6 @@ const MainCardRayout = styled.div<MainCardRayoutProps>`
   background-size: cover; 
   background-position: center;
   border-radius: 8px;
-  border: solid 1px rgba(0, 0, 0, 0.1);
 `;
 
 const CardContent = styled.div`

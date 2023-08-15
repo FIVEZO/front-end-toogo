@@ -94,7 +94,7 @@ const Responsive = () => {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
-    initialSlide: 1,
+    initialSlide: 2,
     responsive: [
       {
         breakpoint: 1200,

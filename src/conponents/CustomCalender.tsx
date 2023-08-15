@@ -5,7 +5,12 @@ import ko from 'date-fns/locale/ko';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
-export const CustomCalendar = () => {
+
+interface CustomCalendarProps {
+  setFormattedDate: (formattedDate: string) => void;
+}
+
+export const CustomCalendar: React.FC<CustomCalendarProps> = ({ setFormattedDate }) => {
 
     const [showCalendar, setShowCalendar] = useState<boolean>(false);   // 캘린더 여는 토글
     const today = new Date()
@@ -15,7 +20,15 @@ export const CustomCalendar = () => {
         
       if (!date) {return;} // 날짜값이 없을 때 예외처리
         setDate(date); 	   // 날짜값이 들어오면 date 를 set해준다
-    },[date]);
+        setFormattedDate(formatDate(date));
+    },[setFormattedDate]);
+
+    const formatDate = (inputDate: Date): string => {
+      const year = inputDate.getFullYear();
+      const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = inputDate.getDate().toString().padStart(2, '0');
+      return `${year}년 ${month}월 ${day}일`;
+    };
 
     const inputDateString = date;
     const inputDate = new Date(inputDateString);

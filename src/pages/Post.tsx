@@ -13,6 +13,7 @@ import Button from '../conponents/Button';
 import Header from '../conponents/Header';
 import Footer from '../conponents/Footer';
 import { CustomCalendar } from '../conponents/CustomCalender';
+import NavigationBox from '../conponents/NavigationBox';
 
 
 
@@ -61,12 +62,13 @@ console.log("selectedCountry", selectedCountry)
   return (
     <div>
     <Header/>
+    <NavigationBox/>
     <Layout>
 
-      <SelectCountry id={param} onClick={setSelectedCountry} />
+      {/* <SelectCountry id={param} onClick={setSelectedCountry} />
       <StCalendar>
         <CustomCalendar/>
-      </StCalendar>
+      </StCalendar> */}
       <StInputLabel>제목</StInputLabel>
       <Input type="text" placeholder="제목을 입력해주세요" value={title} onChange={handleTitleChange} size={"postTitle"} color={'#cfced7'}/>
 
