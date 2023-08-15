@@ -67,5 +67,12 @@ const fetchChatRooms = async () => {
       return response.data; // 생성된 채팅방 정보를 반환
   };
 
-  export { fetchChatRooms, createChatRoom, 
+  // 채팅방 삭제하기
+  const deleteChatRoom = async (id:number) => {
+    const response = await chatInstance.delete(`/api/room/${id}`);
+    // console.log("채팅방 삭제", response)
+    return response.data; // 생성된 채팅방 정보를 반환
+};
+
+  export { fetchChatRooms, createChatRoom, deleteChatRoom
   }  

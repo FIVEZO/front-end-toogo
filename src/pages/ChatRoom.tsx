@@ -3,9 +3,13 @@ import React, { useEffect, useState } from 'react'
 import * as StompJs from "@stomp/stompjs";
 import SockJS from 'sockjs-client';
 import { IMessage, Client, messageCallbackType} from '@stomp/stompjs';
+import { useParams } from 'react-router-dom';
+import Header from '../conponents/Header';
+import { styled } from 'styled-components';
+import sendButton from '../img/sendButton.jpg'
 
 type ReceiveData = {
-  content:string;
+  message:string;
 }
 
 function getCookie(cookieName: string) {
@@ -20,18 +24,14 @@ function getCookie(cookieName: string) {
     return cookieValue;
     }
 
-    // const accessToken = getCookie("access_token");
-    // const refreshToken = getCookie("refresh_token");
-    // const sock = new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-stomp`);
 
 export const ChatRoom = () => {
-  const [roomId, setRoomId] = useState<string>("10");
   const [chats, setChatList] = useState<Array<string>>([]);
   const [chat, setChat] = useState<string>("");
   const [client, changeClient] = useState<StompJs.Client>();
-  const [userId, setUserId] = useState<string>("myid");
   const accessToken = getCookie("access_token");
   const refreshToken = getCookie("refresh_token");
+  const roomId = useParams().id;
 
   const connect = () => {
     // 소켓 연결
@@ -39,13 +39,13 @@ export const ChatRoom = () => {
 
   const clientdata = new Client({
     brokerURL: `ws://${process.env.REACT_APP_CHAT_URL}/ws-stomp`,
-    // connectHeaders: {
-    //   accessToken: accessToken || "",
-    //   refreshToken: refreshToken || "",
-    // },
-    // debug: function (str) {
-    //   console.log(str);
-    // },
+    connectHeaders: {
+      accessToken: accessToken || "",
+      refreshToken: refreshToken || "",
+    },
+    debug: function (str) {
+      console.log("debug",str);
+    },
     reconnectDelay: 5000, // 자동 재 연결
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
@@ -53,14 +53,15 @@ export const ChatRoom = () => {
 
 
   clientdata.onConnect = function () {
-    console.log("Connect");
-    clientdata.subscribe("/sub/channels/10", 
+    console.log("Connect 구독");
+    clientdata.subscribe(`/sub/chat/room/${roomId}`, 
     function (message : IMessage) {
-      console.log(message);
+      console.log("message1", message.body);
       
       if (message.body) {
         let msg = JSON.parse(message.body) as ReceiveData;
-        setChatList((chats) => [...chats, msg.content]);
+        console.log("msg",msg)
+        setChatList((chats) => [...chats, msg.message]);
       }
     } as messageCallbackType);
   };
@@ -78,13 +79,14 @@ export const ChatRoom = () => {
   console.log(err);
 }
 };
-// const disConnect = () => {
-//   // 연결 끊기
-//   if (client === null) {
-//     return;
-//   }
-//   client.deactivate();
-// };
+const disConnect = () => {
+  // 연결 끊기
+  if (client) {
+    client.deactivate();
+  }else{
+    return;
+  }
+};
 
 const sendChat = () => {
   console.log("Send Message", chat);
@@ -94,14 +96,13 @@ const sendChat = () => {
   console.log(1);
   if(client === undefined)
     return;
-    console.log(2);
+    console.log("2", chat);
   client.publish({ //메세지 전송
-    destination: "/pub/chat",
+    destination: "/pub/message",
     body: JSON.stringify({
       type: "",
-      sender: userId,
-      channelId: "1",
-      data: chat,
+      roomId: roomId,
+      message: chat,
     }),
   });
 
@@ -116,23 +117,55 @@ useEffect(() => {
   console.log(refreshToken)
   connect();
 
-  // return () => disConnect();
+  return () => disConnect();
 }, []);
 
 
   return (
-    <>
+    <Stlayout>
+    <StChatContainer>
+    
       <div>ChatRoom</div>
       <br/>
       {!!chats && chats.map((e,i) => <div key={i}><label >{e}</label><br/></div>)}
-      <input style={{width: "200px"}} onChange={(e) => setUserId(e.target.value)} value={userId}/><br />
-      <input style={{width : "400px"}} onChange={(e) => setChat(e.target.value)} value={chat} onKeyPress={(e) => {
+      </StChatContainer>
+      <StInputContainer>
+      <StChatInput type='text' placeholder='메세지를 입력해주세요' onChange={(e) => setChat(e.target.value)} value={chat} onKeyPress={(e) => {
         if(e.key === 'Enter')
           sendChat();
       }}/>
-    </>
+      <StSendButton type='submit'><img src={sendButton}/></StSendButton>
+      </StInputContainer>
+      </Stlayout>
   )
 }
+
+const Stlayout =styled.div`
+width: 716px;
+  background-color: #F4F5F6;
+`
+
+const StChatContainer = styled.div`
+  width: 716px;
+  height: 738px;
+
+
+`
+const StInputContainer = styled.div`
+
+
+`
+
+
+const StChatInput = styled.input`
+  width:659px;
+  height:60px;
+  margin: 35px 28px;
+`
+
+const StSendButton =styled.button`
+
+`
 
 
 /*
@@ -180,7 +213,7 @@ import org.springframework.stereotype.Controller;
 public class GreetingController {
 
   @MessageMapping("/chat")
-  @SendTo("/sub/channels/10")
+  @SendTo("/sub/chat/room/10")
   public Greeting greeting(HelloMessage message) throws Exception {
     return new Greeting(String.format("%s : %s", message.getSender(), message.getData()));
   }
