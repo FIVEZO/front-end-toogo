@@ -3,7 +3,12 @@ import { styled } from 'styled-components';
 import categorymarker from '../img/categorymarker.jpg'
 import "../fonts/Font.css";
 
-const ContinentPageSelectCountry = ({ id }: { id: number; }) => {
+interface ContinentPageSelectCountryProps {
+  id: number;
+  onSelectCountry: (country: string) => void;
+}
+
+const ContinentPageSelectCountry: React.FC<ContinentPageSelectCountryProps> = ({ id, onSelectCountry }) => {
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleContent = () => {
@@ -28,6 +33,11 @@ const ContinentPageSelectCountry = ({ id }: { id: number; }) => {
         }
       };
 
+      const handleCountryClick = (country: string) => {
+        onSelectCountry(country);
+        toggleContent();
+      };
+
       return (
         <ButtonContainer>
           <ToggleButton onClick={toggleContent}>
@@ -38,7 +48,7 @@ const ContinentPageSelectCountry = ({ id }: { id: number; }) => {
             {countrySelect(id).map((item, index) => (
               <StSelects key={index}>
                 <img src={categorymarker} alt="Marker" />
-                <StCountry>{item}</StCountry>
+                <StCountry onClick={() => handleCountryClick(item)}>{item}</StCountry>
               </StSelects>
             ))}
             </CountrySelect>
@@ -98,12 +108,14 @@ const StSelects = styled.div`
   margin: 8px 0;
 `;
 
-const StCountry = styled.div`
+const StCountry = styled.button`
   color: #313131;
   text-align: center;
   font-family: 'Pretendard';
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  padding: 0;
+  border: none;
+  background-color: white;
 `;
