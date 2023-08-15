@@ -7,6 +7,7 @@ import "../fonts/Font.css";
 import { LuSearch } from 'react-icons/lu';
 import { HiOutlineBell } from 'react-icons/hi';
 import { RxAvatar } from 'react-icons/rx';
+import { GoPaperAirplane } from 'react-icons/go';
 import HeaderSelect from './HeaderSelect';
 
 function Header() {
@@ -42,6 +43,7 @@ function Header() {
       {state ? (
         <LoginConditionButtons>
           <Bell><HiOutlineBell color='#403F4E' size='24px'/></Bell>
+          <DM onClick={() => navigate('/chatlistroom')}><GoPaperAirplane size='23px' style = {{transform: 'rotate(-27deg)' }}/></DM>
           <div ref={node}>
           <Profile onClick={handleBox2Click}><RxAvatar color='#403F4E' size='26px'/></Profile>
           <HeaderSelect position={"absolute"} isSelectOpen={isSelectOpen}/>
@@ -163,7 +165,7 @@ const Line = styled.div`
 `;
 
 const LoginConditionButtons = styled.div`
-  width: 88px;
+  width: 120px;
   height: 48px;
   display: flex;
   align-items: center;
@@ -180,10 +182,26 @@ const Bell = styled.button`
   border: none;
   padding: 0px;
   background-color: white;
+  &:hover {
+    transform: scale(1.05); /* Increase size by 5% (3px) on hover */
+  }
+`;
+
+const DM = styled.button`
+  border: none;
+  padding: 0px;
+  background-color: white;
+  margin-top: -5px;
+  &:hover {
+    transform: scale(1.05); /* Increase size by 5% (3px) on hover */
+  }
 `;
 
 const Profile  = styled.button`
   border: none;
   padding: 0px;
   background-color: white;
+  &:hover {
+    transform: scale(1.05); /* Increase size by 5% (3px) on hover */
+  }
 `;

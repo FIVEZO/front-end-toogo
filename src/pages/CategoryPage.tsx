@@ -10,7 +10,7 @@ import Footer from '../conponents/Footer';
 import Continent from '../conponents/ContinentImage';
 import FixedWritingButton from '../conponents/FixedWritingButton';
 import ContinentPageSelectCountry from '../conponents/ContinentPageSelectCountryButton';
-import LoadMoreButton from '../conponents/LoadMoreButton';
+import PageMovingButton from '../conponents/PageMovingButton';
 
 export const CategoryPage = () => {
     const param = Number(useParams().id);
@@ -46,8 +46,12 @@ export const CategoryPage = () => {
     return <p>오류가 발생하였습니다...!</p>;
   }
 
-  const loadMoreContent = () => {
+  const nextPage = () => {
     setpage(page + 1);
+  };
+
+  const previousPage = () => {
+    setpage(page - 1);
   };
 
   return (
@@ -61,7 +65,14 @@ export const CategoryPage = () => {
       ))}
       </StCardContainer>
       <FixedWritingButton id={param}/>
-      <LoadMoreButton onClick={loadMoreContent}/>
+      <Pagebuttons>
+      {page > 1 && (
+        <PageMovingButton onClick={previousPage} text="이전 페이지"/>
+      )}
+      {data?.length >= 20 && (
+        <PageMovingButton onClick={nextPage} text="다음 페이지"/>
+      )}
+      </Pagebuttons>
       <Footer/>
     </div>
   )
@@ -74,10 +85,13 @@ const StCardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   text-align: center;
-  gap:24px;
+  gap: 24px;
 `;
 
-const StButton = styled.button`
-  font-size: 20px;
-  margin-top: 20px;
+const Pagebuttons = styled.div`
+  gap: 50px;
+  justify-content: center;
+  display: flex;
+  margin-top: 100px;
+  margin-bottom: 120px;
 `;

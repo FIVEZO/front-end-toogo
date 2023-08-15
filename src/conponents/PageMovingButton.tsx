@@ -4,13 +4,14 @@ import "../fonts/Font.css";
 
 interface ButtonProps {
   onClick: () => void;
+  text: string;
 }
 
-const LoadMoreButton: React.FC<ButtonProps> = ({ onClick }) => {
-  return <Button onClick={onClick}>더 보기</Button>;
+const PageMovingButton: React.FC<ButtonProps> = ({ onClick, text }) => {
+  return <Button onClick={onClick}>{text}</Button>;
 };
 
-export default LoadMoreButton;
+export default PageMovingButton;
 
 const Button = styled.button`
   width: 323px;
@@ -24,8 +25,5 @@ const Button = styled.button`
   font-weight: 400;
   border-radius: 88px;
   border: 1px solid #9A9A9A;
-  margin: 100px auto 120px auto;
-  display: flex;
   justify-content: center;
-  cursor: pointer;
 `;
