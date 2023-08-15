@@ -17,7 +17,7 @@ const FixedWritingButton: React.FC<FixedWritingButtonProps> = ({id}) => {
   return (
     <FixedWritingButtonWrapper>
       <WritingButton onClick={handleClick}>
-        <PiPencilSimpleLine color='white' size='70px'/>
+        <PiPencilSimpleLine color='white' size='36px'/>
       </WritingButton>
     </FixedWritingButtonWrapper>
   );
@@ -27,8 +27,8 @@ export default FixedWritingButton;
 
 const FixedWritingButtonWrapper = styled.div`
   position: fixed;
-  bottom: 165px;
-  right: 165px;
+  bottom: 140px;
+  right: 140px;
   
 `;
 
@@ -36,8 +36,8 @@ const WritingButton = styled.button`
   background-color: #2BDE97;
   border: none;
   border-radius: 1000px;
-  width: 120px;
-  height: 120px;
+  width: 80px;
+  height: 80px;
   transition: transform 0.2s ease;
   &:hover {
   transform: translateY(-10px);

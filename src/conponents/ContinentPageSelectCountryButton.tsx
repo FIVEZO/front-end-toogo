@@ -98,12 +98,14 @@ const StSelects = styled.div`
   margin: 8px 0;
 `;
 
-const StCountry = styled.div`
+const StCountry = styled.button`
   color: #313131;
   text-align: center;
   font-family: 'Pretendard';
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  padding: 0;
+  border: none;
+  background-color: white;
 `;
