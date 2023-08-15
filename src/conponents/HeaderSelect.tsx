@@ -32,7 +32,7 @@ function HeaderSelect({position, isSelectOpen}:selectForm) {
         case '마이페이지' :
         //   return navigate("/mypage")
         case '쪽지함' :
-          return 
+          return navigate("/chatlistroom")
         case '스크랩' :
           return navigate("/")
         case '로그아웃' :
