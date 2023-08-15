@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useQuery } from 'react-query';
-import { getCategoryPosts } from '../api/api';
+import { getCategoryPosts, getCategoryCountryPosts } from '../api/api';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { cardItem } from '../types/posts';
@@ -15,8 +15,27 @@ import LoadMoreButton from '../conponents/LoadMoreButton';
 export const CategoryPage = () => {
     const param = Number(useParams().id);
     const [page, setpage]= useState<number>(1)
-    const { isLoading, isError, data } = useQuery(["categoryPost", page], ()=>getCategoryPosts(param, page));
-  console.log("categorydata", data)
+    const [country, setCountry] = useState<string | null>(null);
+
+    const handleCountryChange = (country: string) => {
+      setCountry(country);
+      setpage(1);
+    };
+
+    const apiFunction: any = country ? getCategoryCountryPosts : getCategoryPosts;
+  
+    const fetchData = async () => {
+      if (country !== null) {
+        return await apiFunction(param, country as string, page);
+      } else {
+        return await apiFunction(param, page);
+      }
+    };
+  
+    const { isLoading, isError, data } = useQuery(
+      ["categoryPost", param, country, page],
+      fetchData
+    );
 
   if (isLoading) {
   
@@ -35,7 +54,7 @@ export const CategoryPage = () => {
     <div>
       <Header/>
       <Continent id={param}/>
-      <ContinentPageSelectCountry id={param}/>
+      <ContinentPageSelectCountry id={param} onSelectCountry={handleCountryChange}/>
         <StCardContainer>
       {data?.map((item : cardItem)=>(
         <Cards key={item.id} items={item}/>
