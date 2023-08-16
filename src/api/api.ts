@@ -66,6 +66,8 @@ const addUsers = async (newUser: SignupFormValues) => {
     const response = await instance.post(`/api/auth/login`, loginInformation)
     document.cookie = `access_token=${response.headers.accesstoken}; path=/;`;
     document.cookie = `refresh_token=${response.headers.refreshtoken}; path=/`;
+    document.cookie = `nickname=${response.data.nickname}; path=/`;
+
     // console.log("로그인", response)
     return response.data;
   }
@@ -105,7 +107,8 @@ const addUsers = async (newUser: SignupFormValues) => {
     // console.log("카카오 토큰", response)
     document.cookie = `access_token=${response.headers.accesstoken}; path=/;`;
     document.cookie = `refresh_token=${response.headers.refreshtoken}; path=/`;
-    
+    document.cookie = `nickname=${response.data.nickname}; path=/`;
+
     return response.data;
     } catch (error) {
       console.error(error);
