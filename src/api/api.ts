@@ -181,9 +181,9 @@ const postScrap = async (category: number, postId: number) => {
   return response.data;
 }
 
-// // 게시글 검색  ex) api/post/1/search/1?keyword=에펠탑
-const getSearchPosts = async (category: number, pageNum: number, keyword : string) => {
-  const response = await instance.get(`api/post/${category}/search/${pageNum}?keyword=${keyword}`);
+// // 게시글 검색  ex) api/post/search/1?keyword=에펠탑
+const getSearchPosts = async (pageNum: number, keyword : string) => {
+  const response = await instance.get(`api/post/search/${pageNum}?keyword=${keyword}`);
   // console.log("게시글 검색", response)
   return response.data;
 }
