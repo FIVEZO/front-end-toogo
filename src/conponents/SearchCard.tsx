@@ -7,6 +7,7 @@ import {  formatTimeAgo } from './Time';
 import { useNavigate } from 'react-router-dom';
 import { countryImages } from '../img/countryImages';
 import "../fonts/Font.css";
+import { GoPaperAirplane } from 'react-icons/go';
 
 const MySvg = () => (
     <svg viewBox="0 0 36 36" fill="none" role="img" xmlns="http://www.w3.org/2000/svg" width="80" height="80"><mask id=":r9:" maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="36"><rect width="36" height="36" rx="72" fill="#FFFFFF"></rect></mask><g mask="url(#:r9:)"><rect width="36" height="36" fill="#ff7d10"></rect><rect x="0" y="0" width="36" height="36" transform="translate(5 -1) rotate(155 18 18) scale(1.2)" fill="#70ff56" rx="6"></rect><g transform="translate(3 -4) rotate(-5 18 18)"><path d="M15 21c2 1 4 1 6 0" stroke="#000000" fill="none" strokeLinecap="round"></path><rect x="14" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#000000"></rect><rect x="20" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#000000"></rect></g></g></svg>
@@ -23,23 +24,25 @@ export const SearchCard = ({items}: {items:cardItem}) => {
   const navigate = useNavigate();
 
   return (
-    <DivRayout onClick={()=>navigate(`/detailpage/${category}&${id}`)}>
-      <StyledCardImg border-radius= "12px" variant="top" src={countryImage} />
+    <DivRayout>
+      <StyledCardImg onClick={()=>navigate(`/detailpage/${category}&${id}`)} border-radius= "12px" variant="top" src={countryImage} />
       <DivContent>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle onClick={()=>navigate(`/detailpage/${category}&${id}`)}>{title}</CardTitle>
         <CardText>{truncatedContents}</CardText>
         <AvatarLine>
           <AvatarPic>
             <Avatar
               alt="Avatar"
-              sx={{ width: 24, height: 24 }}>
+              sx={{ width: 44, height: 44 }}>
                 <MySvg />
             </Avatar>
           </AvatarPic>
+          <NicknameAndTime>
           <CardNickname>{nickname}</CardNickname>
-          <SpanLine></SpanLine>
           <CreateTime>{formattedCreatedDate}</CreateTime>
-          <DateFootter>{meetDate}</DateFootter>
+          </NicknameAndTime>
+          <MeetingTime>{meetDate}</MeetingTime>
+          <DM><GoPaperAirplane size='30px' style = {{transform: 'rotate(-35deg)' }}/></DM>
         </AvatarLine>
       </DivContent>
     </DivRayout>
@@ -55,13 +58,16 @@ const DivRayout = styled.div`
   background-color: white;
   padding: 24px;
   gap: 24px;
-  cursor: pointer;
 `;
 
 const StyledCardImg = styled(Card.Img)`
   width: 320px;          
   height: 172px;      
   border-radius: 12px;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.005);
+  }
 `;
 
 const DivContent = styled.div`
@@ -78,11 +84,14 @@ const CardTitle = styled.div`
   text-align: left;
   margin-bottom: 8px;
   height: 22px;
+  width: 808px;
   color: #484848;
+  cursor: pointer;
 `;
 
 const CardText = styled.div`
   height: 53px;
+  width: 808px;
   font-family: 'Pretendard';
   font-size: 14px;
   font-weight: 400;
@@ -93,50 +102,70 @@ const CardText = styled.div`
   margin-bottom: 15px;
 `;
 
-const AvatarPic =styled.div`
-  margin: 0 8px 0 0;
-`;
-
-const SpanLine = styled.span`
-  width: 0.9px;
-  height: 8px;
-  flex-grow: 0;
-  margin: 7px 10.6px 9px 10.6px;
-  background-color: #bcbcbc;
-`;
-const CreateTime = styled.div`
-  color: #9a9a9a;
-  font-size: 12px;
-   font-family: Pretendard;
-   margin: 6px 0 7px 0;
-`;
-
 const AvatarLine = styled.div`
   display: flex;
-  margin: 0 0 8px 0;
+  width: 808px;
+  height: 74px;
   background-color: #F4F5F6;
+  padding: 15px 16px 15px 16px;
+  border-radius: 12px;
+  align-items: center;
 `;
 
+const AvatarPic =styled.div`
+  margin-right: 10px;
+`;
 
+const NicknameAndTime = styled.div`
+  width: 551px;
+  height: 44px;
+  gap: 4px;
+`;
 
 const CardNickname = styled.div`
-  margin: 6px 0 7px 0;
+  font-family: 'Pretendard';
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22px;
+  letter-spacing: 0.10000000149011612px;
+  text-align: left;
+  width: 551px;
+  height: 22px;
+  color: #3E3232;
+`;
+
+const CreateTime = styled.div`
+  color: #9a9a9a;
+  width: 551px;
+  height: 18px;
+  font-family: 'Pretendard';
   font-size: 12px;
-  font-weight: 500;
-  font-family: Pretendard;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  text-align: left;
 `;
 
-
-
-
-
-
-
-const DateFootter = styled.div`
-font-weight: bold;
-text-align: right;
-color: #252525;
-font-size: 13.9px;
-margin: 8px 0 0 0 ;
+const MeetingTime = styled.div`
+  width: 123px;
+  height: 44px;
+  font-family: 'Pretendard';
+  font-size: 16px;
+  font-weight: 700;
+  color: #484848;
+  text-align: center;
+  display: flex;
+  align-items: center;
 `;
 
+const DM = styled.button`
+  width: 32px;
+  height: 32px;
+  border: none;
+  margin-left: 14px;
+  margin-top: -10px;
+  background-color: #F4F5F6;
+  &:hover {
+    transform: scale(1.05); /* Increase size by 5% (3px) on hover */
+  }
+`;
