@@ -12,6 +12,7 @@ import Post from "../pages/Post";
 import { ChatRoom } from "../pages/ChatRoom";
 import { ChatListRoom } from "../pages/ChatListRoom";
 import { Chat } from "../pages/Chat";
+import { SearchPage } from "../pages/SearchPage";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ export const Router = () => {
             <Route path="/findPassword" element={<FindPassword />} />
             <Route path="/categorypage/:id" element={<CategoryPage />} />
             <Route path="/detailpage/:id" element={<DetailPage />} />
+            <Route path="/SearchPage" element={<SearchPage />} />
             </Routes> 
         </BrowserRouter>
     </QueryClientProvider>

@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../conponents/Header'
 import Footer from '../conponents/Footer'
 import { styled } from 'styled-components'
-import 프로필 from '../img/프로필.jpg'
+import 프로필 from '../img/프로필.jpg'
 
 export const Chat = () => {
   return (

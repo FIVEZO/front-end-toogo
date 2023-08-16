@@ -14,6 +14,7 @@ function Header() {
   const navigate = useNavigate();
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const state = useSelector((state: RootState) => state.isLogin.isLogin)
+  const [keyword, setKeyword] = useState<string>("");
 
   
   const node = useRef<HTMLDivElement | null>(null); // 창의 바깥부분을 클릭하였을때 창이 사라짐
@@ -28,7 +29,9 @@ function Header() {
     setIsSelectOpen(!isSelectOpen);
   };
 
-  
+  const handleSearchButtonClick = () => {
+    navigate(`/searchpage/?keyword=${keyword}`);
+  };
 
 
   return (
@@ -37,8 +40,15 @@ function Header() {
       <HeaderContainer2>
       <Logo onClick={() => navigate('/')}>오이여행</Logo>
       <SearchContainer>
-        <SearchInput type="text" placeholder="검색어를 입력해주세요." />
-        <SearchButton><LuSearch color='white' size='17px'/></SearchButton>
+        <SearchInput 
+          type="text" 
+          placeholder="검색어를 입력해주세요."
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+        />
+        <SearchButton onClick={handleSearchButtonClick}>
+          <LuSearch color='white' size='17px'/>
+        </SearchButton>
       </SearchContainer>
       {state ? (
         <LoginConditionButtons>
