@@ -1,15 +1,24 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import * as StompJs from "@stomp/stompjs";
 import SockJS from 'sockjs-client';
 import { IMessage, Client, messageCallbackType} from '@stomp/stompjs';
 import { useParams } from 'react-router-dom';
-import Header from '../conponents/Header';
+import Header from './Header';
 import { styled } from 'styled-components';
 import sendButton from '../img/sendButton.jpg'
+import { useQuery } from 'react-query';
+import { ChatRoomForm } from '../pages/Chat';
+import { fetchChatMessage } from '../api/chatApi';
 
 type ReceiveData = {
   message:string;
+}
+interface disConnectHandles {
+  disConnect: () => void;
+}
+interface ChatRoomProps {
+  roomId?: string|undefined;
 }
 
 function getCookie(cookieName: string) {
@@ -24,19 +33,25 @@ function getCookie(cookieName: string) {
     return cookieValue;
     }
 
-
-export const ChatRoom = () => {
-  const [chats, setChatList] = useState<Array<string>>([]);
+    export const ChatRoom = ({roomId}: {roomId:string | undefined}) => {
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [chats, setChatList] = useState<any>([]);
   const [chat, setChat] = useState<string>("");
   const [client, changeClient] = useState<StompJs.Client>();
   const accessToken = getCookie("access_token");
   const refreshToken = getCookie("refresh_token");
-  const roomId = useParams().id;
+  const nickname = getCookie("nickname");
+  const date = new Date();
+  const nowHours = (date.getHours())+":"+(date.getMinutes())
+
+  const { isLoading, isError, data: chatMessages } = useQuery<ChatRoomForm[]>('chatMessage', ()=>fetchChatMessage(roomId!));
+  
+console.log("chatMessages", chatMessages)
+  
 
   const connect = () => {
     // 소켓 연결
     try {
-
   const clientdata = new Client({
     brokerURL: `ws://${process.env.REACT_APP_CHAT_URL}/ws-stomp`,
     connectHeaders: {
@@ -56,12 +71,11 @@ export const ChatRoom = () => {
     console.log("Connect 구독");
     clientdata.subscribe(`/sub/chat/room/${roomId}`, 
     function (message : IMessage) {
-      console.log("message1", message.body);
       
       if (message.body) {
         let msg = JSON.parse(message.body) as ReceiveData;
         console.log("msg",msg)
-        setChatList((chats) => [...chats, msg.message]);
+        setChatList((chats: any) => [...chats, msg]);
       }
     } as messageCallbackType);
   };
@@ -81,6 +95,7 @@ export const ChatRoom = () => {
 };
 const disConnect = () => {
   // 연결 끊기
+  console.log("asd")
   if (client) {
     client.deactivate();
   }else{
@@ -100,7 +115,8 @@ const sendChat = () => {
   client.publish({ //메세지 전송
     destination: "/pub/message",
     body: JSON.stringify({
-      type: "",
+      sentTime: nowHours,
+      sender: nickname,
       roomId: roomId,
       message: chat,
     }),
@@ -112,29 +128,48 @@ const sendChat = () => {
 useEffect(() => {
   // 최초 렌더링 시 , 웹소켓에 연결
   // 우리는 사용자가 방에 입장하자마자 연결 시켜주어야 하기 때문에,,
-
-  console.log(accessToken)
-  console.log(refreshToken)
   connect();
 
   return () => disConnect();
-}, []);
+}, [roomId]);
 
+const scrollToBottom = () => {
+  if (chatContainerRef.current) {
+    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+  }
+};
+
+useEffect(() => {
+  scrollToBottom();
+}, [chats]);
+
+
+if (isLoading) {
+  
+  return <p>로딩중...!</p>;
+}
+
+if (isError) {
+  return <p>오류가 발생하였습니다...!</p>;
+}
 
   return (
     <Stlayout>
-    <StChatContainer>
-    
-      <div>ChatRoom</div>
-      <br/>
-      {!!chats && chats.map((e,i) => <div key={i}><label >{e}</label><br/></div>)}
+    <StChatContainer ref={chatContainerRef}>
+      
+      {!!chats && chats.map((e:any,i:number) => 
+        e.sender == nickname? // 메세지를 보낸사람 확인해서 채팅창 구분
+        <StSendMessageBox key={i}><StSendMessage   ><div className='speech-bubble'><div className='text'>{e.message}</div><div className='time'>12:34 AM</div></div></StSendMessage></StSendMessageBox>
+      :
+      <StReceiveMessageBox key={i}><StReceiveMessage ><div className='speech-bubble'>{e.message}</div><div>12:34 AM</div></StReceiveMessage></StReceiveMessageBox>
+      )}
       </StChatContainer>
       <StInputContainer>
       <StChatInput type='text' placeholder='메세지를 입력해주세요' onChange={(e) => setChat(e.target.value)} value={chat} onKeyPress={(e) => {
         if(e.key === 'Enter')
           sendChat();
       }}/>
-      <StSendButton type='submit'><img src={sendButton}/></StSendButton>
+      <StSendButton type="button" onClick={sendChat}><img src={sendButton}/></StSendButton>
       </StInputContainer>
       </Stlayout>
   )
@@ -147,25 +182,101 @@ width: 716px;
 
 const StChatContainer = styled.div`
   width: 716px;
-  height: 738px;
-
-
+  height: 551px;
+  overflow: auto;
+  padding: 8px 24px 5px;
 `
 const StInputContainer = styled.div`
-
-
+position: relative;
 `
-
 
 const StChatInput = styled.input`
   width:659px;
   height:60px;
   margin: 35px 28px;
+  border:none;
+  border-radius:8px;
+  padding: 18px 60px 18px 16px;
 `
 
 const StSendButton =styled.button`
-
+position: absolute;
+border:none;
+background-color: white;
+right:40px;
+top: 50px;
 `
+const StReceiveMessageBox =styled.div`
+display: flex;
+flex-direction: row;
+`
+
+const StReceiveMessage= styled.div`
+margin-top:32px;
+  .speech-bubble {
+  max-width: 453px;
+  min-height:40px;
+	position: relative;
+	background: white;
+	border-radius: .4em;
+  left: 15px;
+  padding:16px;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	left: 29px;
+	top: 19.5px;
+	border: 15px solid transparent;
+	border-right-color: white;
+	border-left: 0;
+	border-top: 0;
+	margin-top: -19.5px;
+	margin-left: -39px;
+
+}
+`
+
+const StSendMessageBox =styled.div`
+display: flex;
+flex-direction: row-reverse;
+`
+const StSendMessage= styled.div`
+margin-top:32px;
+color: white;
+.speech-bubble {
+  max-width: 453px;
+  min-height:40px;
+	position: relative;
+	background: #2BDE97;
+	border-radius: .4em;
+  padding:16px;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	right: 29px;
+	top: 19.5px;
+	border: 15px solid transparent;
+	border-left-color: #2BDE97;
+	border-right: 0;
+	border-top: 0;
+	margin-top: -19.5px;
+	margin-right: -39px;
+}
+
+.text{
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.time{
+  font-size: 14px;
+}
+`
+
 
 
 /*

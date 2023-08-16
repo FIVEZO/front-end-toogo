@@ -69,6 +69,7 @@ function MainCard({ cardType }: MainCardRayoutProps) {
   return (
     
     <MainCardRayout backgroundImage={backgroundImage} cardType={cardType}>
+      <CardBack>
       <CardContent>
         <CardTitle>{cardName}</CardTitle>
         <CardDescription>{cardDescription}</CardDescription>
@@ -81,11 +82,21 @@ function MainCard({ cardType }: MainCardRayoutProps) {
          name={"둘러보기"}
          />
       </CardContent>
+      </CardBack>
     </MainCardRayout>
   );
 }
 
 export default MainCard;
+
+const CardBack = styled.div`
+    width: 282px;
+  height: 376px;
+  flex-grow: 0;
+
+  border-radius: 8px;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 33%, #000 100%);
+`
 
 const MainCardRayout = styled.div<MainCardRayoutProps>`
   width: 282px;

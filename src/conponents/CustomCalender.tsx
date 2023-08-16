@@ -24,18 +24,18 @@ export const CustomCalendar: React.FC<CustomCalendarProps> = ({ setFormattedDate
     },[setFormattedDate]);
 
     const formatDate = (inputDate: Date): string => {
-      const year = inputDate.getFullYear();
+      // const year = inputDate.getFullYear();
       const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
       const day = inputDate.getDate().toString().padStart(2, '0');
-      return `${year}년 ${month}월 ${day}일`;
+      return `${month}월 ${day}일`;
     };
 
     const inputDateString = date;
     const inputDate = new Date(inputDateString);
-    const year = inputDate.getFullYear();
+    // const year = inputDate.getFullYear();
     const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
     const day = inputDate.getDate().toString().padStart(2, '0');
-    const formattedDate = `${year}년 ${month}월 ${day}일`;
+    const formattedDate = `${month}월 ${day}일`;
     
     console.log(formattedDate); // Output: 2023년 09월 26일
  

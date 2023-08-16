@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { addComment, deleteComment, getDetailPosts } from '../api/api';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { addComment, deleteComment, getDetailPosts, postScrap } from '../api/api';
 import { styled } from 'styled-components';
 import useInput from '../hooks/useInput';
 import { countryImages } from '../img/countryImages';
@@ -10,6 +10,10 @@ import GogleMap from '../conponents/GogleMap';
 import Header from '../conponents/Header';
 import Button from '../conponents/Button';
 import Footer from '../conponents/Footer';
+import { createChatRoom } from '../api/chatApi';
+import { BiHeart } from 'react-icons/bi';
+import { FiShare2 } from 'react-icons/fi';
+
 
 
 export const DetailPage = () => {
@@ -18,7 +22,24 @@ export const DetailPage = () => {
   let postId = "";
   const queryClient = useQueryClient();
   const [comment, handleCommentChange, resetComment] = useInput();
+
+  const navigate = useNavigate();
+
   
+
+  const postMutation = useMutation((data: { category: number, postId: number }) => postScrap(data.category, data.postId), {
+    onSuccess: () => {
+      // Handle success if needed
+    }
+  });
+
+const handleScrap = () => {
+  // postMutation.mutate 호출로 스크랩 요청을 보내기
+  postMutation.mutate({ category: Number(category), postId: Number(postId) });
+};
+  
+
+
   interface ContinentMapping {
     [key: number]: string;
   }
@@ -30,6 +51,13 @@ export const DetailPage = () => {
   const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
   getDetailPosts(+category, +postId)
   );
+
+// 채팅방 만들기
+const createChatMutation = useMutation((receiver:string) => createChatRoom(receiver), {
+  onSuccess: (data) => {
+   navigate(`/chat/${data.roomId}`)
+  }
+});
   
   const commentMutation = useMutation((comment:string) => addComment(+category, +postId, comment), {
     onSuccess: () => {
@@ -66,14 +94,21 @@ export const DetailPage = () => {
     5: '아메리카',
   };
 
+  const makeChatRoom = ()=>{
+    createChatMutation.mutate(data.nickname)
+  }
+
   const commentHandler = (event: React.FormEvent) => {
-    event.preventDefault(); // 이벤트 기본 동작 방지
+    event.preventDefault();
     commentMutation.mutate(comment); // 댓글 작성 함수 호출
   };
 
   const handleDeleteComment = (commentId: number) => {
     deleteCommentMutation.mutate(commentId);
   };
+
+
+ 
 
   return (
     <>
@@ -85,19 +120,28 @@ export const DetailPage = () => {
       
 <NickContainer>
 
- <Container>     
+ <Container>   
+      <ScrapBox> 
       <StTitleBox> 
+        <div>
         <StTitle>{title}</StTitle>
-        <StCountry>[{continentMapping[+category]}] {country}</StCountry>
+        <StCountry>[{continentMapping[+category]}] {country}</StCountry> 
+        </div>
+        <div>
+        <LoveBox onClick={handleScrap}/>
+        <ShaerBox/>
+        </div>
       </StTitleBox>
+       
+      </ScrapBox> 
     <DateBox>
       <DateBoxSpanBox> 
         <DateBoxSpan margin={'39px 16px 21px 40px'}>지역</DateBoxSpan>
-        <AreaBoxSpanBox margin={'39px 0 21px 0'}>프랑스</AreaBoxSpanBox>
+        <AreaBoxSpanBox margin={'39px 0 21px 0'}>{country}</AreaBoxSpanBox>
       </DateBoxSpanBox>
       <DateBoxSpanBox>
         <DateBoxSpan margin={'0 16px 0 40px'} >날짜</DateBoxSpan>
-        <AreaBoxSpanBox margin={'0 16px 0 0'} >2023.07.23</AreaBoxSpanBox>
+        <AreaBoxSpanBox margin={'0 16px 0 0'} >{meetDate}</AreaBoxSpanBox>
       </DateBoxSpanBox>
     </DateBox>
     <ContentBox>
@@ -115,6 +159,7 @@ export const DetailPage = () => {
         margin={"119px 0 16px 0"}
         size={'detail'}
         name={"쪽지 보내기"}
+        onClick={makeChatRoom}
         />
 </NickBox>
 
@@ -142,6 +187,24 @@ export const DetailPage = () => {
         </>
   );
 };
+
+
+const ShaerBox = styled(FiShare2)`
+  width: 28px;
+  height: 30px;
+  margin-left: 16px;
+  cursor: pointer;
+`
+
+const LoveBox = styled(BiHeart)`
+ width : 32px;
+ height: 28px;
+ cursor: pointer;
+`
+
+const ScrapBox = styled.div`
+  display: flex;
+`
 
 const DateBoxSpanBox = styled.div`
    display: flex;
@@ -264,7 +327,10 @@ const StTitleBox =styled.div`
   width: 753px;
   height: 97px;
   padding: 19px 2.4px 13px 0;
-
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
 `
 const StTitle = styled.div`
 height: 41px;
