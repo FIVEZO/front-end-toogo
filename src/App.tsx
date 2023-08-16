@@ -6,16 +6,19 @@ import { Router } from './shared/Router';
 import { Reset } from 'styled-reset'
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
+import { RecoilRoot } from 'recoil';
 
 function App() {
   return (
     <div>
+      <RecoilRoot>
        <ThemeProvider theme={theme}>
         <Reset />
       <Provider store={store}>
         <Router />
       </Provider>
       </ThemeProvider>
+      </RecoilRoot>
     </div>
   );
 }
