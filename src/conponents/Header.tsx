@@ -33,6 +33,12 @@ function Header() {
     navigate(`/searchpage/?keyword=${keyword}`);
   };
 
+  const handleEnterKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearchButtonClick();
+    }
+  };
+
 
   return (
 
@@ -45,6 +51,7 @@ function Header() {
           placeholder="검색어를 입력해주세요."
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
+          onKeyPress={handleEnterKeyPress}
         />
         <SearchButton onClick={handleSearchButtonClick}>
           <LuSearch color='white' size='17px'/>

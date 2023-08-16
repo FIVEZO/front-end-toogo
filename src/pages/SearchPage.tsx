@@ -7,6 +7,7 @@ import { getSearchPosts } from '../api/api';
 import { styled } from 'styled-components';
 import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
+import "../fonts/Font.css";
 
 export const SearchPage: React.FC = () => {
   const location = useLocation();
@@ -35,7 +36,11 @@ export const SearchPage: React.FC = () => {
   return (
     <div>
         <Header/>
-        <h2>프랑스 검색결과</h2>
+        <SearchResult>
+          <SearchResult2>
+            <SearchResultKeyword>{keyword}</SearchResultKeyword> 검색결과
+          </SearchResult2>
+        </SearchResult>
         <StCardContainer>
       {data?.map((item : cardItem)=>(
         <SearchCard key={item.id} items={item}/>
@@ -54,4 +59,27 @@ const StCardContainer = styled.div`
   flex-wrap: wrap;
   text-align: center;
   gap: 24px;
+`;
+
+const SearchResult = styled.div`
+  font-family: "Pretendard";
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0em;
+  text-align: left;
+  display: flex;
+  width: auto;
+  justify-content: center;
+  margin-top: 80px;
+  margin-bottom: 48px;
+`;
+
+const SearchResult2 = styled.div`
+  width: 1200px;
+  flex-direction: row;
+`;
+
+const SearchResultKeyword = styled.span`
+  color: #2BDE97;
 `;
