@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { addComment, deleteComment, getDetailPosts } from '../api/api';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import useInput from '../hooks/useInput';
 import { countryImages } from '../img/countryImages';
@@ -10,6 +10,7 @@ import GogleMap from '../conponents/GogleMap';
 import Header from '../conponents/Header';
 import Button from '../conponents/Button';
 import Footer from '../conponents/Footer';
+import { createChatRoom } from '../api/chatApi';
 
 
 export const DetailPage = () => {
@@ -18,7 +19,8 @@ export const DetailPage = () => {
   let postId = "";
   const queryClient = useQueryClient();
   const [comment, handleCommentChange, resetComment] = useInput();
-  
+  const navigate = useNavigate();
+
   interface ContinentMapping {
     [key: number]: string;
   }
@@ -30,6 +32,13 @@ export const DetailPage = () => {
   const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
   getDetailPosts(+category, +postId)
   );
+
+// 채팅방 만들기
+const createChatMutation = useMutation((receiver:string) => createChatRoom(receiver), {
+  onSuccess: (data) => {
+   navigate(`/chat/${data.roomId}`)
+  }
+});
   
   const commentMutation = useMutation((comment:string) => addComment(+category, +postId, comment), {
     onSuccess: () => {
@@ -65,6 +74,10 @@ export const DetailPage = () => {
     4: '오세아니아',
     5: '아메리카',
   };
+
+  const makeChatRoom = ()=>{
+    createChatMutation.mutate(data.nickname)
+  }
 
   const commentHandler = (event: React.FormEvent) => {
     event.preventDefault(); // 이벤트 기본 동작 방지
@@ -115,6 +128,7 @@ export const DetailPage = () => {
         margin={"119px 0 16px 0"}
         size={'detail'}
         name={"쪽지 보내기"}
+        onClick={makeChatRoom}
         />
 </NickBox>
 
