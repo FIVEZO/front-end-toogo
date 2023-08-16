@@ -43,7 +43,7 @@ function Header() {
       {state ? (
         <LoginConditionButtons>
           <Bell><HiOutlineBell color='#403F4E' size='24px'/></Bell>
-          <DM onClick={() => navigate('/chatlistroom')}><GoPaperAirplane size='23px' style = {{transform: 'rotate(-27deg)' }}/></DM>
+          <DM onClick={() => navigate('/chat/main')}><GoPaperAirplane size='23px' style = {{transform: 'rotate(-27deg)' }}/></DM>
           <div ref={node}>
           <Profile onClick={handleBox2Click}><RxAvatar color='#403F4E' size='26px'/></Profile>
           <HeaderSelect position={"absolute"} isSelectOpen={isSelectOpen}/>

@@ -7,11 +7,14 @@ import { useParams } from 'react-router-dom';
 import Header from './Header';
 import { styled } from 'styled-components';
 import sendButton from '../img/sendButton.jpg'
+import { useQuery } from 'react-query';
+import { ChatRoomForm } from '../pages/Chat';
+import { fetchChatMessage } from '../api/chatApi';
 
 type ReceiveData = {
   message:string;
 }
-export interface disConnectHandles {
+interface disConnectHandles {
   disConnect: () => void;
 }
 interface ChatRoomProps {
@@ -30,7 +33,7 @@ function getCookie(cookieName: string) {
     return cookieValue;
     }
 
-    export const ChatRoom = forwardRef<disConnectHandles ,ChatRoomProps>((roomId, ref) => {
+    export const ChatRoom = ({roomId}: {roomId:string | undefined}) => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [chats, setChatList] = useState<any>([]);
   const [chat, setChat] = useState<string>("");
@@ -38,9 +41,14 @@ function getCookie(cookieName: string) {
   const accessToken = getCookie("access_token");
   const refreshToken = getCookie("refresh_token");
   const nickname = getCookie("nickname");
+  const date = new Date();
+  const nowHours = (date.getHours())+":"+(date.getMinutes())
 
-
+  const { isLoading, isError, data: chatMessages } = useQuery<ChatRoomForm[]>('chatMessage', ()=>fetchChatMessage(roomId!));
   
+console.log("chatMessages", chatMessages)
+  
+
   const connect = () => {
     // 소켓 연결
     try {
@@ -107,7 +115,7 @@ const sendChat = () => {
   client.publish({ //메세지 전송
     destination: "/pub/message",
     body: JSON.stringify({
-      type: "",
+      sentTime: nowHours,
       sender: nickname,
       roomId: roomId,
       message: chat,
@@ -123,7 +131,7 @@ useEffect(() => {
   connect();
 
   return () => disConnect();
-}, []);
+}, [roomId]);
 
 const scrollToBottom = () => {
   if (chatContainerRef.current) {
@@ -135,11 +143,15 @@ useEffect(() => {
   scrollToBottom();
 }, [chats]);
 
-useImperativeHandle(ref, () => ({
-  // 부모 컴포넌트에서 사용할 함수를 선언
-  disConnect
-}))
-    
+
+if (isLoading) {
+  
+  return <p>로딩중...!</p>;
+}
+
+if (isError) {
+  return <p>오류가 발생하였습니다...!</p>;
+}
 
   return (
     <Stlayout>
@@ -161,7 +173,7 @@ useImperativeHandle(ref, () => ({
       </StInputContainer>
       </Stlayout>
   )
-})
+}
 
 const Stlayout =styled.div`
 width: 716px;

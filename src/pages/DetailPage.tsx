@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
 import { addComment, deleteComment, getDetailPosts, postScrap } from '../api/api';
-import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import useInput from '../hooks/useInput';
 import { countryImages } from '../img/countryImages';
@@ -10,8 +10,10 @@ import GogleMap from '../conponents/GogleMap';
 import Header from '../conponents/Header';
 import Button from '../conponents/Button';
 import Footer from '../conponents/Footer';
+import { createChatRoom } from '../api/chatApi';
 import { BiHeart } from 'react-icons/bi';
 import { FiShare2 } from 'react-icons/fi';
+
 
 
 export const DetailPage = () => {
@@ -20,6 +22,9 @@ export const DetailPage = () => {
   let postId = "";
   const queryClient = useQueryClient();
   const [comment, handleCommentChange, resetComment] = useInput();
+
+  const navigate = useNavigate();
+
   
 
   const postMutation = useMutation((data: { category: number, postId: number }) => postScrap(data.category, data.postId), {
@@ -34,6 +39,7 @@ const handleScrap = () => {
 };
   
 
+
   interface ContinentMapping {
     [key: number]: string;
   }
@@ -45,6 +51,13 @@ const handleScrap = () => {
   const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
   getDetailPosts(+category, +postId)
   );
+
+// 채팅방 만들기
+const createChatMutation = useMutation((receiver:string) => createChatRoom(receiver), {
+  onSuccess: (data) => {
+   navigate(`/chat/${data.roomId}`)
+  }
+});
   
   const commentMutation = useMutation((comment:string) => addComment(+category, +postId, comment), {
     onSuccess: () => {
@@ -80,6 +93,10 @@ const handleScrap = () => {
     4: '오세아니아',
     5: '아메리카',
   };
+
+  const makeChatRoom = ()=>{
+    createChatMutation.mutate(data.nickname)
+  }
 
   const commentHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -142,6 +159,7 @@ const handleScrap = () => {
         margin={"119px 0 16px 0"}
         size={'detail'}
         name={"쪽지 보내기"}
+        onClick={makeChatRoom}
         />
 </NickBox>
 

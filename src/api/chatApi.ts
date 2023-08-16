@@ -74,5 +74,12 @@ const fetchChatRooms = async () => {
     return response.data; // 생성된 채팅방 정보를 반환
 };
 
-  export { fetchChatRooms, createChatRoom, deleteChatRoom
+// 기존 대화 내역 조회
+const fetchChatMessage = async (roomId:string) => {
+  const response = await chatInstance.get(`api/room/${roomId}/message`);
+  // console.log("대화 내역 조회", response)
+return response.data;
+}
+
+  export { fetchChatRooms, createChatRoom, deleteChatRoom, fetchChatMessage
   }  

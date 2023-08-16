@@ -5,32 +5,40 @@ import { styled } from 'styled-components'
 import 프로필 from '../img/프로필.jpg'
 import nonechat from "../img/nonechat.jpg"
 import { useNavigate, useParams } from 'react-router-dom'
-import { ChatRoom, disConnectHandles } from '../conponents/ChatRoom'
+import { ChatRoom } from '../conponents/ChatRoom'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import useInput from '../hooks/useInput'
 import { createChatRoom, deleteChatRoom, fetchChatRooms } from '../api/chatApi'
 import { HiDotsVertical } from "react-icons/hi"
 
-interface ChatRoom {
+export interface ChatRoomForm {
     id : number
     roomName : string,
     sender : string,
     roomId : string,
     receiver : string,}
 
-export const Chat = () => {
+export const Chat: React.FC = () => {
     const roomCode = useParams().id;
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [receiverValue, handleReceiverValueChange, resetReceiverValue] = useInput();
     const [id, setId]= useState<number>(0)
-    const [roomName, setRoomName] = useState<string>('')
     const [modal, setModal]= useState<boolean>(false)
-    const disConnectRef =  useRef<disConnectHandles | null>(null);
+
+
 
 // 채팅방 목록 받아오기
-  const { isLoading, isError, data: chatRooms } = useQuery<ChatRoom[]>('chatRoomlist', fetchChatRooms);
+  const { isLoading, isError, data: chatRooms } = useQuery<ChatRoomForm[]>('chatRoomlist', fetchChatRooms);
 
+  const targetRoomId = roomCode;
+  const personWithTargetRoomId = chatRooms!.find(item => item.roomId === targetRoomId);
+  const targetId = chatRooms!.find(item => item.roomId === targetRoomId);
+  
+  const roomNameOfPerson = personWithTargetRoomId!.roomName;
+  const idOfPerson = targetId!.id;
+    
+  
 // 채팅방 만들기
   const createChatMutation = useMutation((receiver:string) => createChatRoom(receiver), {
     onSuccess: () => {
@@ -70,20 +78,16 @@ export const Chat = () => {
   }
 
   const handleEnterChatRoom = (room:any) => {
-    console.log("room", room)
    setId(room.id)
-   setRoomName(room.roomName)
-   if (disConnectRef.current) {
-    disConnectRef.current.disConnect();
-  }
-   
+ 
+ 
     navigate(`/chat/${room.roomId}`);
   };
 
   
  
   const deleteChat = () => {
-    deleteChatMutation.mutate(id)
+    deleteChatMutation.mutate(idOfPerson)
   };
 
     
@@ -132,7 +136,7 @@ export const Chat = () => {
                 <>
                 <StChatReceiver>
                   <StProfileImg src={프로필} alt='프로필사진'/>
-                  <StName>{roomName}</StName>
+                  <StName>{roomNameOfPerson}</StName>
                   <div ref={node}>
                   <StHiDotsVertical onClick={()=>setModal(pre => !pre)}/>
                   {modal&& <StModal onClick={deleteChat} >채팅방 나가기</StModal>}
@@ -140,7 +144,7 @@ export const Chat = () => {
                   </StChatReceiver>
                 
                 <StPost></StPost>
-                <ChatRoom ref={disConnectRef} roomId={roomCode}/>
+                <ChatRoom roomId={roomCode}/>
                 </>
                 }
 
