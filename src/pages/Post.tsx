@@ -4,16 +4,15 @@ import { useMutation } from 'react-query';
 import { addPost } from '../api/api';
 import { locationFormValues, postFormValues } from '../types/posts';
 import { useParams } from 'react-router-dom';
-import SelectCountry from '../conponents/SelectCountry';
 import Map from '../conponents/Map';
 import { styled } from 'styled-components';
 import Input from '../conponents/Input';
-
 import Button from '../conponents/Button';
 import Header from '../conponents/Header';
 import Footer from '../conponents/Footer';
-import { CustomCalendar } from '../conponents/CustomCalender';
 import NavigationBox from '../conponents/NavigationBox';
+import { useRecoilValue } from 'recoil';
+import { selectedCountryState, selectedDateState } from '../recoil/post/NavigationBar';
 
 
 
@@ -22,26 +21,25 @@ function Post() {
   const [title, handleTitleChange] = useInput();
   const [contents, handleContentsChange] =  useInput();
   const [meetDate, handleMeetDateChange] =  useInput();
-  const [selectedCountry, setSelectedCountry] = useState<string>(""); 
+  // const [selectedCountry, setSelectedCountry] = useState<string>(""); 
+  const selectedCountry = useRecoilValue(selectedCountryState);
+  const formattedDate = useRecoilValue(selectedDateState);
   const [MarkerPosition, setMarkerPosition] = useState<null | locationFormValues>(null);
   const [latitudeMarkerPosition, setLatitudeMarkerPosition] = useState<number>(0);
   const [longitudeMarkerPosition, setLongitudeMarkerPosition] = useState<number>(0);
   const [dateValue, dateValueChange] = useState(new Date());
 
-console.log("selectedCountry", selectedCountry)
   const handleMarkerPositionChange = (newPosition: locationFormValues) => {
     if (newPosition) {
       setLatitudeMarkerPosition(newPosition.latitude);
       setLongitudeMarkerPosition(newPosition.longitude);
-      setMarkerPosition(newPosition); // Update the MarkerPosition state as well
-      console.log("마커", MarkerPosition)
+      setMarkerPosition(newPosition);
     }
   }
 
   // ----------------------------------------게시글 등록
   const postMutation = useMutation((postData: postFormValues) => addPost(param, postData), {
     onSuccess: () => {
-      // Handle success if needed
     }
   });
 
@@ -52,7 +50,7 @@ console.log("selectedCountry", selectedCountry)
       title,
       contents,
       country: selectedCountry,
-      meetDate,
+      meetDate: formattedDate,
       latitude: latitudeMarkerPosition, 
       longitude: longitudeMarkerPosition,
     };

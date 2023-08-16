@@ -124,6 +124,7 @@ const addUsers = async (newUser: SignupFormValues) => {
 
   // ------------------------------------------- 게시글
 
+
   //  전체 게시글 조회 - 메인페이지 - 최신글 순으로 12개
 const getHomePosts = async () => {
   const response = await instance.get(`/api/homepost`);
@@ -210,9 +211,12 @@ const deleteComment = async (category: number, postId: number, commentId : numbe
 
 // --------------------------------------------------- 마이 페이지
 
-// 마이페이지 화면구성 필요함 스크렙한
-
-
+// 내가 작성한 게시글
+const getMyPosts = async () => {
+  const response = await instance.get(`api/mypage/post`);
+  // console.log("전체 게시글 조회", response)
+  return response.data;
+}
 
 
 // 회원 탈퇴
@@ -230,8 +234,8 @@ const editUser = async (userInformation : string) => {
 }
 
  // 마이페이지 스크렙 게시글
- const getScrapPosts = async () => {
-  const response = await instance.get(`api/mypage/scrap`);
+ const getScrapPosts = async (pageNum : number) => {
+  const response = await instance.get(`api/mypage/scrap/${pageNum}`);
   // console.log("스크렙한 게시글 조회", response)
   return response.data;
 }
@@ -258,5 +262,5 @@ export {
   // 게시글
   getHomePosts, getCategoryPosts, getCategoryCountryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment, deleteComment, getSearchPosts,
   // 마이페이지
-  deleteUser, editUser, getScrapPosts, getNote,
+  deleteUser, editUser, getScrapPosts, getNote, getMyPosts,
 }  

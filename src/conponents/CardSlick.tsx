@@ -8,60 +8,6 @@ import { ReactComponent as Prev } from "./assets/prev.svg";
 import { ReactComponent as Next } from "./assets/next.svg";
 import { useNavigate } from "react-router-dom";
 
-const StyledSlider = styled(Slider)`
-  height: 100%;
-  width: 100%;
-  margin: 0 auto 0 auto;
-  max-width: 1200px;
-  position: relative;
-  gap: 24px;
-  .slick-prev::before,
-  .slick-next::before {
-    opacity: 0;
-    display: none;
-  }
-  .slick-slide div {
-    cursor: pointer;
-  }
-`;
-
-const Div = styled.div`
-  right: 30px;
-  top: 160px;
-  z-index: 1;
-`;
-
-const DivPre = styled.div`
-  left: -30px;
-  top: 160px;
-  z-index: 1;
-`;
-
-const Arrow = styled.p`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: gray;
-  color: #fff;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-radius: 50%;
-  transition: all 0.3s;
-  z-index: 1;
-
-  &.left {
-    left: -34px;
-  }
-
-  &.right {
-    right: -34px;
-  }
-`;
-
 const Responsive = () => {
   const sliderRef = useRef<Slider | null>(null);
   const navigate = useNavigate();
@@ -152,3 +98,58 @@ const Responsive = () => {
 };
 
 export default Responsive;
+
+
+const StyledSlider = styled(Slider)`
+  height: 100%;
+  width: 100%;
+  margin: 0 auto 0 auto;
+  max-width: 1200px;
+  position: relative;
+  gap: 24px;
+  .slick-prev::before,
+  .slick-next::before {
+    opacity: 0;
+    display: none;
+  }
+  .slick-slide div {
+    cursor: pointer;
+  }
+`;
+
+const Div = styled.div`
+  right: 30px;
+  top: 160px;
+  z-index: 1;
+`;
+
+const DivPre = styled.div`
+  left: -30px;
+  top: 160px;
+  z-index: 1;
+`;
+
+const Arrow = styled.p`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: gray;
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.3s;
+  z-index: 1;
+
+  &.left {
+    left: -34px;
+  }
+
+  &.right {
+    right: -34px;
+  }
+`;
