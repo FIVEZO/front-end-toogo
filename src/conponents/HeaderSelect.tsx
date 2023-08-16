@@ -30,7 +30,7 @@ function HeaderSelect({position, isSelectOpen}:selectForm) {
   const selectListHendler = (index:number) =>{ // 목록을 선택
     switch (selectList[index]){
         case '마이페이지' :
-        //   return navigate("/mypage")
+          return navigate("/mypage")
         case '쪽지함' :
           return navigate("/chatlistroom")
         case '스크랩' :

@@ -4,24 +4,22 @@ import { CustomCalendar } from './CustomCalender';
 import SelectCountry from './SelectCountry';
 import { useParams } from 'react-router-dom';
 import  Clock  from './Clock'
-
+import { useRecoilState } from 'recoil';
+import { selectedCountryState, selectedDateState } from '../recoil/post/NavigationBar';
 
 interface InnerBoxProps {
     highlighted: boolean;
   }
 
-
-
   function NavigationBox() {
     const param = Number(useParams().id);
-
-    const [selectedCountry, setSelectedCountry] = useState<string>(""); 
+    const [selectedCountry, setSelectedCountry] = useRecoilState(selectedCountryState);
     const [selectedBox, setSelectedBox] = useState(0);
     const [isWhele, setIsWhele] = useState(false);
     const [isDate, setIsDate] = useState(false);
     const [isTime, setIsTime] = useState(false);
     const [selectedTime, setSelectedTime] = useState("");
-    const [formattedDate, setFormattedDate] = useState("");
+    const [formattedDate, setFormattedDate] = useRecoilState(selectedDateState);
 
     const handleBoxClick = (index: number) => {
         setSelectedBox(index);
@@ -38,8 +36,6 @@ interface InnerBoxProps {
         }
       };
       
-    
-    
   return (
     <>
         <NavigationBoxRayout>

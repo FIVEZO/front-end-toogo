@@ -12,7 +12,7 @@ import Post from "../pages/Post";
 import { ChatRoom } from "../pages/ChatRoom";
 import { ChatListRoom } from "../pages/ChatListRoom";
 import { Chat } from "../pages/Chat";
-
+import { MyPage } from "../pages/MyPage";
 const queryClient = new QueryClient();
 
 
@@ -25,6 +25,7 @@ export const Router = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/api/auth/kakao" element={<Redirection />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route path="/account" element={<Account />} />
             <Route path="/post/:id" element={<Post />} />
             <Route path="/chatroom/:id" element={<ChatRoom />} />
