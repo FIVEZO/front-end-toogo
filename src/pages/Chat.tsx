@@ -22,31 +22,13 @@ export const Chat: React.FC = () => {
     const roomCode = useParams().id;
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const [receiverValue, handleReceiverValueChange, resetReceiverValue] = useInput();
-    const [id, setId]= useState<number>(0)
+    const [roomNameOfPerson, setRoomNameOfPerson]= useState<string | undefined>('')
+    const [idOfPerson, setIdOfPerson]= useState<number>(0)
     const [modal, setModal]= useState<boolean>(false)
-
 
 
 // 채팅방 목록 받아오기
   const { isLoading, isError, data: chatRooms } = useQuery<ChatRoomForm[]>('chatRoomlist', fetchChatRooms);
-
-  const targetRoomId = roomCode;
-  const personWithTargetRoomId = chatRooms!.find(item => item.roomId === targetRoomId);
-  const targetId = chatRooms!.find(item => item.roomId === targetRoomId);
-  
-  const roomNameOfPerson = personWithTargetRoomId!.roomName;
-  const idOfPerson = targetId!.id;
-    
-  
-// 채팅방 만들기
-  const createChatMutation = useMutation((receiver:string) => createChatRoom(receiver), {
-    onSuccess: () => {
-      resetReceiverValue()
-      queryClient.invalidateQueries('chatRoomlist')
-
-    }
-  });
 
 // 채팅방 삭제하기
   const deleteChatMutation = useMutation((id:number) => deleteChatRoom(id), {
@@ -73,17 +55,24 @@ export const Chat: React.FC = () => {
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;
   }
-  const makeChatRoom = ()=>{
-    createChatMutation.mutate(receiverValue)
-  }
+
 
   const handleEnterChatRoom = (room:any) => {
-   setId(room.id)
- 
- 
+    
     navigate(`/chat/${room.roomId}`);
   };
 
+  const targetRoomId = roomCode;
+  const personWithTargetRoomId = chatRooms!.find(item => item.roomId === targetRoomId);
+  const targetId = chatRooms!.find(item => item.roomId === targetRoomId);
+  console.log("personWithTargetRoomId", personWithTargetRoomId)
+  console.log("targetId", targetId)
+
+
+  if(personWithTargetRoomId && targetId){
+    setRoomNameOfPerson(personWithTargetRoomId!.roomName)
+    setIdOfPerson(targetId!.id)
+  }
   
  
   const deleteChat = () => {
@@ -94,12 +83,10 @@ export const Chat: React.FC = () => {
   return (
     <div>
         <Header/>
-        <input value={receiverValue} onChange={handleReceiverValueChange}/>
-        <button onClick={makeChatRoom}> 방 생성하기</button>
         <Layout>
             <StChatListContainer>
             <StChatListHearder>전체 메세지</StChatListHearder>
-            {chatRooms?.map((room, index) => ( 
+            {chatRooms?.map((room) => ( 
               room.roomId == roomCode?
 
             <StChatSelect key={room.roomId} onClick={() => handleEnterChatRoom(room)}>
