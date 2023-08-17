@@ -132,6 +132,14 @@ const getHomePosts = async () => {
   return response.data;
 }
 
+  //  대륙별 게시글 총 갯수
+  const getCountrySum = async () => {
+    const response = await instance.get(`api/count`);
+    // console.log("전체 게시글 조회", response)
+    return response.data;
+  }
+  
+
   // 대륙별 게시글 전체조회 ex) api/post/1?page=1
 const getCategoryPosts = async (category: number, pageNum: number ) => {
   const response = await instance.get(`api/post/${category}?page=${pageNum}`);
@@ -260,7 +268,7 @@ export {
   // 로그인, 회원가입
   addUsers, login, getKakaoToken, emailCheck, authCodeCheck, nickCheck, logout, findPassword,
   // 게시글
-  getHomePosts, getCategoryPosts, getCategoryCountryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment, deleteComment, getSearchPosts,
+  getHomePosts, getCategoryPosts, getCategoryCountryPosts, getDetailPosts, addPost, editPost, deletePost, postScrap, addComment, editComment, deleteComment, getSearchPosts,getCountrySum,
   // 마이페이지
   deleteUser, editUser, getScrapPosts, getNote, getMyPosts,
 }  
