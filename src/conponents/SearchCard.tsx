@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 import Card from 'react-bootstrap/Card';
 import { cardData, cardItem } from '../types/posts';
 import { Avatar } from '@mui/material';
-import { formatDate, formatTimeAgo } from './Time';
+import { formatTimeAgo } from './Time';
 import { useNavigate } from 'react-router-dom';
 import { countryImages } from '../img/countryImages';
 import "../fonts/Font.css";
@@ -17,7 +17,6 @@ export const SearchCard = ({items}: {items:cardItem}) => {
   const {id, nickname, title, country, contents, createdAt, meetDate, category} = items
   const countryImage = countryImages[country] || countryImages['한국']
   const formattedCreatedDate = formatTimeAgo(createdAt); // createdAt을 문자열로 변환하여 formatTimeAgo 함수에 전달
-  const formattedMeetDate = formatDate(meetDate);
   // 내용이 26자가 넘어가면 자름
   const truncatedContents = contents.length > 26 ? contents.slice(0, 26) + "..." : contents;
   const navigate = useNavigate();
@@ -39,7 +38,7 @@ export const SearchCard = ({items}: {items:cardItem}) => {
           <CardNickname>{nickname}</CardNickname>
           <SpanLine></SpanLine>
           <CreateTime>{formattedCreatedDate}</CreateTime>
-          <DateFootter>{formattedMeetDate}</DateFootter>
+          <DateFootter>{meetDate}</DateFootter>
         </AvatarLine>
       </DivContent>
     </DivRayout>
