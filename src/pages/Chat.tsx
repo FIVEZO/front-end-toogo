@@ -2,54 +2,35 @@ import React, { useEffect, useRef, useState } from 'react'
 import Header from '../conponents/Header'
 import Footer from '../conponents/Footer'
 import { styled } from 'styled-components'
-import 프로필 from '../img/프로필.jpg'
+import 프로필 from '../img/프로필.jpg'
 import nonechat from "../img/nonechat.jpg"
 import { useNavigate, useParams } from 'react-router-dom'
 import { ChatRoom } from '../conponents/ChatRoom'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import useInput from '../hooks/useInput'
-import { createChatRoom, deleteChatRoom, fetchChatRooms } from '../api/chatApi'
-import { HiDotsVertical } from "react-icons/hi"
+import { deleteChatRoom, fetchChatRooms } from '../api/chatApi'
+import Spinner from '../conponents/Spinner'
 
 export interface ChatRoomForm {
     id : number
     roomName : string,
     sender : string,
     roomId : string,
-    receiver : string,}
+    receiver : string,
+  }
 
 export const Chat: React.FC = () => {
     const roomCode = useParams().id;
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
-    const [roomNameOfPerson, setRoomNameOfPerson]= useState<string | undefined>('')
-    const [idOfPerson, setIdOfPerson]= useState<number>(0)
-    const [modal, setModal]= useState<boolean>(false)
 
 
 // 채팅방 목록 받아오기
   const { isLoading, isError, data: chatRooms } = useQuery<ChatRoomForm[]>('chatRoomlist', fetchChatRooms);
 
-// 채팅방 삭제하기
-  const deleteChatMutation = useMutation((id:number) => deleteChatRoom(id), {
-    onSuccess: () => {
-      navigate(`/chat/main`);
-      setModal(false)
-      queryClient.invalidateQueries('chatRoomlist')
-    }
-  });
 
-  const node = useRef<HTMLDivElement | null>(null); // 창의 바깥부분을 클릭하였을때 창이 사라짐
-  useEffect(() => { 
-    const clickOutside = (e: MouseEvent) => {
-    if (modal && node.current && !node.current.contains(e.target as Node)) setModal(false);};
-    document.addEventListener("mousedown", clickOutside);
-    return () => {document.removeEventListener("mousedown", clickOutside);};
-  }, [modal]);
 
   if (isLoading) {
   
-    return <p>로딩중...!</p>;
+    return <Spinner/>;
   }
   
   if (isError) {
@@ -58,26 +39,12 @@ export const Chat: React.FC = () => {
 
 
   const handleEnterChatRoom = (room:any) => {
-    
-    navigate(`/chat/${room.roomId}`);
-  };
-
-  const targetRoomId = roomCode;
-  const personWithTargetRoomId = chatRooms!.find(item => item.roomId === targetRoomId);
-  const targetId = chatRooms!.find(item => item.roomId === targetRoomId);
-  console.log("personWithTargetRoomId", personWithTargetRoomId)
-  console.log("targetId", targetId)
-
-
-  if(personWithTargetRoomId && targetId){
-    setRoomNameOfPerson(personWithTargetRoomId!.roomName)
-    setIdOfPerson(targetId!.id)
-  }
-  
  
-  const deleteChat = () => {
-    deleteChatMutation.mutate(idOfPerson)
+    navigate(`/chat/${room.roomId}`);
+
   };
+
+  
 
     
   return (
@@ -106,12 +73,9 @@ export const Chat: React.FC = () => {
                 </StContentsBox>
                 <StReceiverTime>{"12:34"}</StReceiverTime>
             </StChatList>
-            
-
+          
             ))}
           
-            
-            
             </StChatListContainer>
             <StChatRoomContainer>
                 {roomCode=="main"?
@@ -120,19 +84,7 @@ export const Chat: React.FC = () => {
                     <StNoneChatcomment>채팅할 상대를 <br/> 선택해주세요</StNoneChatcomment>
                 </StNoneChat>
                 :
-                <>
-                <StChatReceiver>
-                  <StProfileImg src={프로필} alt='프로필사진'/>
-                  <StName>{roomNameOfPerson}</StName>
-                  <div ref={node}>
-                  <StHiDotsVertical onClick={()=>setModal(pre => !pre)}/>
-                  {modal&& <StModal onClick={deleteChat} >채팅방 나가기</StModal>}
-                  </div>
-                  </StChatReceiver>
-                
-                <StPost></StPost>
-                <ChatRoom roomId={roomCode}/>
-                </>
+                <ChatRoom/>
                 }
 
                 
@@ -237,42 +189,6 @@ const StNoneChatImg = styled.img`
 const StNoneChatcomment = styled.div`
 font-size: 24px;
 `
-const StChatReceiver = styled.div`
-background-color: #F4F5F6;
-font-size: 24px;
-height:105px;
-border-bottom: 1px solid #DDDCE3;
-padding:24px;
-display: flex;
-  align-items: center;
-  position: relative;
-`
-const StName = styled.span`
-  margin: 0 auto 0 29px;
-`
-const StHiDotsVertical = styled(HiDotsVertical)`
-  cursor: pointer;
-`;
-const StModal =styled.div`
-  width: 243px;
-  height: 51px;
-  border-radius: 8px;
-  position: absolute;
-  background-color:white;
-  left: 450px;
-  top: 90px;
-  padding:17.5px 24px;
-  box-shadow: 3px 0px 15px #c1c1c1;
- font-size: 16px;
- cursor: pointer;
-`
 
-const StPost = styled.div`
-background-color: #F4F5F6;
-font-size: 16px;
-height:80px;
-border-bottom: 1px solid #DDDCE3;
-
-`
 
 

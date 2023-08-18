@@ -11,7 +11,13 @@ import Footer from '../conponents/Footer';
 import { createChatRoom } from '../api/chatApi';
 import { FaRegBookmark } from 'react-icons/fa';
 import { FiShare2 } from 'react-icons/fi';
+
 import { BsFillBookmarkCheckFill } from 'react-icons/bs';
+
+import Spinner from '../conponents/Spinner';
+
+
+
 
 export const DetailPage = () => {
   const param = useParams().id;
@@ -67,7 +73,7 @@ const createChatMutation = useMutation((receiver:string) => createChatRoom(recei
   );
   
   if (isLoading) {
-    return <p>로딩중...!</p>;
+    return <Spinner/>;
   }
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;

@@ -11,8 +11,13 @@ import Continent from '../conponents/ContinentImage';
 import FixedWritingButton from '../conponents/FixedWritingButton';
 import ContinentPageSelectCountry from '../conponents/ContinentPageSelectCountryButton';
 import PageMovingButton from '../conponents/PageMovingButton';
+import { RootState } from '../types/login';
+import { useSelector } from 'react-redux';
+import Spinner from '../conponents/Spinner';
+
 
 export const CategoryPage = () => {
+  const state = useSelector((state: RootState) => state.isLogin.isLogin)
     const param = Number(useParams().id);
     const [page, setpage]= useState<number>(1)
     const [country, setCountry] = useState<string | null>(null);
@@ -39,7 +44,7 @@ export const CategoryPage = () => {
 
   if (isLoading) {
   
-    return <p>로딩중...!</p>;
+    return <Spinner/>;
   }
   
   if (isError) {
@@ -54,6 +59,7 @@ export const CategoryPage = () => {
     setpage(page - 1);
   };
 
+
   return (
     <div>
       <Header/>
@@ -64,7 +70,9 @@ export const CategoryPage = () => {
         <Cards key={item.id} items={item}/>
       ))}
       </StCardContainer>
-      <FixedWritingButton id={param}/>
+
+      {state?(<FixedWritingButton id={param}/>):(<></>)}
+
       <Pagebuttons>
       {page > 1 && (
         <PageMovingButton onClick={previousPage} text="이전 페이지"/>
