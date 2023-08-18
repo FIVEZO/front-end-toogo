@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Header from '../conponents/Header'
 import Footer from '../conponents/Footer'
 import { styled } from 'styled-components'
-import 프로필 from '../img/프로필.jpg'
+import 프로필 from '../img/프로필.jpg'
 import nonechat from "../img/nonechat.jpg"
 import { useNavigate, useParams } from 'react-router-dom'
 import { ChatRoom } from '../conponents/ChatRoom'
