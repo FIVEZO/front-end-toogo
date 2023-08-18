@@ -54,6 +54,18 @@ export const CategoryPage = () => {
     setpage(page - 1);
   };
 
+  const isAuthenticated = (): boolean => {
+    const authToken = getCookie('access_token'); 
+    return authToken !== null;
+  };
+  
+  const getCookie = (name: string): string | null => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+    return null; 
+  };
+
   return (
     <div>
       <Header/>
@@ -64,7 +76,7 @@ export const CategoryPage = () => {
         <Cards key={item.id} items={item}/>
       ))}
       </StCardContainer>
-      <FixedWritingButton id={param}/>
+      {isAuthenticated() && <FixedWritingButton id={param}/>}
       <Pagebuttons>
       {page > 1 && (
         <PageMovingButton onClick={previousPage} text="이전 페이지"/>
