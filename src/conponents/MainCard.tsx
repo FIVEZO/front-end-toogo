@@ -6,40 +6,49 @@ import backgroundImage3 from '../img/모로코.jpg';
 import backgroundImage4 from '../img/미국.jpg';
 import backgroundImage5 from '../img/호주.jpg';
 import Button from './Button';
+import { useQuery } from 'react-query';
+import { getCountrySum } from '../api/api';
 
 interface MainCardRayoutProps {
   backgroundImage: string;
   cardType: string;
 }
 
-const TextHandler = (cardType: MainCardRayoutProps['cardType']) => {
+const TextHandler = (
+  cardType: MainCardRayoutProps['cardType'],
+  asiaPostCount: number,
+  europePostCount: number,
+  africaPostCount: number,
+  americaPostCount: number,
+  oceaniaPostCount: number
+) => {
   let cardName = '';
   let cardDescription = '';
 
   switch (cardType) {
     case '아시아':
       cardName = '아시아';
-      cardDescription = '200여 개의 동행글';
+      cardDescription = `${asiaPostCount}여 개의 동행글`;
       break;
     case '유럽':
       cardName = '유럽';
-      cardDescription = '200여 개의 동행글';
+      cardDescription = `${europePostCount}여 개의 동행글`;
       break;
     case '아프리카':
       cardName = '아프리카';
-      cardDescription = '200여 개의 동행글';
+      cardDescription = `${africaPostCount}여 개의 동행글`;
       break;
     case '아메리카':
       cardName = '아메리카';
-      cardDescription = '200여 개의 동행글';
+      cardDescription = `${americaPostCount}여 개의 동행글`;
       break;
     case '오세아니아':
       cardName = '오세아니아';
-      cardDescription = '200여 개의 동행글';
+      cardDescription = `${oceaniaPostCount}여 개의 동행글`;
       break;
     default:
       cardName = '아시아';
-      cardDescription = '200여 개의 동행글';
+      cardDescription = `${asiaPostCount}여 개의 동행글`;
   }
 
   return { cardName, cardDescription };
@@ -63,7 +72,16 @@ const BackgroundHandler = (cardType: MainCardRayoutProps['cardType']) => {
 };
 
 function MainCard({ cardType }: MainCardRayoutProps) {
-  const { cardName, cardDescription } = TextHandler(cardType);
+  const { isLoading, isError, data } = useQuery("CountrySum", getCountrySum);
+  console.log("data",data)
+  const { cardName, cardDescription } = TextHandler(
+    cardType,
+    data?.asiaPostCount || 0,
+    data?.europePostCount || 0,
+    data?.africaPostCount || 0,
+    data?.americaPostCount || 0,
+    data?.oceaniaPostCount || 0
+  );
   const backgroundImage = BackgroundHandler(cardType);
 
   return (
