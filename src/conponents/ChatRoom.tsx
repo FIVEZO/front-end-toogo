@@ -1,16 +1,16 @@
 
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as StompJs from "@stomp/stompjs";
-import SockJS from 'sockjs-client';
 import { IMessage, Client, messageCallbackType} from '@stomp/stompjs';
-import { useParams } from 'react-router-dom';
-import Header from './Header';
 import { styled } from 'styled-components';
 import sendButton from '../img/sendButton.jpg'
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { ChatRoomForm } from '../pages/Chat';
-import { fetchChatMessage } from '../api/chatApi';
-
+import { deleteChatRoom, fetchChatMessage, fetchChatRoom } from '../api/chatApi';
+import Spinner from './Spinner';
+import { useNavigate, useParams } from 'react-router-dom';
+import { HiDotsVertical } from 'react-icons/hi';
+import 프로필 from '../img/프로필.jpg'
 type ReceiveData = {
   message:string;
 }
@@ -33,7 +33,8 @@ function getCookie(cookieName: string) {
     return cookieValue;
     }
 
-    export const ChatRoom = ({roomId}: {roomId:string | undefined}) => {
+    export const ChatRoom = () => {
+      const roomCode = useParams().id;
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [chats, setChatList] = useState<any>([]);
   const [chat, setChat] = useState<string>("");
@@ -41,19 +42,39 @@ function getCookie(cookieName: string) {
   const accessToken = getCookie("access_token");
   const refreshToken = getCookie("refresh_token");
   const nickname = getCookie("nickname");
+  const navigate = useNavigate();
+    const queryClient = useQueryClient();
   const date = new Date();
-  const nowHours = (date.getHours())+":"+(date.getMinutes())
+  const nowHours = (String(date.getHours()).padStart(2, '0')) + ":" + (String(date.getMinutes()).padStart(2, '0'));
+  const [modal, setModal]= useState<boolean>(false)
+  const { isLoading: isLoading1, isError:isError1, data: chatMessages } = useQuery<ChatRoomForm[]>('chatMessage', ()=>fetchChatMessage(roomCode!));
+  const { isLoading: isLoading2, isError:isError2, data: chatRoomIn } = useQuery(['chatroom',roomCode], ()=>fetchChatRoom(roomCode!));
 
-  const { isLoading, isError, data: chatMessages } = useQuery<ChatRoomForm[]>('chatMessage', ()=>fetchChatMessage(roomId!));
-  
-console.log("chatMessages", chatMessages)
-  
+  // 채팅방 삭제하기
+  const deleteChatMutation = useMutation((id:number) => deleteChatRoom(id), {
+    onSuccess: () => {
+      navigate(`/chat/main`);
+      setModal(false)
+      queryClient.invalidateQueries('chatRoomlist')
+    }
+  });
 
+  const node = useRef<HTMLDivElement | null>(null); // 창의 바깥부분을 클릭하였을때 창이 사라짐
+  useEffect(() => { 
+    const clickOutside = (e: MouseEvent) => {
+    if (modal && node.current && !node.current.contains(e.target as Node)) setModal(false);};
+    document.addEventListener("mousedown", clickOutside);
+    return () => {document.removeEventListener("mousedown", clickOutside);};
+  }, [modal]);
+
+  const deleteChat = () => {
+    deleteChatMutation.mutate(chatRoomIn.id)
+  };
   const connect = () => {
     // 소켓 연결
     try {
   const clientdata = new Client({
-    brokerURL: `ws://${process.env.REACT_APP_CHAT_URL}/ws-stomp`,
+    brokerURL: `wss://${process.env.REACT_APP_CHAT_URL}/ws-stomp`,
     connectHeaders: {
       accessToken: accessToken || "",
       refreshToken: refreshToken || "",
@@ -69,7 +90,7 @@ console.log("chatMessages", chatMessages)
 
   clientdata.onConnect = function () {
     console.log("Connect 구독");
-    clientdata.subscribe(`/sub/chat/room/${roomId}`, 
+    clientdata.subscribe(`/sub/chat/room/${roomCode}`, 
     function (message : IMessage) {
       
       if (message.body) {
@@ -97,6 +118,7 @@ const disConnect = () => {
   // 연결 끊기
   console.log("asd")
   if (client) {
+    setChatList([])
     client.deactivate();
   }else{
     return;
@@ -104,20 +126,18 @@ const disConnect = () => {
 };
 
 const sendChat = () => {
-  console.log("Send Message", chat);
   if (chat === "") {
     return;
   }
   console.log(1);
   if(client === undefined)
     return;
-    console.log("2", chat);
   client.publish({ //메세지 전송
     destination: "/pub/message",
     body: JSON.stringify({
       sentTime: nowHours,
       sender: nickname,
-      roomId: roomId,
+      roomId: roomCode,
       message: chat,
     }),
   });
@@ -129,9 +149,10 @@ useEffect(() => {
   // 최초 렌더링 시 , 웹소켓에 연결
   // 우리는 사용자가 방에 입장하자마자 연결 시켜주어야 하기 때문에,,
   connect();
-
-  return () => disConnect();
-}, [roomId]);
+  setChatList([])
+  queryClient.invalidateQueries('chatroom')
+  return () => disConnect()
+}, [roomCode]);
 
 const scrollToBottom = () => {
   if (chatContainerRef.current) {
@@ -144,24 +165,33 @@ useEffect(() => {
 }, [chats]);
 
 
-if (isLoading) {
+if (isLoading1 || isLoading2) {
   
-  return <p>로딩중...!</p>;
+  return <Spinner/>;
 }
 
-if (isError) {
+if (isError1 || isError2) {
   return <p>오류가 발생하였습니다...!</p>;
 }
 
   return (
     <Stlayout>
+      <StChatReceiver>
+        <StProfileImg src={프로필} alt='프로필사진'/>
+        <StName>{chatRoomIn.roomName}</StName>
+        <div ref={node}>
+          <StHiDotsVertical onClick={()=>setModal(pre => !pre)}/>
+          {modal&& <StModal onClick={deleteChat} >채팅방 나가기</StModal>}
+        </div>
+      </StChatReceiver>
+      <StPost></StPost>
     <StChatContainer ref={chatContainerRef}>
       
       {!!chats && chats.map((e:any,i:number) => 
         e.sender == nickname? // 메세지를 보낸사람 확인해서 채팅창 구분
-        <StSendMessageBox key={i}><StSendMessage   ><div className='speech-bubble'><div className='text'>{e.message}</div><div className='time'>12:34 AM</div></div></StSendMessage></StSendMessageBox>
+        <StSendMessageBox key={i}><StSendMessage   ><div className='speech-bubble'><div className='text'>{e.message}</div><div className='time'>{e.sentTime}</div></div></StSendMessage></StSendMessageBox>
       :
-      <StReceiveMessageBox key={i}><StReceiveMessage ><div className='speech-bubble'>{e.message}</div><div>12:34 AM</div></StReceiveMessage></StReceiveMessageBox>
+      <StReceiveMessageBox key={i}><StReceiveMessage ><div className='speech-bubble'>{e.message}</div><div>{e.sentTime}</div></StReceiveMessage></StReceiveMessageBox>
       )}
       </StChatContainer>
       <StInputContainer>
@@ -178,6 +208,48 @@ if (isError) {
 const Stlayout =styled.div`
 width: 716px;
   background-color: #F4F5F6;
+  
+`
+const StChatReceiver = styled.div`
+background-color: #F4F5F6;
+font-size: 24px;
+height:105px;
+border-bottom: 1px solid #DDDCE3;
+padding:24px;
+display: flex;
+  align-items: center;
+  position: relative;
+`
+
+const StProfileImg =styled.img`
+
+`
+const StName = styled.span`
+  margin: 0 auto 0 29px;
+`
+const StHiDotsVertical = styled(HiDotsVertical)`
+  cursor: pointer;
+`;
+const StModal =styled.div`
+  width: 243px;
+  height: 51px;
+  border-radius: 8px;
+  position: absolute;
+  background-color:white;
+  left: 450px;
+  top: 90px;
+  padding:17.5px 24px;
+  box-shadow: 3px 0px 15px #c1c1c1;
+ font-size: 16px;
+ cursor: pointer;
+`
+
+const StPost = styled.div`
+background-color: #F4F5F6;
+font-size: 16px;
+height:80px;
+border-bottom: 1px solid #DDDCE3;
+
 `
 
 const StChatContainer = styled.div`

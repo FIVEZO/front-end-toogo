@@ -3,7 +3,7 @@ import useInput from '../hooks/useInput';
 import { useMutation } from 'react-query';
 import { addPost } from '../api/api';
 import { locationFormValues, postFormValues } from '../types/posts';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Map from '../conponents/Map';
 import { styled } from 'styled-components';
 import Input from '../conponents/Input';
@@ -17,6 +17,7 @@ import { selectedCountryState, selectedDateState } from '../recoil/post/Navigati
 
 
 function Post() {
+  const navigate = useNavigate();
   const param = Number(useParams().id);
   const [title, handleTitleChange] = useInput();
   const [contents, handleContentsChange] =  useInput();
@@ -39,7 +40,10 @@ function Post() {
 
   // ----------------------------------------게시글 등록
   const postMutation = useMutation((postData: postFormValues) => addPost(param, postData), {
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("data", data)
+      // navigate(`/detailpage/${data.category}&${data.id}`)
+      alert("게시글 작성이 완료되었습니다.")
     }
   });
 

@@ -10,6 +10,7 @@ import { getMyPosts, getScrapPosts } from '../api/api';
 import { Cards } from '../conponents/Cards';
 import { cardItem } from '../types/posts';
 import { log } from 'console';
+import Spinner from '../conponents/Spinner';
 
 export const MyPage =  () => {
   const [activeTab, setActiveTab] = useState('postList');
@@ -33,7 +34,7 @@ export const MyPage =  () => {
   const renderTabContent = () => {
     if (activeTab === 'postList') {
       if (isLoadingPost) {
-        return <p>Loading post data...</p>;
+        return <Spinner/>;
       }
       if (isErrorPost) {
         return <p>Error loading post data...</p>;
@@ -54,7 +55,7 @@ export const MyPage =  () => {
   const renderTabScrap = () => {
     if (activeTab === 'scrapList') {
       if (isLoadingScrap) {
-        return <p>Loading scrap data...</p>;
+        return <Spinner/>;
       }
       if (isErrorScrap) {
         return <p>Error loading scrap data...</p>;

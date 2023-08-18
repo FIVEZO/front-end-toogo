@@ -58,6 +58,12 @@ const fetchChatRooms = async () => {
     // console.log("채팅방 목록 조회", response)
   return response.data;
   }
+  // 단일 채팅방 선택 조회
+const fetchChatRoom = async (roomId:string) => {
+    const response = await chatInstance.get(`/api/room/${roomId}`);
+    // console.log("단일 채팅방 선택 조회", response)
+  return response.data;
+  }
   
   
   // 채팅방 개설
@@ -81,5 +87,5 @@ const fetchChatMessage = async (roomId:string) => {
 return response.data;
 }
 
-  export { fetchChatRooms, createChatRoom, deleteChatRoom, fetchChatMessage
+  export { fetchChatRooms,fetchChatRoom, createChatRoom, deleteChatRoom, fetchChatMessage
   }  

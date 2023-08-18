@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../conponents/Footer';
 
 import CardSlick from '../conponents/CardSlick';
+import Spinner from '../conponents/Spinner';
 
 
 
@@ -17,9 +18,9 @@ export const Main: React.FC = () => {
   const [showData, setShowData] = useState(false);
   const { isLoading, isError, data } = useQuery("mainPost", getHomePosts);
   const navigate = useNavigate();
-
+console.log("data", data)
   useEffect(() => {
-    const delay = 100; 
+    const delay = 300; 
     if (!isLoading && !isError) {
       setTimeout(() => {
         setShowData(true);
@@ -27,6 +28,10 @@ export const Main: React.FC = () => {
     }
   }, [isLoading, isError]);
 
+  if (isLoading) {
+  
+    return <Spinner/>;
+  }
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;
   }
@@ -59,7 +64,6 @@ const MainRayout = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; 
   min-height: 100vh;
 `
 const SecondText = styled.div`
