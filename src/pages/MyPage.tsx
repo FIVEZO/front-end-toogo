@@ -10,6 +10,7 @@ import { getMyPosts, getScrapPosts } from '../api/api';
 import { Cards } from '../conponents/Cards';
 import { cardItem } from '../types/posts';
 import { log } from 'console';
+import Footer from '../conponents/Footer';
 
 export const MyPage =  () => {
   const [activeTab, setActiveTab] = useState('postList');
@@ -118,6 +119,7 @@ export const MyPage =  () => {
         <MibiText>아직 스크랩한 글이 없어요</MibiText>
       </ContentBox>
     )}
+    <Footer/>
   </>
   )
 }

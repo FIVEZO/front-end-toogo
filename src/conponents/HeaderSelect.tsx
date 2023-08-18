@@ -17,7 +17,7 @@ function HeaderSelect({position, isSelectOpen}:selectForm) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-  const selectList = ['마이페이지', '쪽지함', '스크렙','로그아웃'];
+  const selectList = ['마이페이지', '쪽지함', '스크랩','로그아웃'];
   
   const logoutMutation = useMutation(logout, {
     onSuccess: () => {
