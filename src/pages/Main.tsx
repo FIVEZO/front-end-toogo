@@ -25,24 +25,23 @@ console.log("data", data)
     }
   }, [isLoading, isError]);
 
+
   if (isLoading) {
   
     return <Spinner/>;
   }
+
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;
   }
-
+  
+  console.log('data',data)
+  
   return (
     <MainRayout>
       <Header/>
       <TopText>여행지를 선택하세요.</TopText>
       <SecondText>대륙을 선택해서 동행글을 찾아보세요.</SecondText>
-      {/* <StButton onClick={()=>navigate(`/categorypage/1`)}>아시아</StButton>
-      <StButton onClick={()=>navigate(`/categorypage/2`)}>아프리카</StButton>
-      <StButton onClick={()=>navigate(`/categorypage/3`)}>유럽</StButton>
-      <StButton onClick={()=>navigate(`/categorypage/4`)}>오세아니아</StButton>
-      <StButton onClick={()=>navigate(`/categorypage/5`)}>아메리카</StButton> */}
       <CardSlick/>
       <TopText>오이여행 Talk</TopText>
       <SecondText>나와 맞는 여행동행과 이야기를 나누어 보아요!</SecondText>

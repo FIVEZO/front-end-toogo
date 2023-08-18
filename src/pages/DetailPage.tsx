@@ -1,11 +1,9 @@
-import React from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addComment, deleteComment, getDetailPosts, postScrap } from '../api/api';
 import { styled } from 'styled-components';
 import useInput from '../hooks/useInput';
 import { countryImages } from '../img/countryImages';
-import Map from '../conponents/Map';
 import GogleMap from '../conponents/GogleMap';
 import Header from '../conponents/Header';
 import Button from '../conponents/Button';
@@ -13,7 +11,11 @@ import Footer from '../conponents/Footer';
 import { createChatRoom } from '../api/chatApi';
 import { FaRegBookmark } from 'react-icons/fa';
 import { FiShare2 } from 'react-icons/fi';
+
+import { BsFillBookmarkCheckFill } from 'react-icons/bs';
+
 import Spinner from '../conponents/Spinner';
+
 
 
 
@@ -23,23 +25,21 @@ export const DetailPage = () => {
   let postId = "";
   const queryClient = useQueryClient();
   const [comment, handleCommentChange, resetComment] = useInput();
-
   const navigate = useNavigate();
-
+  const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
+  getDetailPosts(+category, +postId)
+  );
   
-
   const postMutation = useMutation((data: { category: number, postId: number }) => postScrap(data.category, data.postId), {
     onSuccess: () => {
+      queryClient.invalidateQueries('detailPost');
       // Handle success if needed
     }
   });
 
 const handleScrap = () => {
-  // postMutation.mutate 호출로 스크랩 요청을 보내기
   postMutation.mutate({ category: Number(category), postId: Number(postId) });
 };
-  
-
 
   interface ContinentMapping {
     [key: number]: string;
@@ -49,10 +49,6 @@ const handleScrap = () => {
     [category, postId] = param.split("&");
   }
   
-  const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
-  getDetailPosts(+category, +postId)
-  );
-
 // 채팅방 만들기
 const createChatMutation = useMutation((receiver:string) => createChatRoom(receiver), {
   onSuccess: (data) => {
@@ -86,7 +82,6 @@ const createChatMutation = useMutation((receiver:string) => createChatRoom(recei
   const { contents, country, createdAt, id, latitude, longitude, meetDate, nickname, scrap, scrapPostSum, title, commentList } = data;
   const countryImage = countryImages[country] || countryImages['한국']
 
- 
   const continentMapping: ContinentMapping = {
     1: '아시아',
     2: '아프리카',
@@ -95,20 +90,27 @@ const createChatMutation = useMutation((receiver:string) => createChatRoom(recei
     5: '아메리카',
   };
 
-  const makeChatRoom = ()=>{
+  const makeChatRoom = ()=>{ // 쪽지 보내기
     createChatMutation.mutate(data.nickname)
   }
 
-  const commentHandler = (event: React.FormEvent) => {
+  const commentHandler = (event: React.FormEvent) => {// 댓글 작성
     event.preventDefault();
-    commentMutation.mutate(comment); // 댓글 작성 함수 호출
+    commentMutation.mutate(comment); 
   };
 
-  const handleDeleteComment = (commentId: number) => {
+  const handleDeleteComment = (commentId: number) => { // 댓글 삭제
     deleteCommentMutation.mutate(commentId);
   };
 
-
+  const handleCopyClipBoard = async () => {// 페이지 url복사
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert("클립보드에 링크가 복사되었어요.");
+    } catch (err) {
+      console.log(err);
+    }
+  };
  
 
   return (
@@ -129,8 +131,8 @@ const createChatMutation = useMutation((receiver:string) => createChatRoom(recei
         <StCountry>[{continentMapping[+category]}] {country}</StCountry> 
         </div>
         <div>
-        <LoveBox onClick={handleScrap}/>
-        <ShaerBox/>
+          {scrap?<BookmarkBoxFill onClick={handleScrap}/>:<BookmarkBox onClick={handleScrap} />}
+        <ShaerBox onClick={handleCopyClipBoard}/>
         </div>
       </StTitleBox>
        
@@ -197,10 +199,17 @@ const ShaerBox = styled(FiShare2)`
   cursor: pointer;
 `
 
-const LoveBox = styled(FaRegBookmark)`
+const BookmarkBox = styled(FaRegBookmark)`
  width : 32px;
  height: 28px;
  cursor: pointer;
+
+`
+const BookmarkBoxFill = styled(BsFillBookmarkCheckFill)`
+ width : 32px;
+ height: 28px;
+ cursor: pointer;
+
 `
 
 const ScrapBox = styled.div`

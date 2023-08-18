@@ -11,7 +11,7 @@ import Button from '../conponents/Button';
 import Header from '../conponents/Header';
 import Footer from '../conponents/Footer';
 import NavigationBox from '../conponents/NavigationBox';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { selectedCountryState, selectedDateState } from '../recoil/post/NavigationBar';
 
 
@@ -24,11 +24,14 @@ function Post() {
   const [meetDate, handleMeetDateChange] =  useInput();
   // const [selectedCountry, setSelectedCountry] = useState<string>(""); 
   const selectedCountry = useRecoilValue(selectedCountryState);
+  const [, setFormattedDate] = useRecoilState(selectedDateState);
   const formattedDate = useRecoilValue(selectedDateState);
+  const [, setSelectedCountry] = useRecoilState(selectedCountryState);
   const [MarkerPosition, setMarkerPosition] = useState<null | locationFormValues>(null);
   const [latitudeMarkerPosition, setLatitudeMarkerPosition] = useState<number>(0);
   const [longitudeMarkerPosition, setLongitudeMarkerPosition] = useState<number>(0);
   const [dateValue, dateValueChange] = useState(new Date());
+  const navigate = useNavigate();
 
   const handleMarkerPositionChange = (newPosition: locationFormValues) => {
     if (newPosition) {
@@ -40,10 +43,11 @@ function Post() {
 
   // ----------------------------------------게시글 등록
   const postMutation = useMutation((postData: postFormValues) => addPost(param, postData), {
-    onSuccess: (data) => {
-      console.log("data", data)
-      // navigate(`/detailpage/${data.category}&${data.id}`)
-      alert("게시글 작성이 완료되었습니다.")
+
+    onSuccess: () => {
+      navigate('/');
+      setFormattedDate(""); 
+      setSelectedCountry(""); 
     }
   });
 
@@ -59,6 +63,7 @@ function Post() {
       longitude: longitudeMarkerPosition,
     };
     postMutation.mutate(postData);
+
   };
 
   return (
@@ -82,7 +87,7 @@ function Post() {
       
       
       <StButtonSet>
-        <Button name={"취소"} size={'post'} color={"negative"} onClick={postHandler}/>
+        <Button name={"취소"} size={'post'} color={"negative"} onClick={()=>navigate(-1)} />
         <Button name={"작성완료"} size={'post'} color={""} onClick={postHandler}/>
       </StButtonSet>
       

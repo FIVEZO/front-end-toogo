@@ -191,6 +191,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
         </LoginForm>
         {authCodeView&&
         <LoginForm>
+
           <Label>인증코드</Label>
           <Input 
             type="text"
