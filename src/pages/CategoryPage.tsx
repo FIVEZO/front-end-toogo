@@ -59,6 +59,7 @@ export const CategoryPage = () => {
     setpage(page - 1);
   };
 
+
   return (
     <div>
       <Header/>
@@ -69,7 +70,9 @@ export const CategoryPage = () => {
         <Cards key={item.id} items={item}/>
       ))}
       </StCardContainer>
+
       {state?(<FixedWritingButton id={param}/>):(<></>)}
+
       <Pagebuttons>
       {page > 1 && (
         <PageMovingButton onClick={previousPage} text="이전 페이지"/>

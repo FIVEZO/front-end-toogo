@@ -11,7 +11,7 @@ import Header from '../conponents/Header';
 import Button from '../conponents/Button';
 import Footer from '../conponents/Footer';
 import { createChatRoom } from '../api/chatApi';
-import { BiHeart } from 'react-icons/bi';
+import { FaRegBookmark } from 'react-icons/fa';
 import { FiShare2 } from 'react-icons/fi';
 import Spinner from '../conponents/Spinner';
 
@@ -197,7 +197,7 @@ const ShaerBox = styled(FiShare2)`
   cursor: pointer;
 `
 
-const LoveBox = styled(BiHeart)`
+const LoveBox = styled(FaRegBookmark)`
  width : 32px;
  height: 28px;
  cursor: pointer;

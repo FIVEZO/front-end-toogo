@@ -3,19 +3,19 @@ import { styled } from 'styled-components';
 import {  SignupFormValues } from '../types/login';
 import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import Button from '../conponents/Button';
 import { emailCheck ,addUsers, nickCheck, authCodeCheck } from '../api/api';
 import Input from '../conponents/Input';
+import Header from '../conponents/Header';
+import "../fonts/Font.css";
 
 
 type ButtonProps = {
   backgroundColor?: string;
   fontColor?: string;
   fontWeight?: string;
-
 };
-
  
 function Signup() {
 
@@ -46,9 +46,6 @@ function Signup() {
   }
 };
 
-
-
-
   // ---------------------------------------회원가입
   const signupMutation = useMutation(addUsers, {
     onSuccess: () => {
@@ -56,6 +53,7 @@ function Signup() {
       navigate('/login')
     }
   });
+
   //----------------------------------------- 회원가입 유효성 검사
   const signupHandler = (event: React.FormEvent) => {
     event.preventDefault(); 
@@ -99,7 +97,6 @@ function Signup() {
       nickname,
       password,
       code : authCode
-      
     }
     signupMutation.mutate(newUser);
   };
@@ -173,162 +170,139 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
 };
 
   return (
-    <CenteredContainer>
-
-    <LoginLayout>
-      <LoginText>회원가입</LoginText>
-      <LoginForm >
-        
-        <Label>이메일</Label>
-        <Input 
-        type="text"
-          placeholder="이메일"
-          value={email}
-          onChange={handleEmailChange}
-          size={"signup"}
-          color={emailChecks=="사용 가능한 이메일입니다." ||emailChecks=="잠시만 기다려 주십시오."|| emailChecks == false ? '#cfced7' : "#E32D2D"}
-          variant={'button'}
-          name={"인증하기"}
-          onButtonClick={emailCheckHandler}
-          />
-        {emailChecks&& <StCheckMassage color={emailChecks=="사용 가능한 이메일입니다." ||emailChecks=="잠시만 기다려 주십시오."?"black":"#E32D2D"}>{emailChecks}</StCheckMassage>}
-      </LoginForm>
-      {authCodeView&&
+    <div>
+      <Header/>
+      <LoginLayout>
+        <SignupText>회원가입</SignupText>
+        <LoginForm >
+          <Label>이메일</Label>
+          <Input 
+            type="text"
+            placeholder="이메일"
+            value={email}
+            onChange={handleEmailChange}
+            size={"signup"}
+            color={emailChecks=="사용 가능한 이메일입니다." ||emailChecks=="잠시만 기다려 주십시오."|| emailChecks == false ? '#cfced7' : "#E32D2D"}
+            variant={'button'}
+            name={"인증하기"}
+            onButtonClick={emailCheckHandler}
+            />
+          {emailChecks&& <StCheckMassage color={emailChecks=="사용 가능한 이메일입니다." ||emailChecks=="잠시만 기다려 주십시오."?"black":"#E32D2D"}>{emailChecks}</StCheckMassage>}
+        </LoginForm>
+        {authCodeView&&
         <LoginForm>
-        
-        <Label>인증코드</Label>
-        <Input 
-          type="text"
-          placeholder="이메일에 있는 인증코드를 입력해주세요"
-          value={authCode}
-          onChange={handleAuthCodeChange}
-          size={"signup"}
-          color={authCodeChecks? "#E32D2D" : '#cfced7'}
-          variant={'button'}
-          name={"코드확인"}
-          onButtonClick={authCodeCheckHandler}
-          />
-        {authCodeChecks&& <StCheckMassage color={"#E32D2D"}>{authCodeChecks}</StCheckMassage>}
-      </LoginForm>}
-      <LoginForm>
-        <Label>비밀번호</Label>
-        <Input 
-        type="password"
-          placeholder="영문,숫자 조합 8자 이상 15자 이하"
-          value={password}
-          onChange={handlePasswordChange}
-          size={"signup"}
-          color={passwordCheck? "#E32D2D" : '#cfced7'}
-          variant={'eyeIcon'}
-          />
-        {passwordCheck&& <StCheckMassage color={"#E32D2D"}>{passwordCheck}</StCheckMassage>}
-      </LoginForm>
-
-      <LoginForm>
-        <Label>비밀번호 확인</Label>
-        <Input 
-        type="password"
-          placeholder="비밀번호 확인"
-          value={passwordConfirm}
-          onChange={handlePasswordConfirmChange}
-          size={"signup"}
-          color={passwordConfirmCheck? "#E32D2D" : '#cfced7'}
-          variant={'eyeIcon'}
-          />
-         {passwordConfirmCheck&& <StCheckMassage color={"#E32D2D"}>{passwordConfirmCheck}</StCheckMassage>}
-      </LoginForm>
-
-      <LoginForm>
-        <Label>닉네임</Label>
-        <Input 
-          type="text"
-          placeholder="2자 이상 10자 이하"
-          value={nickname}
-          onChange={handleNicknameChange}
-          size={"signup"}
-          color={nicknameChecks? "#E32D2D" : '#cfced7'}
-          variant={'button'}
-          name={"중복확인"}
-          required
-          onButtonClick={nickCheckHandler}
-          />
-        {!!nicknameChecks && <StCheckMassage color={"red"}>{nicknameChecks}</StCheckMassage>}
-      </LoginForm>
-
-
-      <LoginButton>
-      
-      <Button  color={updateLoginButtonColor()} onClick={signupHandler} margin='32px 0 0 0' size="large" name="회원가입" />
- 
-
-      </LoginButton>
-
-    
-    </LoginLayout>
-  </CenteredContainer>
+          <Label>인증코드</Label>
+          <Input 
+            type="text"
+            placeholder="이메일에 있는 인증코드를 입력해주세요"
+            value={authCode}
+            onChange={handleAuthCodeChange}
+            size={"signup"}
+            color={authCodeChecks? "#E32D2D" : '#cfced7'}
+            variant={'button'}
+            name={"코드확인"}
+            onButtonClick={authCodeCheckHandler}
+            />
+          {authCodeChecks&& <StCheckMassage color={"#E32D2D"}>{authCodeChecks}</StCheckMassage>}
+        </LoginForm>}
+        <LoginForm>
+          <Label>비밀번호</Label>
+          <Input 
+          type="password"
+            placeholder="영문,숫자 조합 8자 이상 15자 이하"
+            value={password}
+            onChange={handlePasswordChange}
+            size={"signup"}
+            color={passwordCheck? "#E32D2D" : '#cfced7'}
+            variant={'eyeIcon'}
+            />
+          {passwordCheck&& <StCheckMassage color={"#E32D2D"}>{passwordCheck}</StCheckMassage>}
+        </LoginForm>
+        <LoginForm>
+          <Label>비밀번호 확인</Label>
+          <Input 
+          type="password"
+            placeholder="비밀번호 확인"
+            value={passwordConfirm}
+            onChange={handlePasswordConfirmChange}
+            size={"signup"}
+            color={passwordConfirmCheck? "#E32D2D" : '#cfced7'}
+            variant={'eyeIcon'}
+            />
+          {passwordConfirmCheck&& <StCheckMassage color={"#E32D2D"}>{passwordConfirmCheck}</StCheckMassage>}
+        </LoginForm>
+        <LoginForm>
+          <Label>닉네임</Label>
+          <Input 
+            type="text"
+            placeholder="2자 이상 10자 이하"
+            value={nickname}
+            onChange={handleNicknameChange}
+            size={"signup"}
+            color={nicknameChecks? "#E32D2D" : '#cfced7'}
+            variant={'button'}
+            name={"중복확인"}
+            required
+            onButtonClick={nickCheckHandler}
+            />
+          {!!nicknameChecks && <StCheckMassage color={"red"}>{nicknameChecks}</StCheckMassage>}
+        </LoginForm>
+        <SignupButton>
+        <Button  color={updateLoginButtonColor()} onClick={signupHandler} margin='32px 0 0 0' size="large" name="회원가입" />
+        </SignupButton>
+      </LoginLayout>
+  </div>
 );
   }
 
 export default Signup
 
-const StCheckMassage = styled.div`
-  font-size: 14px;
-  margin: 0 auto 16px 0;
-  color: ${({ color }) => (color)};
-`
-
-
-
-const Label = styled.label`
-
-  align-self: flex-start;
-  margin-bottom: 8px;
-  font-size: 16px;
-  font-family: Pretendard;
-  color: #403f4e;
-   font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-   line-height: 1;
-  letter-spacing: normal;
-`;
-
-const CenteredContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
-
 const LoginLayout = styled.div`
-  text-align: center;
+  width: 384px;
+  margin: 200px auto auto auto;
+  display: flex;
+  flex-direction: column;
 `;
 
-const LoginText = styled.div`
-  font-family: Pretendard;
+const SignupText = styled.div`
+  font-family: 'Pretendard';
   font-size: 32px;
   font-weight: 900;
   letter-spacing: 0.96px;
-  margin-bottom: 40px;
+  margin: 0px auto 40px auto;
   color: #403f4e;
-
+  width: 120px;
+  height: 32px;
 `;
 
-const LoginForm = styled.form`
+const LoginForm = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
- 
+  width: 384px;
 `;
 
+const Label = styled.label`
+  align-self: flex-start;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-family: 'Pretendard';
+  color: #403f4e;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+`;
 
-const LoginButton = styled.div`
+const StCheckMassage = styled.div`
+  font-size: 14px;
+  margin: 0px auto 16px 0;
+  color: ${({ color }) => (color)};
+`;
+
+const SignupButton = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
-
-
-

@@ -22,7 +22,8 @@ export const SearchPage: React.FC = () => {
     return Promise.resolve(null);
   });
 
-  console.log(data)
+  console.log("data",data)
+  console.log("keyword",keyword)
   
   if (isLoading) {
   
