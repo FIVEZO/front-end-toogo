@@ -24,7 +24,7 @@ function Signup() {
   const [nickname, handleNicknameChange] = useInput();
   const [passwordConfirm, handlePasswordConfirmChange] = useInput();
   const [authCode, handleAuthCodeChange] = useInput();
-  
+  const navigate = useNavigate();
   
   const [emailChecks, setEmailChecks] = useState<boolean | string>(false)
   const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false)
@@ -36,7 +36,6 @@ function Signup() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
-  const navigate = useNavigate();
 
  // 입력값에 따라 로그인 버튼의 색상을 업데이트하는 함수
  const updateLoginButtonColor = () => {
@@ -51,7 +50,7 @@ function Signup() {
   const signupMutation = useMutation(addUsers, {
     onSuccess: () => {
       alert("회원가입을 완료하였습니다.");
-    
+      navigate('/login')
     }
   });
 

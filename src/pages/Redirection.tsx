@@ -4,6 +4,7 @@ import { getKakaoToken } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../redux/modules/loginSlice';
+import Spinner from '../conponents/Spinner';
 
 const Redirection = () => {
 
@@ -21,7 +22,7 @@ useEffect(() => {
   
 }, []);
   return (
-    <div>Redirection</div> 
+    <Spinner/> 
   )
 }
 

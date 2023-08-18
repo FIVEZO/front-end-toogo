@@ -8,6 +8,7 @@ import { styled } from 'styled-components';
 import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import "../fonts/Font.css";
+import Spinner from '../conponents/Spinner';
 
 export const SearchPage: React.FC = () => {
   const location = useLocation();
@@ -26,7 +27,7 @@ export const SearchPage: React.FC = () => {
   
   if (isLoading) {
   
-    return <p>로딩중...!</p>;
+    return <Spinner/>;
   }
   
   if (isError) {
