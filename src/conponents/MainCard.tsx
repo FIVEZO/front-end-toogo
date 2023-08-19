@@ -73,7 +73,6 @@ const BackgroundHandler = (cardType: MainCardRayoutProps['cardType']) => {
 
 function MainCard({ cardType }: MainCardRayoutProps) {
   const { isLoading, isError, data } = useQuery("CountrySum", getCountrySum);
-  console.log("data",data)
   const { cardName, cardDescription } = TextHandler(
     cardType,
     data?.asiaPostCount || 0,

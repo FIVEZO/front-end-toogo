@@ -31,7 +31,7 @@ function Post() {
   const [latitudeMarkerPosition, setLatitudeMarkerPosition] = useState<number>(0);
   const [longitudeMarkerPosition, setLongitudeMarkerPosition] = useState<number>(0);
   const [dateValue, dateValueChange] = useState(new Date());
-  const navigate = useNavigate();
+
 
   const handleMarkerPositionChange = (newPosition: locationFormValues) => {
     if (newPosition) {
