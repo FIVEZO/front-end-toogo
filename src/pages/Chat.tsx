@@ -25,9 +25,6 @@ export const Chat: React.FC = () => {
 
 // 채팅방 목록 받아오기
   const { isLoading, isError, data: chatRooms } = useQuery<ChatRoomForm[]>('chatRoomlist', fetchChatRooms);
-
-
-
   if (isLoading) {
   
     return <Spinner/>;
@@ -43,9 +40,6 @@ export const Chat: React.FC = () => {
     navigate(`/chat/${room.roomId}`);
 
   };
-
-  
-
     
   return (
     <div>

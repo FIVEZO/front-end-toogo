@@ -1,4 +1,5 @@
 import axios from "axios";
+import { createChat } from "../types/posts";
 
 function getCookie(cookieName: string) {
     var cookieValue = null;
@@ -67,8 +68,8 @@ const fetchChatRoom = async (roomId:string) => {
   
   
   // 채팅방 개설
-  const createChatRoom = async (receiver:string) => {
-      const response = await chatInstance.post(`/api/room`, {receiver});
+  const createChatRoom = async (item:createChat) => {
+      const response = await chatInstance.post(`/api/room`, item);
       // console.log("채팅방 개설", response)
       return response.data; // 생성된 채팅방 정보를 반환
   };

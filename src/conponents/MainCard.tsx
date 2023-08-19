@@ -9,6 +9,10 @@ import Button from './Button';
 import { useQuery } from 'react-query';
 import { getCountrySum } from '../api/api';
 
+import Spinner from './Spinner';
+
+
+
 interface MainCardRayoutProps {
   backgroundImage: string;
   cardType: string;
@@ -24,6 +28,7 @@ const TextHandler = (
 ) => {
   let cardName = '';
   let cardDescription = '';
+
 
   switch (cardType) {
     case '아시아':
@@ -82,6 +87,8 @@ function MainCard({ cardType }: MainCardRayoutProps) {
     data?.oceaniaPostCount || 0
   );
   const backgroundImage = BackgroundHandler(cardType);
+
+
 
   return (
     

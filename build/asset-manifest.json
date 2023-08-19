@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4fa463b0.css",
-    "main.js": "/static/js/main.1fe24029.js",
+    "main.js": "/static/js/main.301ebc3f.js",
     "static/js/787.7d5bcd09.chunk.js": "/static/js/787.7d5bcd09.chunk.js",
     "static/media/에티오피아.jpg": "/static/media/에티오피아.608c69ebe89e08fdc5c3.jpg",
     "static/media/스웨덴.jpg": "/static/media/스웨덴.5f8041f1da2531459f20.jpg",
@@ -68,6 +68,7 @@
     "static/media/영국.jpg": "/static/media/영국.ddfb192980e6e68f975f.jpg",
     "static/media/라오스.jpg": "/static/media/라오스.752212f6646bff3a0112.jpg",
     "static/media/헝가리.jpg": "/static/media/헝가리.3fac3bf8041104111564.jpg",
+    "static/media/로딩중.jpg": "/static/media/로딩중.95d14bc7ec0eeb4ea3c8.jpg",
     "static/media/winking1big.svg": "/static/media/winking1big.831b8fb2a70d94edd8cb3cb38f0cc715.svg",
     "static/media/winking1.svg": "/static/media/winking1.e386675f0488b6f1f0bd5988a86014c7.svg",
     "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
@@ -78,11 +79,11 @@
     "static/media/next.svg": "/static/media/next.1192ea6f48685dee4c70f3ea182e4e7c.svg",
     "index.html": "/index.html",
     "main.4fa463b0.css.map": "/static/css/main.4fa463b0.css.map",
-    "main.1fe24029.js.map": "/static/js/main.1fe24029.js.map",
+    "main.301ebc3f.js.map": "/static/js/main.301ebc3f.js.map",
     "787.7d5bcd09.chunk.js.map": "/static/js/787.7d5bcd09.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4fa463b0.css",
-    "static/js/main.1fe24029.js"
+    "static/js/main.301ebc3f.js"
   ]
 }

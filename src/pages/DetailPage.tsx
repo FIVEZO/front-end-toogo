@@ -15,6 +15,7 @@ import { FiShare2 } from 'react-icons/fi';
 import { BsFillBookmarkCheckFill } from 'react-icons/bs';
 
 import Spinner from '../conponents/Spinner';
+import { createChat } from '../types/posts';
 
 
 
@@ -50,7 +51,7 @@ const handleScrap = () => {
   }
   
 // 채팅방 만들기
-const createChatMutation = useMutation((receiver:string) => createChatRoom(receiver), {
+const createChatMutation = useMutation((makeChatData:createChat) => createChatRoom(makeChatData), {
   onSuccess: (data) => {
    navigate(`/chat/${data.roomId}`)
   }
@@ -91,7 +92,12 @@ const createChatMutation = useMutation((receiver:string) => createChatRoom(recei
   };
 
   const makeChatRoom = ()=>{ // 쪽지 보내기
-    createChatMutation.mutate(data.nickname)
+    const makeChatData = {
+      receiver:nickname,
+      postId:id,
+    }
+
+    createChatMutation.mutate(makeChatData)
   }
 
   const commentHandler = (event: React.FormEvent) => {// 댓글 작성
