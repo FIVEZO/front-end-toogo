@@ -6,6 +6,10 @@ import backgroundImage3 from '../img/모로코.jpg';
 import backgroundImage4 from '../img/미국.jpg';
 import backgroundImage5 from '../img/호주.jpg';
 import Button from './Button';
+import { useQuery } from 'react-query';
+import { getCountrySum } from '../api/api';
+import Spinner from './Spinner';
+
 
 interface MainCardRayoutProps {
   backgroundImage: string;
@@ -15,6 +19,7 @@ interface MainCardRayoutProps {
 const TextHandler = (cardType: MainCardRayoutProps['cardType']) => {
   let cardName = '';
   let cardDescription = '';
+
 
   switch (cardType) {
     case '아시아':
@@ -65,6 +70,8 @@ const BackgroundHandler = (cardType: MainCardRayoutProps['cardType']) => {
 function MainCard({ cardType }: MainCardRayoutProps) {
   const { cardName, cardDescription } = TextHandler(cardType);
   const backgroundImage = BackgroundHandler(cardType);
+
+
 
   return (
     

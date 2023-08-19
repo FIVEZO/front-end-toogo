@@ -13,9 +13,9 @@ import Spinner from '../conponents/Spinner';
 
 export const Main: React.FC = () => {
   const [showData, setShowData] = useState(false);
-  const { isLoading, isError, data } = useQuery("mainPost", getHomePosts);
+  const { isLoading, isError, data:cardData } = useQuery("mainPost", getHomePosts);
+  
   const navigate = useNavigate();
-console.log("data", data)
   useEffect(() => {
     const delay = 300; 
     if (!isLoading && !isError) {
@@ -35,8 +35,6 @@ console.log("data", data)
     return <p>오류가 발생하였습니다...!</p>;
   }
   
-  console.log('data',data)
-  
   return (
     <MainRayout>
       <Header/>
@@ -46,7 +44,7 @@ console.log("data", data)
       <TopText>오이여행 Talk</TopText>
       <SecondText>나와 맞는 여행동행과 이야기를 나누어 보아요!</SecondText>
       <StCardContainer>
-      {showData && data?.map((item: cardItem) => (
+      {showData && cardData?.map((item: cardItem) => (
           <Cards key={item.id} items={item} />
         ))}
       </StCardContainer>

@@ -38,6 +38,7 @@ function getCookie(cookieName: string) {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [chats, setChatList] = useState<any>([]);
   const [chat, setChat] = useState<string>("");
+  const [beforeChat, setBeforeChat] = useState<any>([]);
   const [client, changeClient] = useState<StompJs.Client>();
   const accessToken = getCookie("access_token");
   const refreshToken = getCookie("refresh_token");
@@ -47,9 +48,9 @@ function getCookie(cookieName: string) {
   const date = new Date();
   const nowHours = (String(date.getHours()).padStart(2, '0')) + ":" + (String(date.getMinutes()).padStart(2, '0'));
   const [modal, setModal]= useState<boolean>(false)
-  const { isLoading: isLoading1, isError:isError1, data: chatMessages } = useQuery<ChatRoomForm[]>('chatMessage', ()=>fetchChatMessage(roomCode!));
+  const { isLoading: isLoading1, isError:isError1, data: chatMessages } = useQuery<ChatRoomForm[]>(['chatMessage',roomCode], ()=>fetchChatMessage(roomCode!));
   const { isLoading: isLoading2, isError:isError2, data: chatRoomIn } = useQuery(['chatroom',roomCode], ()=>fetchChatRoom(roomCode!));
-
+console.log("chatMessages", chatMessages)
   // 채팅방 삭제하기
   const deleteChatMutation = useMutation((id:number) => deleteChatRoom(id), {
     onSuccess: () => {
@@ -146,12 +147,14 @@ const sendChat = () => {
 };
 
 useEffect(() => {
-  // 최초 렌더링 시 , 웹소켓에 연결
-  // 우리는 사용자가 방에 입장하자마자 연결 시켜주어야 하기 때문에,,
+  setBeforeChat(chatMessages)
   connect();
   setChatList([])
   queryClient.invalidateQueries('chatroom')
-  return () => disConnect()
+  return() => {
+    disConnect(); // 웹소켓 연결 해제
+    setBeforeChat([]); // beforeChat 상태 초기화
+  };
 }, [roomCode]);
 
 const scrollToBottom = () => {
@@ -186,12 +189,18 @@ if (isError1 || isError2) {
       </StChatReceiver>
       <StPost></StPost>
     <StChatContainer ref={chatContainerRef}>
+    {!!beforeChat && beforeChat.map((e:any,i:number) => 
+        e.sender == nickname? // 메세지를 보낸사람 확인해서 채팅창 구분
+        <StSendMessageBox key={i}><StSendMessage   ><div className='speech-bubble'><div className='text'>{e.message}</div><div className='time'>{e.sentTime}</div></div></StSendMessage></StSendMessageBox>
+      :
+      <StReceiveMessageBox key={i}><StReceiveMessage ><div className='speech-bubble'><div className='text'>{e.message}</div><div className='time'>{e.sentTime}</div></div></StReceiveMessage></StReceiveMessageBox>
+      )}
       
       {!!chats && chats.map((e:any,i:number) => 
         e.sender == nickname? // 메세지를 보낸사람 확인해서 채팅창 구분
         <StSendMessageBox key={i}><StSendMessage   ><div className='speech-bubble'><div className='text'>{e.message}</div><div className='time'>{e.sentTime}</div></div></StSendMessage></StSendMessageBox>
       :
-      <StReceiveMessageBox key={i}><StReceiveMessage ><div className='speech-bubble'>{e.message}</div><div>{e.sentTime}</div></StReceiveMessage></StReceiveMessageBox>
+      <StReceiveMessageBox key={i}><StReceiveMessage ><div className='speech-bubble'><div className='text'>{e.message}</div><div className='time'>{e.sentTime}</div></div></StReceiveMessage></StReceiveMessageBox>
       )}
       </StChatContainer>
       <StInputContainer>
@@ -307,6 +316,16 @@ margin-top:32px;
 	margin-top: -19.5px;
 	margin-left: -39px;
 
+}
+.text{
+  font-size: 16px;
+  margin-bottom: 5px;
+  
+}
+
+.time{
+  font-size: 14px;
+  color:#9A9A9A;
 }
 `
 

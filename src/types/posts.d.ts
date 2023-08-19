@@ -29,3 +29,7 @@ export type cardData ={
     item: cardItem[]
 }
 
+export type createChat = {
+    receiver:string
+    postId:number
+}
