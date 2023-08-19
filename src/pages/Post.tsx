@@ -17,7 +17,6 @@ import { selectedCountryState, selectedDateState } from '../recoil/post/Navigati
 
 
 function Post() {
-  const navigate = useNavigate();
   const param = Number(useParams().id);
   const [title, handleTitleChange] = useInput();
   const [contents, handleContentsChange] =  useInput();
