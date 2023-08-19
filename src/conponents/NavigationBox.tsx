@@ -6,6 +6,8 @@ import { useParams } from 'react-router-dom';
 import  Clock  from './Clock'
 import { useRecoilState } from 'recoil';
 import { selectedCountryState, selectedDateState } from '../recoil/post/NavigationBar';
+import HowMany from './HowMany';
+import { peplecountState } from '../recoil/peplecountState';
 
 interface InnerBoxProps {
     highlighted: boolean;
@@ -20,6 +22,7 @@ interface InnerBoxProps {
     const [isTime, setIsTime] = useState(false);
     const [selectedTime, setSelectedTime] = useState("");
     const [formattedDate, setFormattedDate] = useRecoilState(selectedDateState);
+    const [peplecount, setPeplecount] = useRecoilState(peplecountState);
 
     const handleBoxClick = (index: number) => {
         setSelectedBox(index);
@@ -34,8 +37,12 @@ interface InnerBoxProps {
         } else if (index === 2) {
           setIsTime(true);
         }
+
+        if (index === 0) {
+          setIsDate(true); // 여행 카테고리 선택 시 자동으로 날짜 단계로 이동
+        }
       };
-      
+            
   return (
     <>
         <NavigationBoxRayout>
@@ -57,8 +64,8 @@ interface InnerBoxProps {
                 </InnerBox>
                 <InnerBox onClick={() =>{handleBoxClick(2); setIsTime(true);}} highlighted={selectedBox === 2}>
                 <TextBox>
-                        <TextContent>시간</TextContent>
-                        <TextContent2>시간을 선택해주세요.</TextContent2>
+                        <TextContent>모집 인원</TextContent>
+                        <TextContent2>{peplecount ? `${peplecount}명` : "인원수를 선택해주세요."}</TextContent2>
                     </TextBox>
                 </InnerBox>
             </NavRayout>
@@ -73,7 +80,7 @@ interface InnerBoxProps {
            <CustomCalendar setFormattedDate={setFormattedDate} /> 
             )}
             {isTime && (
-             <Clock />
+             <HowMany />
             )}
         </ModalRayout>
     </>
