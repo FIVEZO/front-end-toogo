@@ -37,42 +37,51 @@ export const MyPage =  () => {
   const renderTabContent = () => {
     if (activeTab === 'postList') {
       if (isLoadingPost) {
-        return <Spinner/>;
+        return <Spinner />;
       }
       if (isErrorPost) {
         return <p>Error loading post data...</p>;
       }
-      return (  
+      return postData.data && postData.data.length > 0 ? (
         <StCardContainer>
-          {postData.data?.map((item: cardItem) => (
+          {postData.data.map((item: cardItem) => (
             <Cards key={item.id} items={item} />
-            ))}
+          ))}
         </StCardContainer>
+      ) : (
+        <ContentBox>
+          <MiniSvg />
+          <MibiText>아직 작성한 글이 없어요</MibiText>
+        </ContentBox>
       );
     }
     return null;
   };
-
-
-
+  
   const renderTabScrap = () => {
     if (activeTab === 'scrapList') {
       if (isLoadingScrap) {
-        return <Spinner/>;
+        return <Spinner />;
       }
       if (isErrorScrap) {
         return <p>Error loading scrap data...</p>;
       }
-      return (
+      return scrapData.data && scrapData.data.length > 0 ? (
         <StCardContainer>
-           {scrapData.data?.map((item: cardItem) => (
-             <Cards key={item.id} items={item} />
-             ))}
+          {scrapData.data.map((item: cardItem) => (
+            <Cards key={item.id} items={item} />
+          ))}
         </StCardContainer>
+      ) : (
+        <ContentBox>
+          <MiniSvg />
+          <MibiText>아직 스크랩한 글이 없어요</MibiText>
+        </ContentBox>
       );
     }
     return null;
   };
+  
   
   
   return (

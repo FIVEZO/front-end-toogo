@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addComment, deleteComment, getDetailPosts, postScrap } from '../api/api';
+import { addComment, deleteComment, deletePost, editPost, getDetailPosts, postScrap } from '../api/api';
 import { styled } from 'styled-components';
 import useInput from '../hooks/useInput';
 import { countryImages } from '../img/countryImages';
@@ -11,13 +11,9 @@ import Footer from '../conponents/Footer';
 import { createChatRoom } from '../api/chatApi';
 import { FaRegBookmark } from 'react-icons/fa';
 import { FiShare2 } from 'react-icons/fi';
-
 import { BsFillBookmarkCheckFill } from 'react-icons/bs';
-
 import Spinner from '../conponents/Spinner';
 import { createChat } from '../types/posts';
-
-
 
 
 export const DetailPage = () => {
@@ -31,7 +27,7 @@ export const DetailPage = () => {
   getDetailPosts(+category, +postId)
   );
   
-  const postMutation = useMutation((data: { category: number, postId: number }) => postScrap(data.category, data.postId), {
+  const ScrapMutation = useMutation((data: { category: number, postId: number }) => postScrap(data.category, data.postId), {
     onSuccess: () => {
       queryClient.invalidateQueries('detailPost');
       // Handle success if needed
@@ -39,7 +35,7 @@ export const DetailPage = () => {
   });
 
 const handleScrap = () => {
-  postMutation.mutate({ category: Number(category), postId: Number(postId) });
+  ScrapMutation.mutate({ category: Number(category), postId: Number(postId) });
 };
 
   interface ContinentMapping {
@@ -50,7 +46,27 @@ const handleScrap = () => {
     [category, postId] = param.split("&");
   }
   
-// 채팅방 만들기
+
+  // ----------------------------------------게시물 삭제
+  const deletePostMutation = useMutation(
+    (data: { category: number; postId: number }) =>
+      deletePost(data.category, data.postId)
+  );
+
+  const handleDeletePost = () => {
+    deletePostMutation.mutate({ category: Number(category), postId: Number(postId) });
+  };
+  // ----------------------------------------게시글 수정
+  const editPostMutation = useMutation(
+    (data: { category: number; postId: number }) =>
+      editPost(data.category, data.postId)
+  );
+
+  const handleEditPost = () => {
+    editPostMutation.mutate({ category: Number(category), postId: Number(postId) });
+  };
+
+// ----------------------------------------채팅방 만들기
 const createChatMutation = useMutation((makeChatData:createChat) => createChatRoom(makeChatData), {
   onSuccess: (data) => {
    navigate(`/chat/${data.roomId}`)
@@ -191,6 +207,8 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
           <StDeleteButton onClick={()=>handleDeleteComment(item.id)}>댓글 삭제하기</StDeleteButton>
           </>
         ))} */}
+        <button onClick={handleDeletePost}>삭제</button>
+        <button onClick={handleEditPost}>수정</button>
     </Layout>
         <Footer/>
         </>
