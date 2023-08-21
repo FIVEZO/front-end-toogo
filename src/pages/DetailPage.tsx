@@ -14,7 +14,6 @@ import { FiShare2 } from 'react-icons/fi';
 import { BsFillBookmarkCheckFill } from 'react-icons/bs';
 import Spinner from '../conponents/Spinner';
 import { createChat } from '../types/posts';
-
 import 댓글프로필 from '../img/댓글프로필.jpg'
 import Input from '../conponents/Input';
 import moment from 'moment';
@@ -33,7 +32,6 @@ function getCookie(cookieName: string) {
   }
   return cookieValue;
   }
-
 
 
 export const DetailPage = () => {
@@ -62,7 +60,7 @@ export const DetailPage = () => {
   getDetailPosts(+category, +postId)
   );
   
-  const ScrapMutation = useMutation((data: { category: number, postId: number }) => postScrap(data.category, data.postId), {
+  const postMutation = useMutation((data: { category: number, postId: number }) => postScrap(data.category, data.postId), {
     onSuccess: () => {
       queryClient.invalidateQueries('detailPost');
       // Handle success if needed
@@ -70,7 +68,7 @@ export const DetailPage = () => {
   });
 
 const handleScrap = () => {
-  ScrapMutation.mutate({ category: Number(category), postId: Number(postId) });
+  postMutation.mutate({ category: Number(category), postId: Number(postId) });
 };
 
   interface ContinentMapping {
@@ -80,7 +78,6 @@ const handleScrap = () => {
   if (param?.includes("&")) {
     [category, postId] = param.split("&");
   }
-  
 
   // ----------------------------------------게시물 삭제
   const deletePostMutation = useMutation(
@@ -101,7 +98,8 @@ const handleScrap = () => {
     editPostMutation.mutate({ category: Number(category), postId: Number(postId) });
   };
 
-// ----------------------------------------채팅방 만들기
+  
+// 채팅방 만들기
 const createChatMutation = useMutation((makeChatData:createChat) => createChatRoom(makeChatData), {
   onSuccess: (data) => {
    navigate(`/chat/${data.roomId}`)
@@ -224,15 +222,6 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
     <AreaBox>댓글</AreaBox>
       <StCommentBox>
         {commentList.map((item: any) => (
-
-          <>
-          <StComment key={item.id}>{item.comment}</StComment>
-          <StDeleteButton onClick={()=>handleDeleteComment(item.id)}>댓글 삭제하기</StDeleteButton>
-          </>
-        ))} */}
-        <button onClick={handleDeletePost}>삭제</button>
-        <button onClick={handleEditPost}>수정</button>
-
           <StCommentList key={item.id}>
             <StProfileImg src={댓글프로필} alt='프로필사진'/>
             <StContents>
@@ -251,7 +240,9 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
           <Input placeholder={'댓글을 적어주세요'} size={'comment'} type={'text'} value={comment} onChange={handleCommentChange}/>
           <Button color={comment?'detailBtn':'negativeDetailBtn'} size={"addComment"} name={"등록하기"} disabled={!comment}/>
         </StInputform>
-
+      </StCommentBox>
+      <button onClick={handleDeletePost}>삭제</button>
+        <button onClick={handleEditPost}>수정</button>
     </Layout>
         <Footer/>
         </>
