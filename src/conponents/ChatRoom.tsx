@@ -11,6 +11,7 @@ import Spinner from './Spinner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HiDotsVertical } from 'react-icons/hi';
 import 프로필 from '../img/프로필.jpg'
+import { countryImages } from '../img/countryImages';
 type ReceiveData = {
   message:string;
 }
@@ -44,13 +45,15 @@ function getCookie(cookieName: string) {
   const refreshToken = getCookie("refresh_token");
   const nickname = getCookie("nickname");
   const navigate = useNavigate();
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const date = new Date();
   const nowHours = (String(date.getHours()).padStart(2, '0')) + ":" + (String(date.getMinutes()).padStart(2, '0'));
   const [modal, setModal]= useState<boolean>(false)
   const { isLoading: isLoading1, isError:isError1, data: chatMessages } = useQuery<ChatRoomForm[]>(['chatMessage',roomCode], ()=>fetchChatMessage(roomCode!));
   const { isLoading: isLoading2, isError:isError2, data: chatRoomIn } = useQuery(['chatroom',roomCode], ()=>fetchChatRoom(roomCode!));
-console.log("chatMessages", chatMessages)
+  const countryImage = countryImages[chatRoomIn?.country] || countryImages['한국']
+
+// console.log("chatMessages", chatMessages)
   // 채팅방 삭제하기
   const deleteChatMutation = useMutation((id:number) => deleteChatRoom(id), {
     onSuccess: () => {
@@ -187,7 +190,10 @@ if (isError1 || isError2) {
           {modal&& <StModal onClick={deleteChat} >채팅방 나가기</StModal>}
         </div>
       </StChatReceiver>
-      <StPost></StPost>
+      <StPost onClick={()=>navigate(`/detailpage/${chatRoomIn?.category}&${chatRoomIn?.postId}`)}>
+        <StCountryImg src={countryImage}/>
+        <StPostTitle>{`[${chatRoomIn?.country}]  ${chatRoomIn?.title}`}</StPostTitle>
+      </StPost>
     <StChatContainer ref={chatContainerRef}>
     {!!beforeChat && beforeChat.map((e:any,i:number) => 
         e.sender == nickname? // 메세지를 보낸사람 확인해서 채팅창 구분
@@ -258,7 +264,22 @@ background-color: #F4F5F6;
 font-size: 16px;
 height:80px;
 border-bottom: 1px solid #DDDCE3;
+padding:16px 24px;
+display: flex;
+  align-items: center;
+  cursor: pointer;
+`
 
+const StCountryImg = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+
+`
+const StPostTitle = styled.span`
+  font-size:16px;
+  margin-left:24px;
+ font-weight:700;
 `
 
 const StChatContainer = styled.div`
