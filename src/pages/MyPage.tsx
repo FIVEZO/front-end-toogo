@@ -9,7 +9,6 @@ import { useQuery} from 'react-query';
 import { getMyPosts, getScrapPosts } from '../api/api';
 import { Cards } from '../conponents/Cards';
 import { cardItem } from '../types/posts';
-import { log } from 'console';
 
 import Footer from '../conponents/Footer';
 

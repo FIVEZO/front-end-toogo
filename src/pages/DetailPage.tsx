@@ -15,8 +15,25 @@ import { BsFillBookmarkCheckFill } from 'react-icons/bs';
 import Spinner from '../conponents/Spinner';
 import { createChat } from '../types/posts';
 
+import 댓글프로필 from '../img/댓글프로필.jpg'
+import Input from '../conponents/Input';
+import moment from 'moment';
+function getCookie(cookieName: string) {
+  var cookieValue = null;
+  if (document.cookie) {
+  var array = document.cookie.split(escape(cookieName) + "=");
+  if (array.length >= 2) {
+  var arraySub = array[1].split(";");
+  cookieValue = unescape(arraySub[0]);
+  }
+  }
+  return cookieValue;
+  }
+
+
 
 export const DetailPage = () => {
+  const myNickName = getCookie("nickname");
   const param = useParams().id;
   let category = "";
   let postId = "";
@@ -139,69 +156,57 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
     <>
       <Header/>
     <Layout>
-     
       <MainImg src={countryImage} alt={country} />
-
-      
-<NickContainer>
-
- <Container>   
-      <ScrapBox> 
-      <StTitleBox> 
-        <div>
-        <StTitle>{title}</StTitle>
-        <StCountry>[{continentMapping[+category]}] {country}</StCountry> 
-        </div>
-        <div>
-          {scrap?<BookmarkBoxFill onClick={handleScrap}/>:<BookmarkBox onClick={handleScrap} />}
-        <ShaerBox onClick={handleCopyClipBoard}/>
-        </div>
-      </StTitleBox>
-       
-      </ScrapBox> 
-    <DateBox>
-      <DateBoxSpanBox> 
-        <DateBoxSpan margin={'39px 16px 21px 40px'}>지역</DateBoxSpan>
-        <AreaBoxSpanBox margin={'39px 0 21px 0'}>{country}</AreaBoxSpanBox>
-      </DateBoxSpanBox>
-      <DateBoxSpanBox>
-        <DateBoxSpan margin={'0 16px 0 40px'} >날짜</DateBoxSpan>
-        <AreaBoxSpanBox margin={'0 16px 0 0'} >{meetDate}</AreaBoxSpanBox>
-      </DateBoxSpanBox>
-    </DateBox>
-    <ContentBox>
-        {contents} 
-    </ContentBox>
-    <AreaBox>위치</AreaBox>
-</Container>
+      <NickContainer>
+        <Container>   
+          <ScrapBox> 
+            <StTitleBox> 
+              <div>
+              <StTitle>{title}</StTitle>
+              <StCountry>[{continentMapping[+category]}] {country}</StCountry> 
+              </div>
+              <div>
+                {scrap?<BookmarkBoxFill onClick={handleScrap}/>:<BookmarkBox onClick={handleScrap} />}
+                <ShaerBox onClick={handleCopyClipBoard}/>
+              </div>
+            </StTitleBox>
+          </ScrapBox> 
+          <DateBox>
+            <DateBoxSpanBox> 
+              <DateBoxSpan margin={'39px 16px 21px 40px'}>지역</DateBoxSpan>
+              <AreaBoxSpanBox margin={'39px 0 21px 0'}>{country}</AreaBoxSpanBox>
+            </DateBoxSpanBox>
+            <DateBoxSpanBox>
+              <DateBoxSpan margin={'0 16px 0 40px'} >날짜</DateBoxSpan>
+              <AreaBoxSpanBox margin={'0 16px 0 0'} >{meetDate}</AreaBoxSpanBox>
+            </DateBoxSpanBox>
+          </DateBox>
+            <ContentBox>
+                {contents} 
+            </ContentBox>
+            <AreaBox>위치</AreaBox>
+        </Container>
 
 <NickBox>
         <StNickname>{nickname} <div className="Line" />
-        
       </StNickname>
       <Button
-        color={'detailBtn'} 
+        color={nickname==myNickName?'negativeDetailBtn':'detailBtn'} 
         margin={"119px 0 16px 0"}
         size={'detail'}
         name={"쪽지 보내기"}
         onClick={makeChatRoom}
+        disabled={nickname==myNickName}
         />
 </NickBox>
-
 </NickContainer>
-
-
     <MapBox>
     <GogleMap latitude={latitude} longitude={longitude} />
     </MapBox>
-      
-
-      {/* <form onSubmit={commentHandler}>
-        <StInput value={comment} onChange={handleCommentChange} />
-        <StCommentButton type="submit">댓글작성</StCommentButton>
-        
-        </form>
+    <AreaBox>댓글</AreaBox>
+      <StCommentBox>
         {commentList.map((item: any) => (
+
           <>
           <StComment key={item.id}>{item.comment}</StComment>
           <StDeleteButton onClick={()=>handleDeleteComment(item.id)}>댓글 삭제하기</StDeleteButton>
@@ -209,6 +214,23 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
         ))} */}
         <button onClick={handleDeletePost}>삭제</button>
         <button onClick={handleEditPost}>수정</button>
+
+          <StCommentList key={item.id}>
+            <StProfileImg src={댓글프로필} alt='프로필사진'/>
+            <StContents>
+              <StComment>{item.comment}</StComment>
+              <StCommentNickName>{`${item.nickname}`}</StCommentNickName>
+              <StTime>{`  ·  ${moment(item.createdAt).format("YYYY.MM.DD HH:mm")}`}</StTime>
+            </StContents>
+            <StDeleteButton onClick={()=>handleDeleteComment(item.id)}>˚˚˚</StDeleteButton>
+          </StCommentList>
+        ))}
+        <StInputform onSubmit={commentHandler}>
+          <StProfileImg src={댓글프로필} alt='프로필사진'/>
+          <Input placeholder={'댓글을 적어주세요'} size={'comment'} type={'text'} value={comment} onChange={handleCommentChange}/>
+          <Button color={comment?'detailBtn':'negativeDetailBtn'} size={"addComment"} name={"등록하기"} disabled={!comment}/>
+        </StInputform>
+
     </Layout>
         <Footer/>
         </>
@@ -224,16 +246,14 @@ const ShaerBox = styled(FiShare2)`
 `
 
 const BookmarkBox = styled(FaRegBookmark)`
- width : 32px;
- height: 28px;
- cursor: pointer;
-
+  width : 32px;
+  height: 28px;
+  cursor: pointer;
 `
 const BookmarkBoxFill = styled(BsFillBookmarkCheckFill)`
  width : 32px;
  height: 28px;
  cursor: pointer;
-
 `
 
 const ScrapBox = styled.div`
@@ -242,12 +262,10 @@ const ScrapBox = styled.div`
 
 const DateBoxSpanBox = styled.div`
    display: flex;
- 
 `
 
 const AreaBoxSpanBox = styled.div<{ margin: string }>`
   margin: ${({ margin }) => margin};
-  
   font-family: Pretendard;
   font-size: 24px;
   font-weight: normal;
@@ -271,15 +289,11 @@ const DateBoxSpan = styled.span<{ margin: string }>`
   text-align: left;
   color: #9a9a9a;
   margin: ${({ margin }) => margin};
-
 `
 
 
 const NickContainer =styled.div`
   display: flex;
-  
-  
-
 `
 
 const Layout = styled.div`
@@ -327,7 +341,6 @@ const AreaBox =styled.div`
 const ContentBox = styled.div`
   width: 753px;
   height: 149px;
-
   font-family: Pretendard;
   font-size: 20px;
   font-weight: normal;
@@ -340,7 +353,7 @@ const ContentBox = styled.div`
 `
 
 const DateBox = styled.div`
- width: 753px;
+  width: 753px;
   height: 160px;
   margin: 20px 0 20px 0;
   border-radius: 8px;
@@ -348,7 +361,7 @@ const DateBox = styled.div`
 `
 
 const MainImg = styled.img`
-display: block;
+  display: block;
   width: 1200px;
   height: 440px;
   margin: 40px auto 55px auto;
@@ -362,13 +375,13 @@ const StTitleBox =styled.div`
   height: 97px;
   padding: 19px 2.4px 13px 0;
   display: flex;
-    justify-content: space-between;
-    align-items: center;
+  justify-content: space-between;
+  align-items: center;
   
 `
 const StTitle = styled.div`
-height: 41px;
-   font-family: Pretendard;
+  height: 41px;
+  font-family: Pretendard;
   font-size: 28px;
   font-weight: bold;
   font-stretch: normal;
@@ -378,8 +391,9 @@ height: 41px;
   text-align: left;
   color: #484848;
 `;
+
 const StNickname = styled.div`
-   width: 191px;
+  width: 191px;
   height: 27px;
   flex-grow: 0;
   margin: 0 133px 27px 1px;
@@ -401,9 +415,9 @@ const StNickname = styled.div`
   background-color: rgba(0, 0, 0, 0.1);
 }
 `;
-const StCountry = styled.div`
 
-   font-family: Pretendard;
+const StCountry = styled.div`
+  font-family: Pretendard;
   font-size: 20px;
   font-weight: 500;
   font-stretch: normal;
@@ -413,19 +427,61 @@ const StCountry = styled.div`
   text-align: left;
   color: #9a9a9a;
 `;
+
+const StCommentBox = styled.div`
+
+
+`;
+
+
+const StProfileImg = styled.img`
+  width: 55px;
+  height: 55px;
+`;
+
+const StCommentList = styled.div`
+  padding:30px 0;
+  display: flex;
+  flex-direction: row;
+  border-bottom:solid 1px #DDDCE3;
+  
+`;
+
 const StContents = styled.div`
-  font-size: 40px;
+  margin-left:20px;
 `;
-const StInput = styled.input`
-  font-size: 40px;
+
+const StInputform = styled.form`
+  margin-top:60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
+
+
 const StCommentButton = styled.button`
-  font-size: 40px;
+  
 `;
 const StComment = styled.div`
-  font-size: 40px;
+  font-size:20px;
+  height:70px;
+  width:100%;
+  margin-right:55px;
 `;
+
+const StCommentNickName = styled.span`
+  font-size: 20px;
+
+`;
+
+const StTime = styled.span`
+  font-size: 20px;
+  color:#9A9A9A;
+`;
+
 const StDeleteButton = styled.div`
-  font-size: 40px;
-  border: 1px solid #1FEC9B;
+  margin-left: auto;
+  font-size:30px;
+  color:#9A9A9A;
+
 `;

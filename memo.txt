@@ -1,76 +1,28 @@
+1. 리스펀시브를 선택한 이유?
+2. 채팅 시스템을 어떤식으로 안정화?
+3. 이미지 리사이징? 똑같은 형태의 사이즈를 올리게끔 해야 할듯
+4. 리덕스 리코일 다른점?
+5. 리펙토링의 방향성? 라이트하우스 사용했나요? 라이트하우스 사용해서 점수 포퍼먼스를 체크 지연 로딩 ,번들,이미지,웹폰트 확장자도 점수 포퍼먼스 등을 높이는데 집중
+6. 메모리제이션을 알고있나요?
+7. 유즈 메모나 유즈 콜백 함수나 값에 대해서도 재사용을 하는 경우도 있다 이때 콜백이나 메모 를 사용하면 좋음
+8. 토크을 쿠키에서 관리 보안의 취약점 저장 공간 1회성인지 자동인지 크기! 크기의양도 다르기 때문에 거기에 맞는 스토리지를 선택 하는것이 좋다.
+9. 컨포넌트는 어떻게 쪼개고 왜?
 
-예시 1
+1.프레잉 방식과 롱플레인 방식? 웹소켓에 대해 설명 해주세요.
 
-(<script>
-    //alert(document.title);
-    // websocket & stomp initialize
-    var sock = new SockJS("/ws/chat");
-    //1. SockJS를 내부에 들고있는 stomp를 내어줌
-    var ws = Stomp.over(sock);
-    var reconnect = 0;
-    // vue.js
-    var vm = new Vue({
-        el: '#app',
-        data: {
-            roomId: '',
-            room: {},
-            sender: '',
-            message: '',
-            messages: []
-        },
-        created() {
-            this.roomId = localStorage.getItem('wschat.roomId');
-            this.sender = localStorage.getItem('wschat.sender');
-            this.findRoom();
-        },
-        methods: {
-            findRoom: function() {
-                axios.get('/chat/room/'+this.roomId).then(response => { this.room = response.data; });
-            },
-            sendMessage: function() {
-                ws.send("/app/chat/message", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:this.message}));
-                this.message = '';
-            },
-            recvMessage: function(recv) {
-                this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
-            }
-        }
-    });
-//2. connection이 맺어지면 실행
-    function connect() {
-        // pub/sub event
-        ws.connect({}, function(frame) {
-             //4. subscribe(path, callback)으로 메세지를 받을 수 있음
-            ws.subscribe("/topic/chat/room/"+vm.$data.roomId, function(message) {
-                var recv = JSON.parse(message.body);
-                vm.recvMessage(recv);
-            });
-            //3. send(path, header, message)로 메세지를 보낼 수 있음
-            ws.send("/app/chat/message", {}, JSON.stringify({type:'ENTER', roomId:vm.$data.roomId, sender:vm.$data.sender}));
-        }, function(error) {
-            if(reconnect++ <= 5) {
-                setTimeout(function() {
-                    console.log("connection reconnect");
-                    sock = new SockJS("/ws/chat");
-                    ws = Stomp.over(sock);
-                    connect();
-                },10*1000);
-            }
-        });
-    }
-    connect();
-</script>)
+2.SSE는 어떤식으로 통신이 되는건가요?
 
+3.기본적인 트렌지션을 적용해서 해당 소스에 대한 트렌지션에 하고 있는걸로 보이는데 해당 전파속성에 대해 알고 있나요?
 
-예시 2
+4.리콰이얼드뉴 에 대해 알고 있나요?
 
-useEffect(() => {
-        const socket = new SockJS(`${process.env.REACT_APP_BE_SERVER}/stomp/ws`);
-        const stompClient = Stomp.over(socket);
-        stompClient.connect({Authorization: getCookie('authorization')}, () => {dispatch(setStompClient(stompClient))});
-        return () => {
-            if (stompClient.connected) {
-                stompClient.disconnect()
-            }
-        };
-    }, [dispatch])
+5.로그 관리가 미흡해 보인 서버에서 로그관리는 어떤식으로 저장 되어 있나요?
+어떤식의 로그를 관리 할건지 생각해보자
+
+6.메세지 브로커의 역활?
+7.쿼리 dsl을 사용하고 있는걸로 보임 복잡한 쿼리에 대한 플랜을 뽑아보고 개선하는 방향을 말해주세요.
+
+8.AOP? 를 구현해 보셨나요? 알고 계신가요?
+기능적으로 사장님 모을수도 있고
+커뮤니티의 길로 갈수 있고
+검색 기능을 세부적으로 나눌수 있고
