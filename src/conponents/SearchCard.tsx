@@ -89,17 +89,10 @@ export const SearchCard = ({ items }: { items: cardItem }) => {
   const navigate = useNavigate();
 
   return (
-    <DivRayout>
-      <StyledCardImg
-        onClick={() => navigate(`/detailpage/${category}&${id}`)}
-        border-radius="12px"
-        variant="top"
-        src={countryImage}
-      />
+    <DivRayout onClick={() => navigate(`/detailpage/${category}&${id}`)}>
+      <StyledCardImg border-radius="12px" variant="top" src={countryImage} />
       <DivContent>
-        <CardTitle onClick={() => navigate(`/detailpage/${category}&${id}`)}>
-          {title}
-        </CardTitle>
+        <CardTitle>{title}</CardTitle>
         <CardText>{truncatedContents}</CardText>
         <AvatarLine>
           <AvatarPic>
@@ -127,16 +120,17 @@ const DivRayout = styled.div`
   background-color: white;
   padding: 24px;
   gap: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: translateY(-5px);
+  }
 `;
 
 const StyledCardImg = styled(Card.Img)`
   width: 320px;
   height: 172px;
   border-radius: 12px;
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.005);
-  }
 `;
 
 const DivContent = styled.div`
@@ -155,7 +149,6 @@ const CardTitle = styled.div`
   height: 22px;
   width: 808px;
   color: #484848;
-  cursor: pointer;
 `;
 
 const CardText = styled.div`
