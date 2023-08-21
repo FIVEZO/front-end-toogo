@@ -193,7 +193,10 @@ export const ChatRoom = () => {
           {modal && <StModal onClick={deleteChat}>채팅방 나가기</StModal>}
         </div>
       </StChatReceiver>
-      <StPost></StPost>
+      <StPost onClick={()=>navigate(`/detailpage/${chatRoomIn?.category}&${chatRoomIn?.postId}`)}>
+        <StCountryImg src={countryImage}/>
+        <StPostTitle>{`[${chatRoomIn?.country}]  ${chatRoomIn?.title}`}</StPostTitle>
+      </StPost>
       <StChatContainer ref={chatContainerRef}>
         {!!beforeChat &&
           beforeChat.map((e: any, i: number) =>
