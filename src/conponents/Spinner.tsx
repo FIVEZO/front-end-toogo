@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import 로딩중 from "../img/로딩중.jpg"
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import 로딩중 from "../img/로딩중.jpg";
+import styled from "styled-components";
 
 function Spinner() {
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setRotation(prevRotation => (prevRotation + 1) % 360); // 회전 속도를 늦추기 위해 1도씩 증가하도록 수정
+      setRotation((prevRotation) => (prevRotation + 1) % 360); // 회전 속도를 늦추기 위해 1도씩 증가하도록 수정
     }, 50); // 간격을 50ms로 조정하여 늦은 속도로 회전하도록 수정
 
     return () => clearInterval(interval);
@@ -19,7 +19,7 @@ function Spinner() {
         src={로딩중}
         alt="로딩 중..."
         style={{
-          transform: `rotate(${rotation}deg)`
+          transform: `rotate(${rotation}deg)`,
         }}
       />
     </StContainer>
