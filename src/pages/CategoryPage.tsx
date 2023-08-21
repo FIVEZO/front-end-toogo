@@ -49,10 +49,10 @@ export const CategoryPage = () => {
     return <p>오류가 발생하였습니다...!</p>;
   }
 
-  const totalPages = 20; // 전체 페이지 수를 20으로 가정
+  const totalPages = 7; // 전체 페이지 수를 가정
 
   const nextPage = () => {
-    setpage(page + 1);
+    if (page < totalPages) setpage(page + 1);
   };
 
   const previousPage = () => {
