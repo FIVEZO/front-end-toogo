@@ -27,6 +27,14 @@ function Login() {
   const dispatch = useDispatch();
   // ----------------------------------------로그인 로직
   const loginMutation = useMutation(login, {
+    onError: (error: any) => {
+      if (error.response && error.response.status === 400) {
+        const errorMsg = error.response.data.msg;
+        alert(errorMsg);
+      } else {
+        console.error("An error occurred:", error);
+      }
+    },
     onSuccess: () => {
       dispatch(logIn());
       navigate("/");
