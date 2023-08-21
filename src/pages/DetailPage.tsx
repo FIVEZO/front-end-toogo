@@ -17,6 +17,10 @@ import { createChat } from '../types/posts';
 import 댓글프로필 from '../img/댓글프로필.jpg'
 import Input from '../conponents/Input';
 import moment from 'moment';
+import { HiDotsHorizontal } from "react-icons/hi";
+import { useEffect, useRef, useState } from 'react';
+
+
 function getCookie(cookieName: string) {
   var cookieValue = null;
   if (document.cookie) {
@@ -37,6 +41,20 @@ export const DetailPage = () => {
   let postId = "";
   const queryClient = useQueryClient();
   const [comment, handleCommentChange, resetComment] = useInput();
+  const [modal, setModal]= useState<boolean>(false)
+
+  const node = useRef<HTMLDivElement | null>(null); // 창의 바깥부분을 클릭하였을때 창이 사라짐
+  useEffect(() => {
+    const clickOutside = (e: MouseEvent) => {
+      if (modal && node.current && !node.current.contains(e.target as Node))
+        setModal(false);
+    };
+    document.addEventListener("mousedown", clickOutside);
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, [modal]);
+
   const navigate = useNavigate();
   const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
   getDetailPosts(+category, +postId)
@@ -191,7 +209,10 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
               <StCommentNickName>{`${item.nickname}`}</StCommentNickName>
               <StTime>{`  ·  ${moment(item.createdAt).format("YYYY.MM.DD HH:mm")}`}</StTime>
             </StContents>
-            <StDeleteButton onClick={()=>handleDeleteComment(item.id)}>˚˚˚</StDeleteButton>
+            <StCommentModal ref={node}>
+            <StDeleteButton onClick={() => setModal((pre) => !pre)}><HiDotsHorizontal/></StDeleteButton>
+            
+            </StCommentModal>
           </StCommentList>
         ))}
         <StInputform onSubmit={commentHandler}>
@@ -206,6 +227,7 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
   );
 };
 
+// onClick={()=>handleDeleteComment(item.id)}
 
 const ShaerBox = styled(FiShare2)`
   width: 28px;
@@ -448,9 +470,11 @@ const StTime = styled.span`
   color:#9A9A9A;
 `;
 
-const StDeleteButton = styled.div`
+const StCommentModal = styled.div`
   margin-left: auto;
+`;
+const StDeleteButton = styled.div`
   font-size:30px;
   color:#9A9A9A;
-
+  cursor: pointer;
 `;
