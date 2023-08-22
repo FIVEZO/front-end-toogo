@@ -57,9 +57,7 @@ export const DetailPage = () => {
   const postMutation = useMutation((data: { category: number, postId: number }) => postScrap(data.category, data.postId), {
     onSuccess: () => {
       queryClient.invalidateQueries('detailPost');
-     
-
-    }
+    }}
   );
 
 
@@ -93,13 +91,11 @@ const handleScrap = () => {
     });
   };
 
-
   //수정버튼
   const moveToUpdate = () => {
     navigate(`/editpost/${category}&${id}`)
+  }
 
-
-  
 // 채팅방 만들기
 const createChatMutation = useMutation((makeChatData:createChat) => createChatRoom(makeChatData), {
   onSuccess: (data) => {
