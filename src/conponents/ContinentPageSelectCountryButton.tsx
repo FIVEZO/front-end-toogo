@@ -29,7 +29,7 @@ const ContinentPageSelectCountry: React.FC<ContinentPageSelectCountryProps> = ({
           "대만",
           "중국",
           "몽골",
-          "상가포르",
+          "싱가포르",
           "베트남",
           "태국",
           "인도네시아",

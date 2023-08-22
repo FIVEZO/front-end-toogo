@@ -47,7 +47,7 @@ function Post() {
     (postData: postFormValues) => addPost(param, postData),
     {
       onSuccess: () => {
-        navigate("/");
+        navigate(-1);
         setFormattedDate("");
         setSelectedCountry("");
       },

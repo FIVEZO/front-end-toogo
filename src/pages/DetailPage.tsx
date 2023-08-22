@@ -14,7 +14,7 @@ import { FiShare2 } from 'react-icons/fi';
 import { BsFillBookmarkCheckFill } from 'react-icons/bs';
 import Spinner from '../conponents/Spinner';
 import { createChat } from '../types/posts';
-import 댓글프로필 from '../img/댓글프로필.jpg'
+import 댓글프로필 from '../img/댓글프로필.jpg'
 import Input from '../conponents/Input';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
