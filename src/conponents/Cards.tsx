@@ -83,7 +83,7 @@ export const Cards = ({ items }: { items: cardItem }) => {
   // 내용이 26자가 넘어가면 자름
   const truncatedContents =
     contents.length > 26 ? contents.slice(0, 26) + "..." : contents;
-  const truncatedTitle = title.length > 18 ? title.slice(0, 18) + "..." : title;
+  const truncatedTitle = title.length > 15 ? title.slice(0, 15) + "..." : title;
   const navigate = useNavigate();
 
   return (
