@@ -213,7 +213,7 @@ const Bell = styled.button`
   padding: 0px;
   background-color: white;
   &:hover {
-    transform: scale(1.05); /* Increase size by 5% (3px) on hover */
+    transform: scale(1.05);
   }
 `;
 
@@ -223,7 +223,7 @@ const DM = styled.button`
   background-color: white;
   margin-top: -5px;
   &:hover {
-    transform: scale(1.05); /* Increase size by 5% (3px) on hover */
+    transform: scale(1.05);
   }
 `;
 
@@ -232,6 +232,6 @@ const Profile = styled.button`
   padding: 0px;
   background-color: white;
   &:hover {
-    transform: scale(1.05); /* Increase size by 5% (3px) on hover */
+    transform: scale(1.05);
   }
 `;

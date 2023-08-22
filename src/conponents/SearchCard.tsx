@@ -85,14 +85,17 @@ export const SearchCard = ({ items }: { items: cardItem }) => {
 
   // 내용이 26자가 넘어가면 자름
   const truncatedContents =
-    contents.length > 26 ? contents.slice(0, 26) + "..." : contents;
+    contents.length > 180 ? contents.slice(0, 180) + "..." : contents;
+
+  const truncatedTitle = title.length > 50 ? title.slice(0, 50) + "..." : title;
+
   const navigate = useNavigate();
 
   return (
     <DivRayout onClick={() => navigate(`/detailpage/${category}&${id}`)}>
       <StyledCardImg border-radius="12px" variant="top" src={countryImage} />
       <DivContent>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle>{truncatedTitle}</CardTitle>
         <CardText>{truncatedContents}</CardText>
         <AvatarLine>
           <AvatarPic>
