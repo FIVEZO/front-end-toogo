@@ -47,7 +47,11 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log("응답 에러", error);
+    console.log("응답 에러", error)
+    if(error.message=="Request failed with status code 401"){
+      document.cookie = `access_token=${error.response.headers.accesstoken}; path=/;`;
+      document.cookie = `refresh_token=${error.response.headers.refreshtoken}; path=/`;
+    }
     return Promise.reject(error);
   }
 );

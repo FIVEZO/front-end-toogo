@@ -25,6 +25,8 @@ const sizeHandler = (size: InputProps['size']) => {
         return `width: 100%; height: 70px; margin: 40px 0`;
     case 'comment':
         return `width:100%; height: 80px; margin: 0 24px; font-size: 20px;`;
+    case 'editComment':
+        return `width:100%; height: 50px; font-size: 20px; margin-bottom : 20px `;
     case 'postContents':
         return `width: 100%; height: 190px; margin: 40px 0`;
     default:

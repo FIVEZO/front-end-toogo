@@ -1,31 +1,23 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  addComment,
-  deleteComment,
-  deletePost,
-  editPost,
-  getDetailPosts,
-  postScrap,
-} from "../api/api";
-import { styled } from "styled-components";
-import useInput from "../hooks/useInput";
-import { countryImages } from "../img/countryImages";
-import GogleMap from "../conponents/GogleMap";
-import Header from "../conponents/Header";
-import Button from "../conponents/Button";
-import Footer from "../conponents/Footer";
-import { createChatRoom } from "../api/chatApi";
-import { FaRegBookmark } from "react-icons/fa";
-import { FiShare2 } from "react-icons/fi";
-import { BsFillBookmarkCheckFill } from "react-icons/bs";
-import Spinner from "../conponents/Spinner";
-import { createChat } from "../types/posts";
-import 댓글프로필 from "../img/댓글프로필.jpg";
-import Input from "../conponents/Input";
-import moment from "moment";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { useEffect, useRef, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { addComment, deleteComment, deletePost, editComment, editPost, getDetailPosts, postScrap } from '../api/api';
+import { styled } from 'styled-components';
+import useInput from '../hooks/useInput';
+import { countryImages } from '../img/countryImages';
+import GogleMap from '../conponents/GogleMap';
+import Header from '../conponents/Header';
+import Button from '../conponents/Button';
+import Footer from '../conponents/Footer';
+import { createChatRoom } from '../api/chatApi';
+import { FaRegBookmark } from 'react-icons/fa';
+import { FiShare2 } from 'react-icons/fi';
+import { BsFillBookmarkCheckFill } from 'react-icons/bs';
+import Spinner from '../conponents/Spinner';
+import { createChat } from '../types/posts';
+import 댓글프로필 from '../img/댓글프로필.jpg'
+import Input from '../conponents/Input';
+import moment from 'moment';
+import { useEffect, useRef, useState } from 'react';
 
 function getCookie(cookieName: string) {
   var cookieValue = null;
@@ -46,19 +38,10 @@ export const DetailPage = () => {
   let postId = "";
   const queryClient = useQueryClient();
   const [comment, handleCommentChange, resetComment] = useInput();
-  const [modal, setModal] = useState<boolean>(false);
+  const [editcomment, handleEditCommentChange, resetEditComment] = useInput();
+  const [editInput, setEditInput] = useState<boolean | number>(false)
 
-  const node = useRef<HTMLDivElement | null>(null); // 창의 바깥부분을 클릭하였을때 창이 사라짐
-  useEffect(() => {
-    const clickOutside = (e: MouseEvent) => {
-      if (modal && node.current && !node.current.contains(e.target as Node))
-        setModal(false);
-    };
-    document.addEventListener("mousedown", clickOutside);
-    return () => {
-      document.removeEventListener("mousedown", clickOutside);
-    };
-  }, [modal]);
+
 
   const navigate = useNavigate();
   const { isLoading, isError, data } = useQuery(
@@ -114,37 +97,36 @@ export const DetailPage = () => {
     });
   };
 
-  // 채팅방 만들기
-  const createChatMutation = useMutation(
-    (makeChatData: createChat) => createChatRoom(makeChatData),
-    {
-      onSuccess: (data) => {
-        navigate(`/chat/${data.roomId}`);
-      },
-    }
-  );
-
-  const commentMutation = useMutation(
-    (comment: string) => addComment(+category, +postId, comment),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("detailPost");
-        console.log("댓글 작성 완료!");
-        resetComment();
-      },
-    }
-  );
-
-  const deleteCommentMutation = useMutation(
-    (commentId: number) => deleteComment(+category, +postId, commentId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("detailPost");
-        console.log("댓글 삭제 완료!");
-      },
-    }
-  );
-
+// ----------------------------------------채팅방 만들기
+const createChatMutation = useMutation((makeChatData:createChat) => createChatRoom(makeChatData), {
+  onSuccess: (data) => {
+   navigate(`/chat/${data.roomId}`)
+  }
+});
+  // ---------------------------------------- 댓글
+  const commentMutation = useMutation((comment:string) => addComment(+category, +postId, comment), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("detailPost")
+      console.log('댓글 작성 완료!');
+      resetComment()
+    },
+  });
+  
+  const deleteCommentMutation = useMutation((commentId:number) =>deleteComment(+category, +postId, commentId),{
+    onSuccess: () => {
+      queryClient.invalidateQueries('detailPost');
+      console.log('댓글 삭제 완료!');
+    },
+  });
+  const editCommentMutation = useMutation((commentId:number) =>editComment(+category, +postId, commentId, editcomment),{
+    onSuccess: () => {
+      queryClient.invalidateQueries('detailPost');
+      setEditInput(false)
+      resetEditComment()
+      console.log('댓글 수정 완료!');
+    },
+  });
+  
   if (isLoading) {
     return <Spinner />;
   }
@@ -197,8 +179,21 @@ export const DetailPage = () => {
     deleteCommentMutation.mutate(commentId);
   };
 
-  const handleCopyClipBoard = async () => {
-    // 페이지 url복사
+  const handleEditComment = (commentId: number) => { // 댓글 삭제
+    editCommentMutation.mutate(commentId);
+  };
+
+
+  const handleEditToggle = (commentId: number) => { // 댓글 수정 인풋 토글
+    if(editInput){
+      setEditInput(false)
+      resetEditComment()
+    }else{
+      setEditInput(commentId)
+    }
+  };
+
+  const handleCopyClipBoard = async () => {// 페이지 url복사
     try {
       await navigator.clipboard.writeText(window.location.href);
       alert("클립보드에 링크가 복사되었어요.");
@@ -248,66 +243,59 @@ export const DetailPage = () => {
             </DateBox>
             <ContentBox>{contents}</ContentBox>
             <AreaBox>위치</AreaBox>
-          </Container>
+        </Container>
 
-          <NickBox>
-            <StNickname>
-              {nickname} <div className="Line" />
-            </StNickname>
-            <Button
-              color={nickname == myNickName ? "negativeDetailBtn" : "detailBtn"}
-              margin={"119px 0 16px 0"}
-              size={"detail"}
-              name={"쪽지 보내기"}
-              onClick={makeChatRoom}
-              disabled={nickname == myNickName}
-            />
-          </NickBox>
-        </NickContainer>
-        <MapBox>
-          <GogleMap latitude={latitude} longitude={longitude} />
-        </MapBox>
-        <AreaBox>댓글</AreaBox>
-        <StCommentBox>
-          {commentList.map((item: any) => (
-            <StCommentList key={item.id}>
-              <StProfileImg src={댓글프로필} alt="프로필사진" />
-              <StContents>
-                <StComment>{item.comment}</StComment>
-                <StCommentNickName>{`${item.nickname}`}</StCommentNickName>
-                <StTime>{`  ·  ${moment(item.createdAt).format(
-                  "YYYY.MM.DD HH:mm"
-                )}`}</StTime>
-              </StContents>
-              <StCommentModal ref={node}>
-                <StDeleteButton onClick={() => setModal((pre) => !pre)}>
-                  <HiDotsHorizontal />
-                </StDeleteButton>
-              </StCommentModal>
-            </StCommentList>
-          ))}
-          <StInputform onSubmit={commentHandler}>
-            <StProfileImg src={댓글프로필} alt="프로필사진" />
-            <Input
-              placeholder={"댓글을 적어주세요"}
-              size={"comment"}
-              type={"text"}
-              value={comment}
-              onChange={handleCommentChange}
-            />
-            <Button
-              color={comment ? "detailBtn" : "negativeDetailBtn"}
-              size={"addComment"}
-              name={"등록하기"}
-              disabled={!comment}
-            />
-          </StInputform>
-        </StCommentBox>
-        <button onClick={handleDeletePost}>삭제</button>
+<NickBox>
+        <StNickname>{nickname} <div className="Line" />
+      </StNickname>
+      <Button
+        color={nickname==myNickName?'negativeDetailBtn':'detailBtn'} 
+        margin={"119px 0 16px 0"}
+        size={'detail'}
+        name={"쪽지 보내기"}
+        onClick={makeChatRoom}
+        disabled={nickname==myNickName}
+        />
+</NickBox>
+</NickContainer>
+    <MapBox>
+    <GogleMap latitude={latitude} longitude={longitude} />
+    </MapBox>
+    <AreaBox>댓글</AreaBox>
+      <StCommentBox>
+        {commentList.map((item: any) => (
+          <StCommentList key={item.id}>
+            <StProfileImg src={댓글프로필} alt='프로필사진'/>
+            <StContents>
+              
+              {editInput==item.id?
+              <Input placeholder={'수정할 댓글을 적어주세요'} size={'editComment'} type={'text'} value={editcomment} onChange={handleEditCommentChange}/>
+              :<StComment>{item.comment}</StComment>}
+              
+              <StCommentNickName>{`${item.nickname}`}</StCommentNickName>
+              <StTime>{` · ${moment(item.createdAt).format("YYYY.MM.DD HH:mm")}`}</StTime>
+              {item.nickname==myNickName&&
+              <StCommentButtonSet>
+              <StDeleteButton onClick={() => handleDeleteComment(item.id)}> · 삭제</StDeleteButton>
+              {editInput==item.id&&<StDeleteButton onClick={() => handleEditComment(item.id)}> · 완료</StDeleteButton> }   
+            <StDeleteButton onClick={() => handleEditToggle(item.id)}>{editInput==item.id?" · 취소":" · 수정"}</StDeleteButton> 
+            </StCommentButtonSet>}
+              
+            </StContents>
+              
+          </StCommentList>
+        ))}
+        <StInputform onSubmit={commentHandler}>
+          <StProfileImg src={댓글프로필} alt='프로필사진'/>
+          <Input placeholder={'댓글을 적어주세요'} size={'comment'} type={'text'} value={comment} onChange={handleCommentChange}/>
+          <Button color={comment?'detailBtn':'negativeDetailBtn'} size={"addComment"} name={"등록하기"} disabled={!comment}/>
+        </StInputform>
+      </StCommentBox>
+      <button onClick={handleDeletePost}>삭제</button>
         <button onClick={handleEditPost}>수정</button>
       </Layout>
-      <Footer />
-    </>
+        <Footer/>
+        </>
   );
 };
 
@@ -516,7 +504,8 @@ const StCommentList = styled.div`
 `;
 
 const StContents = styled.div`
-  margin-left: 20px;
+  margin-left:20px;
+  width:100%;
 `;
 
 const StInputform = styled.form`
@@ -526,12 +515,13 @@ const StInputform = styled.form`
   align-items: center;
 `;
 
-const StCommentButton = styled.button``;
+const StCommentButtonSet = styled.span`
+  margin-right:auto;
+`;
 const StComment = styled.div`
-  font-size: 20px;
-  height: 70px;
-  width: 100%;
-  margin-right: 55px;
+  font-size:20px;
+  height:70px;
+  width:100%;
 `;
 
 const StCommentNickName = styled.span`
@@ -543,11 +533,9 @@ const StTime = styled.span`
   color: #9a9a9a;
 `;
 
-const StCommentModal = styled.div`
-  margin-left: auto;
-`;
-const StDeleteButton = styled.div`
-  font-size: 30px;
-  color: #9a9a9a;
+const StDeleteButton = styled.span`
+  font-size: 20px;
+  color:#9A9A9A;
   cursor: pointer;
 `;
+
