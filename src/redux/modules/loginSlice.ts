@@ -35,6 +35,8 @@ const isLoginSlice = createSlice({
         state.isLogin = false;
         deleteCookie("access_token"); // 엑세스 토큰 삭제
         deleteCookie("refresh_token"); // 리프레쉬 토큰 삭제
+        deleteCookie("nickname"); // 닉네임 삭제
+
     },
   },
 });
