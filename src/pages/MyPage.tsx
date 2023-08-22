@@ -34,6 +34,7 @@ export const MyPage =  () => {
 
   //탭바
   const renderTabContent = () => {
+    console.log('Rendering tab content with data:', postData); 
     if (activeTab === 'postList') {
       if (isLoadingPost) {
         return <Spinner />;
@@ -54,6 +55,7 @@ export const MyPage =  () => {
         </ContentBox>
       );
     }
+    
     return null;
   };
   
@@ -80,8 +82,7 @@ export const MyPage =  () => {
     }
     return null;
   };
-  
-  
+
   
   return (
     <>

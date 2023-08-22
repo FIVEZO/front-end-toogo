@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { CustomCalendar } from './CustomCalender';
 import SelectCountry from './SelectCountry';
 import { useParams } from 'react-router-dom';
-import  Clock  from './Clock'
 import { useRecoilState } from 'recoil';
 import { selectedCountryState, selectedDateState } from '../recoil/post/NavigationBar';
 import HowMany from './HowMany';
 import { peplecountState } from '../recoil/peplecountState';
+import { getDetailPosts } from '../api/api';
+import { useQuery } from 'react-query';
 
 interface InnerBoxProps {
     highlighted: boolean;
@@ -24,6 +25,28 @@ interface InnerBoxProps {
     const [formattedDate, setFormattedDate] = useRecoilState(selectedDateState);
     const [peplecount, setPeplecount] = useRecoilState(peplecountState);
 
+
+    const params = useParams().id;
+    let category = "";
+    let postId = "";
+  
+    if (params?.includes("&")) {
+      [category, postId] = params.split("&");
+    }
+  
+    const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
+      getDetailPosts(+category, +postId)
+    );
+  
+    useEffect(() => {
+      if (data) {
+        setSelectedCountry(data.country);
+        setFormattedDate(data.meetDate);
+      }
+    }, [data, setSelectedCountry, setFormattedDate]);
+
+    
+
     const handleBoxClick = (index: number) => {
         setSelectedBox(index);
         setIsWhele(false);
@@ -38,9 +61,7 @@ interface InnerBoxProps {
           setIsTime(true);
         }
 
-        if (index === 0) {
-          setIsDate(true); // 여행 카테고리 선택 시 자동으로 날짜 단계로 이동
-        }
+       
       };
             
   return (

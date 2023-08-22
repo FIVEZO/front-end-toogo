@@ -9,6 +9,7 @@ import FindPassword from "../pages/FindPassword";
 import { CategoryPage } from "../pages/CategoryPage";
 import { DetailPage } from "../pages/DetailPage";
 import Post from "../pages/Post";
+import EditPost from "../pages/EditPost";
 import { Chat } from "../pages/Chat";
 import { SearchPage } from "../pages/SearchPage";
 import { MyPage } from "../pages/MyPage";
@@ -27,6 +28,7 @@ export const Router = () => {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/account" element={<Account />} />
             <Route path="/post/:id" element={<Post />} />
+            <Route path="/editpost/:id" element={<EditPost />} />
             <Route path="/chat/:id" element={<Chat />} />
             <Route path="/findPassword" element={<FindPassword />} />
             <Route path="/categorypage/:id" element={<CategoryPage />} />

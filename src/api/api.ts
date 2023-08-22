@@ -40,6 +40,8 @@ instance.interceptors.request.use(
   }
 );
 
+
+
 instance.interceptors.response.use(
   function (response) {
     console.log("응답 완료", response)
@@ -51,6 +53,7 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 
 export default instance;
 
@@ -144,7 +147,7 @@ const getHomePosts = async () => {
 const getCategoryPosts = async (category: number, pageNum: number ) => {
   const response = await instance.get(`api/post/${category}?page=${pageNum}`);
   // console.log("전체 게시글 조회", response)
-  return response.data;
+  return response.data.data;
 }
 
   // 대륙별 게시글 나라조회 ex) api/post/1/한국/list?page=1
@@ -169,7 +172,7 @@ const addPost = async (category: number, postData : postFormValues) => {
 }
 
 // 게시글 수정
-const editPost = async (category: number, postId: number) => {
+const editPost = async (category: number, postId: number, postData : postFormValues) => {
   const response = await instance.patch(`api/post/${category}/${postId}`)
   // console.log("게시글 수정", response)
   return response.data;

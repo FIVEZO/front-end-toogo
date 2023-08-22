@@ -14,6 +14,7 @@ import PageMovingButton from '../conponents/PageMovingButton';
 import { RootState } from '../types/login';
 import { useSelector } from 'react-redux';
 import Spinner from '../conponents/Spinner';
+import { log } from 'console';
 
 
 export const CategoryPage = () => {
@@ -59,7 +60,7 @@ export const CategoryPage = () => {
     setpage(page - 1);
   };
 
-
+console.log("data", data)
   return (
     <div>
       <Header/>
