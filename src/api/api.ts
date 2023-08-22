@@ -161,7 +161,7 @@ const getCategoryCountryPosts = async (
     `api/post/${category}/${country}/list?page=${pageNum}`
   );
   // console.log("전체 게시글 조회", response)
-  return response.data;
+  return response.data.data;
 };
 
 // 게시글 상세페이지 조회
