@@ -232,22 +232,25 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
             />
           {passwordConfirmCheck&& <StCheckMassage color={"#E32D2D"}>{passwordConfirmCheck}</StCheckMassage>}
         </LoginForm>
-        <LoginForm>
-          <Label>닉네임</Label>
-          <Input 
-            type="text"
-            placeholder="2자 이상 10자 이하"
-            value={nickname}
-            onChange={handleNicknameChange}
-            size={"signup"}
-            color={nicknameChecks? "#E32D2D" : '#cfced7'}
-            variant={'button'}
-            name={"중복확인"}
-            required
-            onButtonClick={nickCheckHandler}
-            />
-          {!!nicknameChecks && <StCheckMassage color={"red"}>{nicknameChecks}</StCheckMassage>}
-        </LoginForm>
+        <LoginForm> 
+  <Label>닉네임</Label>
+  <Input 
+    type="text"
+    placeholder="2자 이상 10자 이하"
+    value={nickname}
+    onChange={handleNicknameChange}
+    size={"signup"}
+    color={nicknameChecks === "사용 가능한 닉네임입니다." ? '#cfced7' : (nicknameChecks ? '#E32D2D' : '#cfced7')}
+
+    variant={'button'}
+    name={"중복확인"}
+    required
+    onButtonClick={nickCheckHandler}
+  />
+    {nicknameChecks && <StCheckMassage color={nicknameChecks === "사용 가능한 닉네임입니다." ? "black" : "#E32D2D"}>
+      {nicknameChecks}
+    </StCheckMassage>}
+</LoginForm>
         <SignupButton>
         <Button  color={updateLoginButtonColor()} onClick={signupHandler} margin='32px 0 0 0' size="large" name="회원가입" />
         </SignupButton>

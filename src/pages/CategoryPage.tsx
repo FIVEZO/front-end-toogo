@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { getCategoryPosts, getCategoryCountryPosts } from "../api/api";
@@ -14,6 +15,7 @@ import PageMovingButton from "../conponents/PageMovingButton";
 import { RootState } from "../types/login";
 import { useSelector } from "react-redux";
 import Spinner from "../conponents/Spinner";
+
 
 export const CategoryPage = () => {
   const state = useSelector((state: RootState) => state.isLogin.isLogin);

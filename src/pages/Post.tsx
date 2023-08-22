@@ -21,10 +21,7 @@ function Post() {
   const param = Number(useParams().id);
   const [title, handleTitleChange] = useInput();
   const [contents, handleContentsChange] = useInput();
-
   const [meetDate, handleMeetDateChange] =  useInput();
-  // const [selectedCountry, setSelectedCountry] = useState<string>(""); 
-
   const selectedCountry = useRecoilValue(selectedCountryState);
   const [, setFormattedDate] = useRecoilState(selectedDateState);
   const formattedDate = useRecoilValue(selectedDateState);
@@ -35,7 +32,6 @@ function Post() {
     useState<number>(0);
   const [longitudeMarkerPosition, setLongitudeMarkerPosition] =
     useState<number>(0);
-  const [dateValue, dateValueChange] = useState(new Date());
   const navigate = useNavigate();
 
   const handleMarkerPositionChange = (newPosition: locationFormValues) => {
@@ -88,7 +84,7 @@ function Post() {
 
 
       <StInputLabel>내용</StInputLabel>
-      <ContentInput placeholder="내용을 입력해주세요"  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleContentsChange(e)} />
+      <ContentInput placeholder="내용을 입력해주세요"  onChange={handleContentsChange} />
 
       <StInputLabel>위치</StInputLabel>
       <Map onMarkerPosition={MarkerPosition} onMarkerPositionChange={handleMarkerPositionChange}/>

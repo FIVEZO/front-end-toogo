@@ -29,7 +29,9 @@ function getCookie(cookieName: string) {
     }
   }
   return cookieValue;
+
 }
+
 
 export const DetailPage = () => {
   const myNickName = getCookie("nickname");
@@ -49,20 +51,22 @@ export const DetailPage = () => {
     () => getDetailPosts(+category, +postId)
   );
 
-  const postMutation = useMutation(
-    (data: { category: number; postId: number }) =>
-      postScrap(data.category, data.postId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("detailPost");
-        // Handle success if needed
-      },
+  
+  console.log("data",data)
+  
+  const postMutation = useMutation((data: { category: number, postId: number }) => postScrap(data.category, data.postId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('detailPost');
+     
+
     }
   );
 
-  const handleScrap = () => {
-    postMutation.mutate({ category: Number(category), postId: Number(postId) });
-  };
+
+const handleScrap = () => {
+  postMutation.mutate({ category: Number(category), postId: Number(postId) });
+};
+
 
   interface ContinentMapping {
     [key: number]: string;
@@ -75,7 +79,11 @@ export const DetailPage = () => {
   // ----------------------------------------게시물 삭제
   const deletePostMutation = useMutation(
     (data: { category: number; postId: number }) =>
-      deletePost(data.category, data.postId)
+      deletePost(data.category, data.postId),{
+      onSuccess:() => {
+        navigate('/');
+      }}
+
   );
 
   const handleDeletePost = () => {
@@ -84,20 +92,15 @@ export const DetailPage = () => {
       postId: Number(postId),
     });
   };
-  // ----------------------------------------게시글 수정
-  const editPostMutation = useMutation(
-    (data: { category: number; postId: number }) =>
-      editPost(data.category, data.postId)
-  );
 
-  const handleEditPost = () => {
-    editPostMutation.mutate({
-      category: Number(category),
-      postId: Number(postId),
-    });
-  };
 
-// ----------------------------------------채팅방 만들기
+  //수정버튼
+  const moveToUpdate = () => {
+    navigate(`/editpost/${category}&${id}`)
+
+
+  
+// 채팅방 만들기
 const createChatMutation = useMutation((makeChatData:createChat) => createChatRoom(makeChatData), {
   onSuccess: (data) => {
    navigate(`/chat/${data.roomId}`)
@@ -292,8 +295,10 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
         </StInputform>
       </StCommentBox>
       <button onClick={handleDeletePost}>삭제</button>
-        <button onClick={handleEditPost}>수정</button>
-      </Layout>
+
+        <button onClick={moveToUpdate}>수정</button>
+    </Layout>
+
         <Footer/>
         </>
   );

@@ -1,24 +1,19 @@
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 
-const useInput = (): [
-  string,
-  (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
-  () => void
-] => {
-  const [value, setValue] = useState<string>("");
+type ChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
-  const handler = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+const useInput = (initialValue?: string) => {
+  const [value, setValue] = useState<string>(initialValue || "");
+
+  const handler = (e: ChangeEvent) => {
     setValue(e.target.value);
   };
 
   const resetValue = () => {
-    setValue(""); // 값을 초기화하는 함수
+    setValue("");
   };
 
-  return [value, handler, resetValue];
+  return [value, handler, resetValue] as const;
 };
 
 export default useInput;
-
