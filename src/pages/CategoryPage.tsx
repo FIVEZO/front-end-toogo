@@ -41,10 +41,9 @@ export const CategoryPage = () => {
       ["categoryPost", param, country, page],
       fetchData
     );
-
-  if (isLoading) {
   
-    return <Spinner/>;
+  if (isLoading) {
+      return <Spinner />;
   }
   
   if (isError) {

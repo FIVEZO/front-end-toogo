@@ -48,6 +48,10 @@ instance.interceptors.response.use(
   },
   function (error) {
     console.log("응답 에러", error)
+    if(error.message=="Request failed with status code 401"){
+      document.cookie = `access_token=${error.response.headers.accesstoken}; path=/;`;
+      document.cookie = `refresh_token=${error.response.headers.refreshtoken}; path=/`;
+    }
     return Promise.reject(error);
   }
 );
@@ -144,7 +148,7 @@ const getHomePosts = async () => {
 const getCategoryPosts = async (category: number, pageNum: number ) => {
   const response = await instance.get(`api/post/${category}?page=${pageNum}`);
   // console.log("전체 게시글 조회", response)
-  return response.data;
+  return response.data.data;
 }
 
   // 대륙별 게시글 나라조회 ex) api/post/1/한국/list?page=1
