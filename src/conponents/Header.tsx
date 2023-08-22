@@ -1,28 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
-import { RootState } from '../types/login';
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { styled } from "styled-components";
+import { RootState } from "../types/login";
 import "../fonts/Font.css";
-import { LuSearch } from 'react-icons/lu';
-import { HiOutlineBell } from 'react-icons/hi';
-import { RxAvatar } from 'react-icons/rx';
-import { GoPaperAirplane } from 'react-icons/go';
-import HeaderSelect from './HeaderSelect';
+import { LuSearch } from "react-icons/lu";
+import { HiOutlineBell } from "react-icons/hi";
+import { RxAvatar } from "react-icons/rx";
+import { GoPaperAirplane } from "react-icons/go";
+import HeaderSelect from "./HeaderSelect";
 
 function Header() {
   const navigate = useNavigate();
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
-  const state = useSelector((state: RootState) => state.isLogin.isLogin)
+  const state = useSelector((state: RootState) => state.isLogin.isLogin);
   const [keyword, setKeyword] = useState<string>("");
 
-  
   const node = useRef<HTMLDivElement | null>(null); // 창의 바깥부분을 클릭하였을때 창이 사라짐
-  useEffect(() => { 
+  useEffect(() => {
     const clickOutside = (e: MouseEvent) => {
-    if (isSelectOpen && node.current && !node.current.contains(e.target as Node)) setIsSelectOpen(false);};
+      if (
+        isSelectOpen &&
+        node.current &&
+        !node.current.contains(e.target as Node)
+      )
+        setIsSelectOpen(false);
+    };
     document.addEventListener("mousedown", clickOutside);
-    return () => {document.removeEventListener("mousedown", clickOutside);};
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
   }, [isSelectOpen]);
 
   const handleBox2Click = () => {
@@ -34,48 +41,56 @@ function Header() {
   };
 
   const handleEnterKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearchButtonClick();
     }
   };
 
-
   return (
-
     <HeaderContainer>
       <HeaderContainer2>
-      <Logo onClick={() => navigate('/')}>오이여행</Logo>
-      <SearchContainer>
-        <SearchInput 
-          type="text" 
-          placeholder="검색어를 입력해주세요."
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          onKeyPress={handleEnterKeyPress}
-        />
-        <SearchButton onClick={handleSearchButtonClick}>
-          <LuSearch color='white' size='17px'/>
-        </SearchButton>
-      </SearchContainer>
-      {state ? (
-        <LoginConditionButtons>
-          <Bell><HiOutlineBell color='#403F4E' size='24px'/></Bell>
-          <DM onClick={() => navigate('/chat/main')}><GoPaperAirplane size='23px' style = {{transform: 'rotate(-27deg)' }}/></DM>
-          <div ref={node}>
-          <Profile onClick={handleBox2Click}><RxAvatar color='#403F4E' size='26px'/></Profile>
-          <HeaderSelect position={"absolute"} isSelectOpen={isSelectOpen}/>
-          </div>
-        </LoginConditionButtons>
-      ) : (
-        <LogoutConditionButtons>
-          <SignupButton onClick={() => navigate('/signup')}>회원가입</SignupButton>
-          <Line>|</Line>
-          <LoginButton onClick={() => navigate('/login')}>로그인</LoginButton>
-        </LogoutConditionButtons>
-      )}
+        <Logo onClick={() => navigate("/")}>오이여행</Logo>
+        <SearchContainer>
+          <SearchInput
+            type="text"
+            placeholder="검색어를 입력해주세요."
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyPress={handleEnterKeyPress}
+          />
+          <SearchButton onClick={handleSearchButtonClick}>
+            <LuSearch color="white" size="17px" />
+          </SearchButton>
+        </SearchContainer>
+        {state ? (
+          <LoginConditionButtons>
+            <Bell>
+              <HiOutlineBell color="#403F4E" size="24px" />
+            </Bell>
+            <DM onClick={() => navigate("/chat/main")}>
+              <GoPaperAirplane
+                size="23px"
+                style={{ transform: "rotate(-27deg)" }}
+              />
+            </DM>
+            <div ref={node}>
+              <Profile onClick={handleBox2Click}>
+                <RxAvatar color="#403F4E" size="26px" />
+              </Profile>
+              <HeaderSelect position={"absolute"} isSelectOpen={isSelectOpen} />
+            </div>
+          </LoginConditionButtons>
+        ) : (
+          <LogoutConditionButtons>
+            <SignupButton onClick={() => navigate("/signup")}>
+              회원가입
+            </SignupButton>
+            <Line>|</Line>
+            <LoginButton onClick={() => navigate("/login")}>로그인</LoginButton>
+          </LogoutConditionButtons>
+        )}
       </HeaderContainer2>
     </HeaderContainer>
-
   );
 }
 
@@ -94,18 +109,18 @@ const HeaderContainer = styled.header`
 `;
 
 const HeaderContainer2 = styled.div`
-display: flex;
-align-items: center;
-justify-content: space-between;
-width: 100%;
-max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
 `;
 
 const Logo = styled.button`
   background-color: white;
   border: none;
-  color: #2BDE97;
-  font-family: 'Cafe24 Ssurround';
+  color: #2bde97;
+  font-family: "Cafe24 Ssurround";
   font-size: 30px;
   font-weight: 700;
 `;
@@ -118,7 +133,7 @@ const SearchContainer = styled.div`
   position: relative;
   gap: 16px;
   border-radius: 1000px;
-  border: 1px solid  #CFCED7;
+  border: 1px solid #cfced7;
   background: white;
 `;
 
@@ -127,14 +142,13 @@ const SearchInput = styled.input`
   height: 20px;
   margin-left: 24px;
   border: none;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-size: 14px;
   font-weight: 500;
   outline: none;
   &::placeholder {
-       color: #DDDCE3;
-   }
-
+    color: #dddce3;
+  }
 `;
 
 const SearchButton = styled.button`
@@ -142,12 +156,11 @@ const SearchButton = styled.button`
   right: 8px;
   width: 32px;
   height: 32px;
-  background-color: #2BDE97;
+  background-color: #2bde97;
   border: none;
   border-radius: 1000px;
   padding-bottom: 4px;
 `;
-
 
 const LogoutConditionButtons = styled.div`
   display: flex;
@@ -157,7 +170,7 @@ const LogoutConditionButtons = styled.div`
 const SignupButton = styled.button`
   background-color: white;
   border: none;
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -166,32 +179,32 @@ const SignupButton = styled.button`
 const LoginButton = styled.button`
   background-color: white;
   border: none;
-  color: #9A9A9A;
-  font-family: 'Pretendard';
+  color: #9a9a9a;
+  font-family: "Pretendard";
   font-size: 16px;
   font-weight: 400;
   cursor: pointer;
 `;
 
 const Line = styled.div`
-  color: #9A9A9A;
-  font-family: 'Pretendard';
+  color: #9a9a9a;
+  font-family: "Pretendard";
   font-size: 16px;
   font-weight: 400;
   cursor: default;
 `;
 
 const LoginConditionButtons = styled.div`
-  width: 120px;
+  width: 144px;
   height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  gap: 8px;
+  gap: 20px;
   padding: 8px 8px 8px 8px;
   border-radius: 1000px;
-  border: 1px solid  #CFCED7;
+  border: 1px solid #cfced7;
   background: white;
 `;
 
@@ -214,7 +227,7 @@ const DM = styled.button`
   }
 `;
 
-const Profile  = styled.button`
+const Profile = styled.button`
   border: none;
   padding: 0px;
   background-color: white;
