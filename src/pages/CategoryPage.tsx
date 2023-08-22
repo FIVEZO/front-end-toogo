@@ -49,7 +49,7 @@ export const CategoryPage = () => {
     return <p>오류가 발생하였습니다...!</p>;
   }
 
-  const totalPages = 7; // 전체 페이지 수를 가정
+  const totalPages = data.totalPages;
 
   const nextPage = () => {
     if (page < totalPages) setpage(page + 1);
@@ -77,7 +77,7 @@ export const CategoryPage = () => {
         onSelectCountry={handleCountryChange}
       />
       <StCardContainer>
-        {data?.map((item: cardItem) => (
+        {data.data?.map((item: cardItem) => (
           <Cards key={item.id} items={item} />
         ))}
       </StCardContainer>

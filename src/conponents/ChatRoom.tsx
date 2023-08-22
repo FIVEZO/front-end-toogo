@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
-import { IMessage, Client, messageCallbackType} from '@stomp/stompjs';
-import { styled } from 'styled-components';
-import sendButton from '../img/sendButton.jpg'
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { ChatRoomForm } from '../pages/Chat';
-import { deleteChatRoom, fetchChatMessage, fetchChatRoom } from '../api/chatApi';
-import Spinner from './Spinner';
-import { useNavigate, useParams } from 'react-router-dom';
-import { HiDotsVertical } from 'react-icons/hi';
-import 프로필 from '../img/프로필.jpg'
-import { countryImages } from '../img/countryImages';
+import { IMessage, Client, messageCallbackType } from "@stomp/stompjs";
+import { styled } from "styled-components";
+import sendButton from "../img/sendButton.jpg";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { ChatRoomForm } from "../pages/Chat";
+import {
+  deleteChatRoom,
+  fetchChatMessage,
+  fetchChatRoom,
+} from "../api/chatApi";
+import Spinner from "./Spinner";
+import { useNavigate, useParams } from "react-router-dom";
+import { HiDotsVertical } from "react-icons/hi";
+import 프로필 from "../img/프로필.jpg";
+import { countryImages } from "../img/countryImages";
 
 type ReceiveData = {
   message: string;
@@ -47,13 +51,27 @@ export const ChatRoom = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const date = new Date();
-  const nowHours = (String(date.getHours()).padStart(2, '0')) + ":" + (String(date.getMinutes()).padStart(2, '0'));
-  const [modal, setModal]= useState<boolean>(false)
-  const { isLoading: isLoading1, isError:isError1, data: chatMessages } = useQuery<ChatRoomForm[]>(['chatMessage',roomCode], ()=>fetchChatMessage(roomCode!));
-  const { isLoading: isLoading2, isError:isError2, data: chatRoomIn } = useQuery(['chatroom',roomCode], ()=>fetchChatRoom(roomCode!));
-  const countryImage = countryImages[chatRoomIn?.country] || countryImages['한국']
+  const nowHours =
+    String(date.getHours()).padStart(2, "0") +
+    ":" +
+    String(date.getMinutes()).padStart(2, "0");
+  const [modal, setModal] = useState<boolean>(false);
+  const {
+    isLoading: isLoading1,
+    isError: isError1,
+    data: chatMessages,
+  } = useQuery<ChatRoomForm[]>(["chatMessage", roomCode], () =>
+    fetchChatMessage(roomCode!)
+  );
+  const {
+    isLoading: isLoading2,
+    isError: isError2,
+    data: chatRoomIn,
+  } = useQuery(["chatroom", roomCode], () => fetchChatRoom(roomCode!));
+  const countryImage =
+    countryImages[chatRoomIn?.country] || countryImages["한국"];
 
-// console.log("chatMessages", chatMessages)
+  // console.log("chatMessages", chatMessages)
 
   // 채팅방 삭제하기
   const deleteChatMutation = useMutation((id: number) => deleteChatRoom(id), {
@@ -193,8 +211,12 @@ export const ChatRoom = () => {
           {modal && <StModal onClick={deleteChat}>채팅방 나가기</StModal>}
         </div>
       </StChatReceiver>
-      <StPost onClick={()=>navigate(`/detailpage/${chatRoomIn?.category}&${chatRoomIn?.postId}`)}>
-        <StCountryImg src={countryImage}/>
+      <StPost
+        onClick={() =>
+          navigate(`/detailpage/${chatRoomIn?.category}&${chatRoomIn?.postId}`)
+        }
+      >
+        <StCountryImg src={countryImage} />
         <StPostTitle>{`[${chatRoomIn?.country}]  ${chatRoomIn?.title}`}</StPostTitle>
       </StPost>
       <StChatContainer ref={chatContainerRef}>
@@ -299,27 +321,26 @@ const StModal = styled.div`
 `;
 
 const StPost = styled.div`
-background-color: #F4F5F6;
-font-size: 16px;
-height:80px;
-border-bottom: 1px solid #DDDCE3;
-padding:16px 24px;
-display: flex;
+  background-color: #f4f5f6;
+  font-size: 16px;
+  height: 80px;
+  border-bottom: 1px solid #dddce3;
+  padding: 16px 24px;
+  display: flex;
   align-items: center;
   cursor: pointer;
-`
+`;
 
 const StCountryImg = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 8px;
-
-`
+`;
 const StPostTitle = styled.span`
-  font-size:16px;
-  margin-left:24px;
- font-weight:700;
-`
+  font-size: 16px;
+  margin-left: 24px;
+  font-weight: 700;
+`;
 
 const StChatContainer = styled.div`
   width: 716px;
