@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 
-const useInput = (): [string, (e: React.ChangeEvent<HTMLInputElement>) => void, () => void] => {
+const useInput = (): [
+  string,
+  (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
+  () => void
+] => {
   const [value, setValue] = useState<string>("");
 
-  const handler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const newValue : string = e.target.value
+  const handler = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setValue(e.target.value);
   };
 
