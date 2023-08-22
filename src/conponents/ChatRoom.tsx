@@ -154,10 +154,10 @@ export const ChatRoom = () => {
   };
 
   useEffect(() => {
-    setBeforeChat(chatMessages);
+    queryClient.invalidateQueries("chatroom");
     connect();
     setChatList([]);
-    queryClient.invalidateQueries("chatroom");
+   
     return () => {
       disConnect(); // 웹소켓 연결 해제
       setBeforeChat([]); // beforeChat 상태 초기화

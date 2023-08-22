@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addComment, deleteComment, getDetailPosts, postScrap } from '../api/api';
+import { addComment, deleteComment, deletePost, editComment, editPost, getDetailPosts, postScrap } from '../api/api';
 import { styled } from 'styled-components';
 import useInput from '../hooks/useInput';
 import { countryImages } from '../img/countryImages';
@@ -17,7 +17,6 @@ import { createChat } from '../types/posts';
 import 댓글프로필 from '../img/댓글프로필.jpg'
 import Input from '../conponents/Input';
 import moment from 'moment';
-import { HiDotsHorizontal } from "react-icons/hi";
 import { useEffect, useRef, useState } from 'react';
 
 
@@ -41,19 +40,11 @@ export const DetailPage = () => {
   let postId = "";
   const queryClient = useQueryClient();
   const [comment, handleCommentChange, resetComment] = useInput();
-  const [modal, setModal]= useState<boolean>(false)
+  const [editcomment, handleEditCommentChange, resetEditComment] = useInput();
+  const [editInput, setEditInput] = useState<boolean | number>(false)
 
-  const node = useRef<HTMLDivElement | null>(null); // 창의 바깥부분을 클릭하였을때 창이 사라짐
-  useEffect(() => {
-    const clickOutside = (e: MouseEvent) => {
-      if (modal && node.current && !node.current.contains(e.target as Node))
-        setModal(false);
-    };
-    document.addEventListener("mousedown", clickOutside);
-    return () => {
-      document.removeEventListener("mousedown", clickOutside);
-    };
-  }, [modal]);
+
+
 
   const navigate = useNavigate();
   const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
@@ -78,14 +69,34 @@ const handleScrap = () => {
   if (param?.includes("&")) {
     [category, postId] = param.split("&");
   }
+
+  // ----------------------------------------게시물 삭제
+  const deletePostMutation = useMutation(
+    (data: { category: number; postId: number }) =>
+      deletePost(data.category, data.postId)
+  );
+
+  const handleDeletePost = () => {
+    deletePostMutation.mutate({ category: Number(category), postId: Number(postId) });
+  };
+  // ----------------------------------------게시글 수정
+  const editPostMutation = useMutation(
+    (data: { category: number; postId: number }) =>
+      editPost(data.category, data.postId)
+  );
+
+  const handleEditPost = () => {
+    editPostMutation.mutate({ category: Number(category), postId: Number(postId) });
+  };
+
   
-// 채팅방 만들기
+// ----------------------------------------채팅방 만들기
 const createChatMutation = useMutation((makeChatData:createChat) => createChatRoom(makeChatData), {
   onSuccess: (data) => {
    navigate(`/chat/${data.roomId}`)
   }
 });
-  
+  // ---------------------------------------- 댓글
   const commentMutation = useMutation((comment:string) => addComment(+category, +postId, comment), {
     onSuccess: () => {
       queryClient.invalidateQueries("detailPost")
@@ -99,8 +110,15 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
       queryClient.invalidateQueries('detailPost');
       console.log('댓글 삭제 완료!');
     },
-  }
-  );
+  });
+  const editCommentMutation = useMutation((commentId:number) =>editComment(+category, +postId, commentId, editcomment),{
+    onSuccess: () => {
+      queryClient.invalidateQueries('detailPost');
+      setEditInput(false)
+      resetEditComment()
+      console.log('댓글 수정 완료!');
+    },
+  });
   
   if (isLoading) {
     return <Spinner/>;
@@ -138,6 +156,20 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
     deleteCommentMutation.mutate(commentId);
   };
 
+  const handleEditComment = (commentId: number) => { // 댓글 삭제
+    editCommentMutation.mutate(commentId);
+  };
+
+
+  const handleEditToggle = (commentId: number) => { // 댓글 수정 인풋 토글
+    if(editInput){
+      setEditInput(false)
+      resetEditComment()
+    }else{
+      setEditInput(commentId)
+    }
+  };
+
   const handleCopyClipBoard = async () => {// 페이지 url복사
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -146,6 +178,7 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
       console.log(err);
     }
   };
+
  
 
   return (
@@ -205,14 +238,22 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
           <StCommentList key={item.id}>
             <StProfileImg src={댓글프로필} alt='프로필사진'/>
             <StContents>
-              <StComment>{item.comment}</StComment>
+              
+              {editInput==item.id?
+              <Input placeholder={'수정할 댓글을 적어주세요'} size={'editComment'} type={'text'} value={editcomment} onChange={handleEditCommentChange}/>
+              :<StComment>{item.comment}</StComment>}
+              
               <StCommentNickName>{`${item.nickname}`}</StCommentNickName>
-              <StTime>{`  ·  ${moment(item.createdAt).format("YYYY.MM.DD HH:mm")}`}</StTime>
+              <StTime>{` · ${moment(item.createdAt).format("YYYY.MM.DD HH:mm")}`}</StTime>
+              {item.nickname==myNickName&&
+              <StCommentButtonSet>
+              <StDeleteButton onClick={() => handleDeleteComment(item.id)}> · 삭제</StDeleteButton>
+              {editInput==item.id&&<StDeleteButton onClick={() => handleEditComment(item.id)}> · 완료</StDeleteButton> }   
+            <StDeleteButton onClick={() => handleEditToggle(item.id)}>{editInput==item.id?" · 취소":" · 수정"}</StDeleteButton> 
+            </StCommentButtonSet>}
+              
             </StContents>
-            <StCommentModal ref={node}>
-            <StDeleteButton onClick={() => setModal((pre) => !pre)}><HiDotsHorizontal/></StDeleteButton>
-            
-            </StCommentModal>
+              
           </StCommentList>
         ))}
         <StInputform onSubmit={commentHandler}>
@@ -221,7 +262,9 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
           <Button color={comment?'detailBtn':'negativeDetailBtn'} size={"addComment"} name={"등록하기"} disabled={!comment}/>
         </StInputform>
       </StCommentBox>
-    </Layout>
+      <button onClick={handleDeletePost}>삭제</button>
+        <button onClick={handleEditPost}>수정</button>
+      </Layout>
         <Footer/>
         </>
   );
@@ -440,6 +483,7 @@ const StCommentList = styled.div`
 
 const StContents = styled.div`
   margin-left:20px;
+  width:100%;
 `;
 
 const StInputform = styled.form`
@@ -450,14 +494,13 @@ const StInputform = styled.form`
 `;
 
 
-const StCommentButton = styled.button`
-  
+const StCommentButtonSet = styled.span`
+  margin-right:auto;
 `;
 const StComment = styled.div`
   font-size:20px;
   height:70px;
   width:100%;
-  margin-right:55px;
 `;
 
 const StCommentNickName = styled.span`
@@ -470,11 +513,10 @@ const StTime = styled.span`
   color:#9A9A9A;
 `;
 
-const StCommentModal = styled.div`
-  margin-left: auto;
-`;
-const StDeleteButton = styled.div`
-  font-size:30px;
+
+const StDeleteButton = styled.span`
+  font-size: 20px;
   color:#9A9A9A;
   cursor: pointer;
 `;
+
