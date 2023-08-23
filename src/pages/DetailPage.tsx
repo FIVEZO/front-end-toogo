@@ -18,6 +18,8 @@ import 댓글프로필 from '../img/댓글프로필.jpg'
 import Input from '../conponents/Input';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../types/login';
 
 function getCookie(cookieName: string) {
   var cookieValue = null;
@@ -35,7 +37,9 @@ function getCookie(cookieName: string) {
 
 export const DetailPage = () => {
   const myNickName = getCookie("nickname");
-  const param = useParams().id;
+  const state = useSelector((state: RootState) => state.isLogin.isLogin);
+  const param = Number(useParams().id);
+  const params = useParams().id;
   let category = "";
   let postId = "";
   const queryClient = useQueryClient();
@@ -70,8 +74,8 @@ const handleScrap = () => {
     [key: number]: string;
   }
 
-  if (param?.includes("&")) {
-    [category, postId] = param.split("&");
+  if (params?.includes("&")) {
+    [category, postId] = params.split("&");
   }
 
   // ----------------------------------------게시물 삭제
@@ -290,9 +294,11 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
           <Button color={comment?'detailBtn':'negativeDetailBtn'} size={"addComment"} name={"등록하기"} disabled={!comment}/>
         </StInputform>
       </StCommentBox>
-      <button onClick={handleDeletePost}>삭제</button>
-
-        <button onClick={moveToUpdate}>수정</button>
+      <DelateButtonBox>
+      {state && myNickName === nickname ? <DelateButton onClick={handleDeletePost}>삭제하기</DelateButton> : null}
+      {state && myNickName === nickname ? <DelateButton onClick={moveToUpdate}>수정하기</DelateButton> : null}
+     
+      </DelateButtonBox>
     </Layout>
 
         <Footer/>
@@ -302,6 +308,33 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
 
 // onClick={()=>handleDeleteComment(item.id)}
 
+const DelateButtonBox = styled.div`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+
+`
+const DelateButton = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+   width: 370px;
+  height: 70px;
+  flex-grow: 0;
+  margin: 80px 24px 0 0;
+  border-radius: 5.1px;
+  border: solid 1px #000;
+  font-family: Pretendard;
+  font-size: 24px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #403f4e;
+  cursor: pointer;
+`
 const ShaerBox = styled(FiShare2)`
   width: 28px;
   height: 30px;
@@ -403,22 +436,22 @@ const AreaBox = styled.div`
 
 const ContentBox = styled.div`
   width: 753px;
-  height: 149px;
+  height: 550px;
   font-family: Pretendard;
   font-size: 20px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  margin-top: 20px;
   line-height: 1.2;
   letter-spacing: normal;
   text-align: left;
   color: #484848;
+  word-break: break-all;
+    overflow: auto;
 `;
 
 const DateBox = styled.div`
   width: 753px;
   height: 160px;
-  margin: 20px 0 20px 0;
+  margin-top: 20px;
   border-radius: 8px;
   background-color: #f4f5f6;
 `;
