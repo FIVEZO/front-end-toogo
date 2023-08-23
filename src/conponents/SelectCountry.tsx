@@ -56,14 +56,27 @@ const SelectContainer = styled.div`
   padding: 32px;
 `
 
+// const StSelects = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap:12px;
+//   width: 260px;
+//   margin: 8px 0;
+// `
 const StSelects = styled.div`
   display: flex;
   align-items: center;
-  gap:12px;
+  gap: 12px;
   width: 260px;
   margin: 8px 0;
-`
+  cursor: pointer; /* Add cursor pointer to indicate clickable */
+  transition: background-color 0.3s ease-in-out; /* Add smooth transition for background color change */
 
+  &:hover {
+    background-color: #f0f0f0; /* Change background color on hover */
+  }
+
+`;
 const StCountry = styled.div`
 
 `

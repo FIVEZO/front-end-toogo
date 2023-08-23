@@ -41,7 +41,7 @@ function getCookie(cookieName: string) {
   
   chatInstance.interceptors.response.use(
     function (response) {
-      console.log("응답 완료", response)
+      // console.log("응답 완료", response)
   
       return response;
     },
@@ -60,13 +60,13 @@ function getCookie(cookieName: string) {
   // 채팅방 목록 가져오기
 const fetchChatRooms = async () => {
     const response = await chatInstance.get(`/api/rooms`);
-    // console.log("채팅방 목록 조회", response)
+    console.log("채팅방 목록 조회", response)
   return response.data;
   }
   // 단일 채팅방 선택 조회
 const fetchChatRoom = async (roomId:string) => {
     const response = await chatInstance.get(`/api/room/${roomId}`);
-    // console.log("단일 채팅방 선택 조회", response)
+    console.log("단일 채팅방 선택 조회", response)
   return response.data;
   }
   
@@ -88,7 +88,7 @@ const fetchChatRoom = async (roomId:string) => {
 // 기존 대화 내역 조회
 const fetchChatMessage = async (roomId:string) => {
   const response = await chatInstance.get(`api/room/${roomId}/message`);
-  // console.log("대화 내역 조회", response)
+  console.log("대화 내역 조회", response)
 return response.data;
 }
 

@@ -15,6 +15,7 @@ const Map: React.FC<{
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [markerPosition, setMarkerPosition] = useState<google.maps.LatLng | null>(null);
   
+  
   useEffect(() => {
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapApiKey}&libraries=places`;
@@ -65,7 +66,7 @@ const Map: React.FC<{
               position: markerPosition,
               map: newMap,
               title: 'Your Location',
-              draggable: true,
+              draggable: false,
             });
   
             marker.addListener('dragend', () => {
@@ -157,20 +158,24 @@ const Map: React.FC<{
     }
   };
 
-  const handleSearch = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (map && searchQuery) {
-      const placesService = new google.maps.places.PlacesService(map);
-      placesService.textSearch({ query: searchQuery }, (results, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && results && results.length > 0) {
-          const place = results[0];
-          const location = place.geometry?.location;
 
-          if (location) {
-            updatePin(location);
+  
+  const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (map && searchQuery) {
+        const placesService = new google.maps.places.PlacesService(map);
+        placesService.textSearch({ query: searchQuery }, (results, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK && results && results.length > 0) {
+            const place = results[0];
+            const location = place.geometry?.location;
+  
+            if (location) {
+              updatePin(location);
+            }
           }
-        }
-      });
+        });
+      }
     }
   };
 
@@ -178,9 +183,14 @@ const Map: React.FC<{
     <div>
       <div>
       <InputContainer>
-        <InputField type="text" placeholder="위치에 대한 설명을 적어주세요" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+        <InputField 
+        type="text" 
+        placeholder="위치에 대한 설명을 최대한 상세히 적어주세요 ex:프랑스 파리 에펠탑 " 
+        value={searchQuery} 
+        onChange={(e) => setSearchQuery(e.target.value)} 
+        onKeyDown={handleSearch} 
+        />
       </InputContainer>
-        <button onClick={handleSearch}>Search</button>
       </div>
       <div ref={mapRef} style={{ width: '100%', height: '480px' }} />
     </div>
