@@ -263,6 +263,7 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
 
 <NickBox>
         <StNickname>{nickname} <div className="Line" />
+        <Stdiv>안녕하세요 반갑습니다. 안녕하세요 반갑습니다. 안녕하세요 반갑습니다. 안녕하세요 반갑습니다.안녕하세요 반갑습니다. 안녕하세요 반갑습니다.</Stdiv>
       </StNickname>
       <Button
         color={nickname==myNickName?'negativeDetailBtn':'detailBtn'} 
@@ -519,10 +520,15 @@ const StNickname = styled.div`
     width: 325px;
     height: 1px;
     flex-grow: 0;
-    margin: 27px 0 37px;
+    margin: 27px 0 16px;
     background-color: rgba(0, 0, 0, 0.1);
   }
 `;
+
+const Stdiv = styled.div`
+  width: 325px;
+  font-size: 16px;
+`
 
 const StCountry = styled.div`
   font-family: Pretendard;
