@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import { LuEyeOff } from 'react-icons/lu';
+import styled from "styled-components";
+import { LuEyeOff } from "react-icons/lu";
 
-import React from 'react';
-import Button from './Button';
+import React from "react";
+import Button from "./Button";
 
 type InputProps = {
   placeholder: string;
@@ -11,28 +11,30 @@ type InputProps = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   size: string;
   color?: string;
-  variant?: 'default' | 'eyeIcon' | 'button';
+  variant?: "default" | "eyeIcon" | "button";
   name?: string;
   required?: boolean;
   onButtonClick?: (event: React.FormEvent<Element>) => void;
 };
 
-const sizeHandler = (size: InputProps['size']) => {
+const sizeHandler = (size: InputProps["size"]) => {
   switch (size) {
-    case 'signup':
-        return `width: 384px; height: 46px; margin-bottom: 16px;`;
-    case 'postTitle':
-        return `width: 100%; height: 70px; margin: 40px 0`;
-    case 'comment':
-        return `width:100%; height: 80px; margin: 0 24px; font-size: 20px;`;
-    case 'editComment':
-        return `width:100%; height: 50px; font-size: 20px; margin-bottom : 20px `;
-    case 'postContents':
-        return `width: 100%; height: 190px; margin: 40px 0`;
+    case "signup":
+      return `width: 384px; height: 46px; margin-bottom: 16px;`;
+    case "nicknameChange":
+      return `width: 384px; height: 46px; margin-bottom: 8px;`;
+    case "postTitle":
+      return `width: 100%; height: 70px; margin: 40px 0`;
+    case "comment":
+      return `width:100%; height: 80px; margin: 0 24px; font-size: 20px;`;
+    case "editComment":
+      return `width:100%; height: 50px; font-size: 20px; margin-bottom : 20px `;
+    case "postContents":
+      return `width: 100%; height: 190px; margin: 40px 0`;
     default:
-        return `width: 384px; height: 46px;`;
-    }
-}
+      return `width: 384px; height: 46px;`;
+  }
+};
 
 const Input: React.FC<InputProps> = ({
   placeholder,
@@ -40,15 +42,13 @@ const Input: React.FC<InputProps> = ({
   value,
   onChange,
   size,
-  variant = 'default',
+  variant = "default",
   name,
   color,
   required,
   onButtonClick,
 }) => {
-
-    
- // 일반 인풋
+  // 일반 인풋
   const renderInput = () => (
     <InputContainer size={size} color={color}>
       <InputField
@@ -73,7 +73,7 @@ const Input: React.FC<InputProps> = ({
     </InputContainer>
   );
 
-    // 인풋안에 버튼
+  // 인풋안에 버튼
   const renderButton = () => (
     <InputContainer size={size} color={color}>
       <InputField
@@ -84,23 +84,21 @@ const Input: React.FC<InputProps> = ({
       />
       {onButtonClick && (
         <CustomButton
-          color={value? "on" : 'negative'}
-          margin='0 6px 0 0'
+          color={value ? "on" : "negative"}
+          margin="0 6px 0 0"
           onClick={onButtonClick}
           size={"small"}
           name={name}
         />
-        
-        
       )}
     </InputContainer>
   );
 
   const renderVariant = () => {
     switch (variant) {
-      case 'eyeIcon':
+      case "eyeIcon":
         return renderEyeIcon();
-      case 'button':
+      case "button":
         return renderButton();
       default:
         return renderInput();
@@ -112,27 +110,26 @@ const Input: React.FC<InputProps> = ({
 
 export default Input;
 
-const InputContainer = styled.div<{ size: string , color?: string }>`
-
+const InputContainer = styled.div<{ size: string; color?: string }>`
   ${({ size }) => sizeHandler(size)};
-  border: 1px solid ${({ color }) => (color)};
+  border: 1px solid ${({ color }) => color};
   border-radius: 8.53px;
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   position: relative;
   /* box-shadow: 3px 0px 15px #c1c1c1; */
 `;
 
 const InputField = styled.input`
-  margin-left: 16px;
+  margin-left: 15px;
   font-size: 16px;
-  color: #403F4E;
+  color: #403f4e;
   border: none;
   outline: none;
   flex: 1;
   &::placeholder {
-    color: #dddce3; 
+    color: #dddce3;
   }
 `;
 

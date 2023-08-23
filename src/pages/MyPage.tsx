@@ -11,6 +11,7 @@ import { Cards } from "../conponents/Cards";
 import { cardItem } from "../types/posts";
 import Footer from "../conponents/Footer";
 import Spinner from "../conponents/Spinner";
+import "../fonts/Font.css";
 
 export const MyPage = () => {
   const [activeTab, setActiveTab] = useState("postList");
@@ -108,9 +109,9 @@ export const MyPage = () => {
           <PenIconBox onClick={() => navigate("/Account")}>
             <PenIcon />
           </PenIconBox>
-          <NameBox>{nickname}</NameBox>
-          {/* <MailBox>이메일</MailBox> */}
         </MainEmoticon>
+        <NameBox>{nickname}</NameBox>
+        <MailBox>hurshey12@gmail.com</MailBox>
       </InfoBox>
 
       <PageBox>
@@ -152,22 +153,21 @@ export const MyPage = () => {
 };
 
 const InfoBox = styled.div`
-  max-width: 1200px;
+  width: 1200px;
   height: 260px;
-  flex-grow: 0;
-  margin: 80px auto;
-  display: flex;
-  justify-content: center;
+  margin: 80px auto 39px auto;
   align-items: center;
+  flex-direction: column;
+  display: flex;
+  position: relative;
 `;
 
 const MainEmoticon = styled.div`
+  position: relative;
   width: 180px;
-  height: 239px;
-  flex-grow: 0;
+  height: 174px;
+  margin-top: 10.5px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
 `;
 
 const PenIconBox = styled.div`
@@ -194,9 +194,8 @@ const PenIcon = styled(BiSolidPencil)`
 const NameBox = styled.div`
   width: 182.1px;
   height: 28px;
-  flex-grow: 0;
-  font-family: Pretendard;
-  margin: 24px auto 8px auto;
+  font-family: "Pretendard";
+  margin-top: 10.5px;
   font-size: 23.6px;
   font-weight: 600;
   font-stretch: normal;
@@ -204,15 +203,15 @@ const NameBox = styled.div`
   line-height: normal;
   letter-spacing: normal;
   text-align: center;
-  color: #121;
+  color: #112211;
 `;
 
 const MailBox = styled.div`
   width: 182.1px;
   height: 19px;
-  flex-grow: 0;
+  margin-top: 8px;
   opacity: 0.75;
-  font-family: Pretendard;
+  font-family: "Pretendard";
   font-size: 15.8px;
   font-weight: normal;
   font-stretch: normal;
@@ -220,7 +219,7 @@ const MailBox = styled.div`
   line-height: normal;
   letter-spacing: normal;
   text-align: center;
-  color: #121;
+  color: #112211;
 `;
 
 const PageBox = styled.div`
