@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useInput from "../hooks/useInput";
 import { useMutation, useQuery } from "react-query";
 import {  editPost, getDetailPosts } from "../api/api";
@@ -15,9 +15,11 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   selectedCountryState,
   selectedDateState,
-} from "../recoil/post/NavigationBar";
+} from "../recoil/NavigationBar";
+import { peplecountState } from "../recoil/peplecountState";
 
 function EditPost() {
+
   const param = useParams().id;
   let category = "";
   let postId = "";
@@ -25,15 +27,21 @@ function EditPost() {
   const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
   getDetailPosts(+category, +postId)
   );
-  const [title, handleTitleChange] = useInput(data.title);
-  const [contents, handleContentsChange] = useInput(data.contents);
-  const [meetDate, handleMeetDateChange] =  useInput();
+
+  const [title, setTitle] = useState(data.title);
+  const [contents, setContents] = useState(data.contents);
+  const [showAlert, setShowAlert] = useState(false);
+  const [showContentsAlert, setShowContentsAlert] = useState(false);
 
   if (param?.includes("&")) {
     [category, postId] = param.split("&");
   }
   
+  const peple = useRecoilValue(peplecountState);
+  const [, setPeple] = useRecoilState(peplecountState);
   const selectedCountry = useRecoilValue(selectedCountryState);
+  const [, setFormattedDate] = useRecoilState(selectedDateState);
+  const [, setSelectedCountry] = useRecoilState(selectedCountryState);
   const formattedDate = useRecoilValue(selectedDateState);
   const [MarkerPosition, setMarkerPosition] =
     useState<null | locationFormValues>(null);
@@ -50,23 +58,50 @@ function EditPost() {
       setMarkerPosition(newPosition);
     }
   };
+  // 제목 30자 이상 안넘어가게하는 핸들러
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = event.target.value;
 
+    if (newTitle.length <= 20) {
+      setTitle(newTitle);
+      setShowAlert(false);
+    } else {
+      setShowAlert(true);
+    }
+  };
 
- console.log("data",data)
-
-
+  const handleContentsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newContents = event.target.value;
+  
+    if (newContents.length <= 1000) {
+      setContents(newContents);
+      setShowContentsAlert(false);
+    } else {
+      setShowContentsAlert(true);
+    }
+  };
   // ----------------------------------------게시글 수정
   const editPostMutation = useMutation(
     (postData: postFormValues) =>
-      editPost(+category, +postId, postData)
-  );
+      editPost(+category, +postId, postData),
+      {
+        onSuccess: () => {
+          navigate(-1)
+          setFormattedDate("");
+          setSelectedCountry("");
+          setPeple(0);
+        },
+      }
+  );  
   
 
-  const handleEditPost = () => {
+  const handleEditPost = (event: React.FormEvent) => {
+    event.preventDefault();
 
     const postData: postFormValues = {
       title,
       contents,
+      peple,
       country: selectedCountry,
       meetDate: formattedDate,
       latitude: latitudeMarkerPosition,
@@ -75,21 +110,29 @@ function EditPost() {
     
     editPostMutation.mutate(postData);
   };
+  useEffect(() => {
+    setFormattedDate("");
+    setSelectedCountry("");
+    setPeple(0);
+  }, []); 
 
   return (
     <div>
 
     <Header/>
-    <NavigationBox/>
+    <NavigationBox id={+category} />
     <Layout>
 
   
-      <StInputLabel>제목</StInputLabel>
-      <Input type={"text"} placeholder="제목을 입력해주세요" value={title} onChange={handleTitleChange} size={"postTitle"} color={'#cfced7'}/>
-
+    <StInputLabel>제목</StInputLabel>
+      <Input type="text" placeholder="제목을 입력해주세요" value={title} onChange={handleTitleChange} size={"postTitle"} color={'#cfced7'} maxLength={20} />
+      {showAlert && <div style={{ color: 'red' }}>20자 이내로 작성해 주세요.</div>}
+      
       <StInputLabel>내용</StInputLabel>
-      <ContentInput placeholder="내용을 입력해주세요"  value={contents} onChange={handleContentsChange} />
-
+      <ContentInput placeholder="내용을 입력해주세요"  value={contents} onChange={handleContentsChange}  maxLength={1000}/>
+      {showContentsAlert && (
+  <div style={{ color: 'red' }}>1000자 이내로 작성해 주세요.</div>
+)}
       <StInputLabel>위치</StInputLabel>
       <Map onMarkerPosition={MarkerPosition} onMarkerPositionChange={handleMarkerPositionChange}/>
       

@@ -14,6 +14,7 @@ type InputProps = {
   variant?: 'default' | 'eyeIcon' | 'button';
   name?: string;
   required?: boolean;
+  maxLength?: number;
   onButtonClick?: (event: React.FormEvent<Element>) => void;
 };
 
@@ -44,6 +45,7 @@ const Input: React.FC<InputProps> = ({
   name,
   color,
   required,
+  maxLength,
   onButtonClick,
 }) => {
 

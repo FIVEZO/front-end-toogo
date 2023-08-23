@@ -9,10 +9,12 @@ import { HiOutlineBell } from "react-icons/hi";
 import { RxAvatar } from "react-icons/rx";
 import { GoPaperAirplane } from "react-icons/go";
 import HeaderSelect from "./HeaderSelect";
+import BudgetModal from "./BudgetModal";
 
 function Header() {
   const navigate = useNavigate();
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
+  const [budgetOpen, setBudgetOpen] = useState<boolean>(false);
   const state = useSelector((state: RootState) => state.isLogin.isLogin);
   const [keyword, setKeyword] = useState<string>("");
 
@@ -35,7 +37,30 @@ function Header() {
   const handleBox2Click = () => {
     setIsSelectOpen(!isSelectOpen);
   };
+  // --------------------------------------------------------------------------------
 
+
+  const buge = useRef<HTMLDivElement | null>(null); // 창의 바깥부분을 클릭하였을때 창이 사라짐
+  useEffect(() => {
+    const clickOutside = (e: MouseEvent) => {
+      if (
+        budgetOpen &&
+        buge.current &&
+        !buge.current.contains(e.target as Node)
+      )
+      setBudgetOpen(false);
+    };
+    document.addEventListener("mousedown", clickOutside);
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, [budgetOpen]);
+
+  const budgetBoxClick = () => {
+    setBudgetOpen(!budgetOpen);
+  };
+
+  // --------------------------------------------------------------------------------
   const handleSearchButtonClick = () => {
     navigate(`/searchpage/?keyword=${keyword}`);
   };
@@ -64,15 +89,18 @@ function Header() {
         </SearchContainer>
         {state ? (
           <LoginConditionButtons>
-            <Bell>
-              <HiOutlineBell color="#403F4E" size="24px" />
-            </Bell>
-            <DM onClick={() => navigate("/chat/main")}>
+            <div ref ={buge}>
+              <Bell onClick={budgetBoxClick}>
+                <HiOutlineBell color="#403F4E" size="24px" />
+              </Bell>
+              <BudgetModal  position={"absolute"} budgetOpen={budgetOpen} />
+            </div>
+            {/* <DM onClick={() => navigate("/chat/main")}>
               <GoPaperAirplane
                 size="23px"
                 style={{ transform: "rotate(-27deg)" }}
               />
-            </DM>
+            </DM> */}
             <div ref={node}>
               <Profile onClick={handleBox2Click}>
                 <RxAvatar color="#403F4E" size="26px" />
@@ -195,13 +223,13 @@ const Line = styled.div`
 `;
 
 const LoginConditionButtons = styled.div`
-  width: 144px;
+  width: 90px;
   height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  gap: 20px;
+  gap: 10px;
   padding: 8px 8px 8px 8px;
   border-radius: 1000px;
   border: 1px solid #cfced7;

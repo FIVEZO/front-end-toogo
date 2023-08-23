@@ -190,7 +190,7 @@ const addPost = async (category: number, postData: postFormValues) => {
 // 게시글 수정
 
 const editPost = async (category: number, postId: number, postData : postFormValues) => {
-  const response = await instance.patch(`api/post/${category}/${postId}`)
+  const response = await instance.patch(`api/post/${category}/${postId}`, postData)
 
   // console.log("게시글 수정", response)
   return response.data;
