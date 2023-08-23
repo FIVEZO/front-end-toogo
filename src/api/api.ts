@@ -40,8 +40,6 @@ instance.interceptors.request.use(
   }
 );
 
-
-
 instance.interceptors.response.use(
   function (response) {
     console.log("응답 완료", response);
@@ -49,15 +47,14 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log("응답 에러", error)
-    if(error.message=="Request failed with status code 401"){
+    console.log("응답 에러", error);
+    if (error.message == "Request failed with status code 401") {
       document.cookie = `access_token=${error.response.headers.accesstoken}; path=/;`;
       document.cookie = `refresh_token=${error.response.headers.refreshtoken}; path=/`;
     }
     return Promise.reject(error);
   }
 );
-
 
 export default instance;
 
@@ -172,7 +169,6 @@ const getCategoryCountryPosts = async (
   return response.data.data;
 };
 
-
 // 게시글 상세페이지 조회
 const getDetailPosts = async (category: number, postId: number) => {
   const response = await instance.get(`api/post/${category}/${postId}`);
@@ -189,8 +185,12 @@ const addPost = async (category: number, postData: postFormValues) => {
 
 // 게시글 수정
 
-const editPost = async (category: number, postId: number, postData : postFormValues) => {
-  const response = await instance.patch(`api/post/${category}/${postId}`)
+const editPost = async (
+  category: number,
+  postId: number,
+  postData: postFormValues
+) => {
+  const response = await instance.patch(`api/post/${category}/${postId}`);
 
   // console.log("게시글 수정", response)
   return response.data;
@@ -284,6 +284,13 @@ const editUser = async (userInformation: string) => {
   return response.data;
 };
 
+// 비밀번호 변경
+const changePassword = async (newPassword: string) => {
+  const response = await instance.post(`api/mypage/pwupdate`, newPassword);
+  // console.log("비밀번호 변경", response)
+  return response.data;
+};
+
 // 마이페이지 스크렙 게시글
 const getScrapPosts = async (pageNum: number) => {
   const response = await instance.get(`api/mypage/scrap/${pageNum}`);
@@ -328,4 +335,5 @@ export {
   getScrapPosts,
   getNote,
   getMyPosts,
+  changePassword,
 };

@@ -8,7 +8,7 @@ import { BiSolidPencil } from "react-icons/bi";
 import Input from "../conponents/Input";
 import useInput from "../hooks/useInput";
 import { useMutation } from "react-query";
-import { nickCheck } from "../api/api";
+import { nickCheck, changePassword } from "../api/api";
 
 export const Account = () => {
   const [activeTab, setActiveTab] = useState("changeNickname");
@@ -22,14 +22,28 @@ export const Account = () => {
     boolean | string
   >(false);
 
+  const newPassword: {
+    password: string;
+  } = {
+    password: "",
+  };
+
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
+  // ---------------------------------------비밀번호 변경
+  const signupMutation = useMutation(changePassword, {
+    onSuccess: () => {
+      alert("비밀번호 변경 완료!");
+    },
+  });
+
   // -------------------------------------------------닉네임 중복확인
   const nickCheckMutation = useMutation(nickCheck, {
     onSuccess: (data) => {
-      console.log(data);
       if (data) {
         setNicknameChecks("사용 가능한 닉네임입니다.");
       } else {
@@ -43,9 +57,30 @@ export const Account = () => {
 
   const nickCheckHandler = (event: FormEvent<Element>) => {
     event.preventDefault();
-    console.log("클릭");
-
     nickCheckMutation.mutate(nickname);
+  };
+
+  //----------------------------------------- 비밀번호 유효성 검사
+  const signupHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    let hasError = false;
+
+    if (!passwordRegex.test(password)) {
+      setPasswordCheck("비밀번호는 8자리 이상, 영문과 숫자를 포함해주세요.");
+      hasError = true;
+    } else {
+      setPasswordCheck(false);
+    }
+
+    if (password !== passwordConfirm) {
+      setPasswordConfirmCheck("비밀번호가 일치하지 않습니다");
+      hasError = true;
+    } else {
+      setPasswordConfirmCheck(false);
+    }
+
+    signupMutation.mutate(newPassword.password);
   };
 
   return (
