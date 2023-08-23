@@ -1,26 +1,46 @@
 import React, { useState, FormEvent } from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import { BiSolidPencil } from "react-icons/bi";
+import { MdClose } from "react-icons/md";
 import Header from "../conponents/Header";
 import Footer from "../conponents/Footer";
-import { ReactComponent as Winking1 } from "../conponents/assets/emoticon/winking1.svg";
-import { ReactComponent as Winking1Big } from "../conponents/assets/emoticon/winking1big.svg";
-import { BiSolidPencil } from "react-icons/bi";
 import Input from "../conponents/Input";
 import useInput from "../hooks/useInput";
-import { useMutation } from "react-query";
-import { nickCheck, changePassword } from "../api/api";
+import { ReactComponent as Winking1 } from "../conponents/assets/emoticon/winking1.svg";
+import { ReactComponent as Winking2 } from "../conponents/assets/emoticon/winking2.svg";
+import { ReactComponent as Winking3 } from "../conponents/assets/emoticon/winking3.svg";
+import { ReactComponent as Winking4 } from "../conponents/assets/emoticon/winking4.svg";
+import { ReactComponent as Winking5 } from "../conponents/assets/emoticon/winking5.svg";
+import { ReactComponent as Winking1Big } from "../conponents/assets/emoticon/winking1big.svg";
+import { ReactComponent as Winking2Big } from "../conponents/assets/emoticon/winking2big.svg";
+import { ReactComponent as Winking3Big } from "../conponents/assets/emoticon/winking3big.svg";
+import { ReactComponent as Winking4Big } from "../conponents/assets/emoticon/winking4big.svg";
+import { ReactComponent as Winking5Big } from "../conponents/assets/emoticon/winking5big.svg";
+import { logOff } from "../redux/modules/loginSlice";
+import { nickCheck, changePassword, logout, deleteUser } from "../api/api";
 
 export const Account = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("changeNickname");
   const [nickname, handleNicknameChange] = useInput();
-  const [introduction, handleIntroductionChange] = useInput();
   const [nicknameChecks, setNicknameChecks] = useState<boolean | string>(false);
+  const [introduction, handleIntroductionChange] = useInput();
+  const [emoticonModalOpen, setemoticonModalOpen] = useState(false);
+  const [cancelmemberModalOpen, setcancelmemberModalOpen] = useState(false);
   const [password, handlePasswordChange] = useInput();
   const [passwordConfirm, handlePasswordConfirmChange] = useInput();
   const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false);
   const [passwordConfirmCheck, setPasswordConfirmCheck] = useState<
     boolean | string
   >(false);
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+  };
 
   const newPassword: {
     password: string;
@@ -30,18 +50,7 @@ export const Account = () => {
 
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
-  const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-  };
-
-  // ---------------------------------------비밀번호 변경
-  const signupMutation = useMutation(changePassword, {
-    onSuccess: () => {
-      alert("비밀번호 변경 완료!");
-    },
-  });
-
-  // -------------------------------------------------닉네임 중복확인
+  //---------------------------------------------------- 닉네임 중복확인 기능
   const nickCheckMutation = useMutation(nickCheck, {
     onSuccess: (data) => {
       if (data) {
@@ -60,7 +69,32 @@ export const Account = () => {
     nickCheckMutation.mutate(nickname);
   };
 
-  //----------------------------------------- 비밀번호 유효성 검사
+  //---------------------------------------------------- 로그아웃 기능
+  const logoutMutation = useMutation(logout, {
+    onSuccess: () => {
+      alert("로그아웃 되었습니다.");
+      dispatch(logOff());
+      navigate("/");
+    },
+  });
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
+
+  //---------------------------------------------------- 회원 탈퇴 기능
+  const deleteUserMutation = useMutation(deleteUser, {
+    onSuccess: (data) => {
+      alert(data.msg);
+      dispatch(logOff());
+      navigate("/");
+    },
+  });
+  const handleDeleteUser = () => {
+    deleteUserMutation.mutate();
+  };
+
+  //---------------------------------------------------- 비밀번호 유효성 검사
   const signupHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -80,8 +114,15 @@ export const Account = () => {
       setPasswordConfirmCheck(false);
     }
 
-    signupMutation.mutate(newPassword.password);
+    pwchangeMutation.mutate(newPassword.password);
   };
+
+  //---------------------------------------------------- 비밀번호 변경 기능
+  const pwchangeMutation = useMutation(changePassword, {
+    onSuccess: () => {
+      alert("비밀번호 변경 완료!");
+    },
+  });
 
   return (
     <div>
@@ -101,18 +142,53 @@ export const Account = () => {
           비밀번호 재설정
         </PostTap>
       </PageBox>
-
+      {/* ----------------------------------------------------------------------------- 내 정보 수정 칸 */}
+      {/* ------------------------------------------------------------------ 이모티콘 수정 */}
       {activeTab === "changeNickname" && (
         <ContentBox>
           <MainEmoticon>
             <Winking1Big />
-            <PenIconBox>
+            <PenIconBox onClick={() => setemoticonModalOpen(true)}>
               <PenIcon />
             </PenIconBox>
           </MainEmoticon>
+          {/* ------------------------------------------------------------------ 이모티콘 선택 모달 */}
+          {emoticonModalOpen && (
+            <EmoticonModalOverlay onClick={() => setemoticonModalOpen(false)}>
+              <EmoticonModalContent onClick={(e) => e.stopPropagation()}>
+                <Emoticons>
+                  <Emoticon>
+                    <Winking1 />
+                    행복
+                  </Emoticon>
+                  <Emoticon>
+                    <Winking2 />
+                    언짢
+                  </Emoticon>
+                  <Emoticon>
+                    <Winking3 />
+                    심심
+                  </Emoticon>
+                  <Emoticon>
+                    <Winking4 />
+                    졸림
+                  </Emoticon>
+                  <Emoticon>
+                    <Winking5 />
+                    놀람
+                  </Emoticon>
+                </Emoticons>
+                <EmoticonModalCloseButton
+                  onClick={() => setemoticonModalOpen(false)}
+                >
+                  <MdClose size="22px" />
+                </EmoticonModalCloseButton>
+              </EmoticonModalContent>
+            </EmoticonModalOverlay>
+          )}
 
           <MailBox>hurshey12@gmail.com</MailBox>
-
+          {/* ------------------------------------------------------------------ 닉네임/소개 수정 구간 */}
           <ChangeNicknameForm>
             <Label>닉네임</Label>
             <Input
@@ -153,12 +229,37 @@ export const Account = () => {
           </ChangeNicknameForm>
           <SaveButton>저장하기</SaveButton>
           <LogoutCancelMembership>
-            <Logout>로그아웃</Logout>|
-            <CancelMembership>회원 탈퇴</CancelMembership>
+            <Logout onClick={handleLogout}>로그아웃</Logout>|
+            <CancelMembership onClick={() => setcancelmemberModalOpen(true)}>
+              회원 탈퇴
+            </CancelMembership>
           </LogoutCancelMembership>
         </ContentBox>
       )}
-
+      {/* ------------------------------------------------------------------ 회원 탈퇴 모달 */}
+      {cancelmemberModalOpen && (
+        <CancelmemberModalOverlay
+          onClick={() => setcancelmemberModalOpen(false)}
+        >
+          <CancelmemberModalContent onClick={(e) => e.stopPropagation()}>
+            <Cancelmemberdiv1>정말 탈퇴하시겠습니까?</Cancelmemberdiv1>
+            <Cancelmemberdiv2>
+              탈퇴하면 모든 정보들이 삭제됩니다.
+            </Cancelmemberdiv2>
+            <CancelmemberButtons>
+              <CancelmemberButton1 onClick={handleDeleteUser}>
+                탈퇴
+              </CancelmemberButton1>
+              <CancelmemberButton2
+                onClick={() => setcancelmemberModalOpen(false)}
+              >
+                취소
+              </CancelmemberButton2>
+            </CancelmemberButtons>
+          </CancelmemberModalContent>
+        </CancelmemberModalOverlay>
+      )}
+      {/* ----------------------------------------------------------------------------- 비밀번호 수정 칸 */}
       {activeTab === "changePassword" && (
         <ContentBox>
           <OriginalPasswordForm>
@@ -286,6 +387,7 @@ const PenIconBox = styled.div`
   align-items: center;
   border-radius: 50%;
   background-color: #2bde97;
+  cursor: pointer;
 `;
 
 const PenIcon = styled(BiSolidPencil)`
@@ -304,6 +406,64 @@ const MailBox = styled.div`
   font-weight: 400;
   line-height: normal;
   margin: 24px auto 52px auto;
+`;
+
+const EmoticonModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const EmoticonModalContent = styled.div`
+  width: 620px;
+  height: 192px;
+  border-radius: 4px;
+  border: 1px solid #cfced7;
+  background-color: white;
+  padding: 0;
+  display: flex;
+  position: relative;
+`;
+
+const EmoticonModalCloseButton = styled.button`
+  position: absolute;
+  border: none;
+  background-color: white;
+  top: 14px;
+  right: 24.76px;
+  padding: 0;
+  width: 14.24px;
+  height: 14.24px;
+`;
+
+const Emoticons = styled.div`
+  width: 557px;
+  height: 107px;
+  margin: 53px 32px 32px 31px;
+  gap: 58px;
+  display: flex;
+`;
+
+const Emoticon = styled.div`
+  width: 65px;
+  height: 107px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  gap: 24px;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 18px;
+  letter-spacing: 0px;
+  text-align: center;
 `;
 
 const ChangeNicknameForm = styled.div``;
@@ -412,6 +572,98 @@ const CancelMembership = styled.button`
   font-weight: 400;
   line-height: 100%;
   padding: 0;
+`;
+
+const CancelmemberModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.6);
+`;
+
+const CancelmemberModalContent = styled.div`
+  width: 420px;
+  height: 256px;
+  border-radius: 8px;
+  border: 1px solid #cfced7;
+  background-color: white;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Cancelmemberdiv1 = styled.div`
+  width: 190px;
+  height: 32px;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-align: center;
+  margin-top: 56px;
+`;
+
+const Cancelmemberdiv2 = styled.div`
+  width: 230px;
+  height: 26px;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0em;
+  text-align: center;
+  margin-top: 12px;
+`;
+
+const CancelmemberButtons = styled.div`
+  width: 265px;
+  height: 48px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 32px;
+`;
+
+const CancelmemberButton1 = styled.button`
+  width: 128px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.20000000298023224px;
+  background-color: white;
+  color: #9a9a9a;
+  border: solid 1px #9a9a9a;
+  border-radius: 8px;
+`;
+
+const CancelmemberButton2 = styled.button`
+  width: 128px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.20000000298023224px;
+  background-color: #2bde97;
+  color: white;
+  border: none;
+  border-radius: 8px;
 `;
 
 const OriginalPasswordForm = styled.div`
