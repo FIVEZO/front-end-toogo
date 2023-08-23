@@ -17,7 +17,7 @@ function HeaderSelect({position, isSelectOpen}:selectForm) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-  const selectList = ['마이페이지', '쪽지함', '스크랩','로그아웃'];
+  const selectList = ['마이페이지',"쪽지함", '로그아웃'];
   
   const logoutMutation = useMutation(logout, {
     onSuccess: () => {
@@ -33,8 +33,6 @@ function HeaderSelect({position, isSelectOpen}:selectForm) {
           return navigate("/mypage")
         case '쪽지함' :
           return navigate("/chat/main")
-        case '스크랩' :
-          return navigate("/")
         case '로그아웃' :
           return logoutMutation.mutate()
         default : 
@@ -65,7 +63,7 @@ border-radius: 16px;
   top : 70px;
   right: 0px;
   width: 243px;
-  height: 216px;
+  height: 162px;
   margin: 0%;
   padding-left: 0; // ul 밑의 li부분은 기본적으로 padding-left값이 있어 이것을 초기화 해줌
   list-style: none; // 목록 마커 삭제

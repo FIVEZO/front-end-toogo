@@ -16,6 +16,8 @@ export interface ChatRoomForm {
     sender : string,
     roomId : string,
     receiver : string,
+    message?:string,
+    createdAt?: string,
   }
 
 export const Chat: React.FC = () => {
@@ -40,6 +42,13 @@ export const Chat: React.FC = () => {
     navigate(`/chat/${room.roomId}`);
 
   };
+
+  // 날짜와 시간을 원하는 형식으로 변환하는 함수
+const formatTime = (dateTimeString: string) => {
+    const dateObject = new Date(dateTimeString);
+    const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
+    return new Intl.DateTimeFormat('en-US', options).format(dateObject);
+  };
     
   return (
     <div>
@@ -54,22 +63,20 @@ export const Chat: React.FC = () => {
                 <StProfileImg src={프로필} alt='프로필사진'/>
                 <StContentsBox>
                     <StReceiverNickname>{room.roomName}</StReceiverNickname>  
-                    <StReceiverMessage>{"오늘 프랑스에 같이 가면 좋을 거 같아서 연락을 드렸..."}</StReceiverMessage>
+                    {room.message&&<StReceiverMessage>{room.message}</StReceiverMessage>}
                 </StContentsBox>
-                <StReceiverTime>{"12:34"}</StReceiverTime>
+                {room.createdAt&&<StReceiverTime>{formatTime(room.createdAt)}</StReceiverTime>}
             </StChatSelect>
               :
             <StChatList key={room.roomId} onClick={() => handleEnterChatRoom(room)}>
                 <StProfileImg src={프로필} alt='프로필사진'/>
                 <StContentsBox>
                     <StReceiverNickname>{room.roomName}</StReceiverNickname>  
-                    <StReceiverMessage>{"오늘 프랑스에 같이 가면 좋을 거 같아서 연락을 드렸..."}</StReceiverMessage>
+                    <StReceiverMessage>{room.message}</StReceiverMessage>
                 </StContentsBox>
-                <StReceiverTime>{"12:34"}</StReceiverTime>
-            </StChatList>
-          
+                {room.createdAt&&<StReceiverTime>{formatTime(room.createdAt)}</StReceiverTime>}
+                </StChatList>
             ))}
-          
             </StChatListContainer>
             <StChatRoomContainer>
                 {roomCode=="main"?
@@ -121,6 +128,7 @@ const StChatSelect = styled.div`
     flex-direction: row;
     cursor: pointer;
     background-color: #f0f0f0;
+
 `
 const StChatList = styled.div`
     font-size: 16px;
@@ -150,11 +158,16 @@ const StReceiverNickname = styled.div`
 const StReceiverMessage = styled.div`
     margin-top:9px;
     font-size: 12px;
+    width:100%;
+    overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
 `
 
 const StReceiverTime = styled.div`
     margin-left:auto;
     font-size: 12px;
+    color: #9a9a9a;
 `
 
 const StChatRoomContainer = styled.div`

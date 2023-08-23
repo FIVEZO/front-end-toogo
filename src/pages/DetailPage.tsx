@@ -42,6 +42,7 @@ export const DetailPage = () => {
   const [comment, handleCommentChange, resetComment] = useInput();
   const [editcomment, handleEditCommentChange, resetEditComment] = useInput();
   const [editInput, setEditInput] = useState<boolean | number>(false)
+  const MAX_COMMENT_LENGTH = 200;
 
 
 
@@ -103,13 +104,19 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
   }
 });
   // ---------------------------------------- 댓글
-  const commentMutation = useMutation((comment:string) => addComment(+category, +postId, comment), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("detailPost")
-      console.log('댓글 작성 완료!');
-      resetComment()
+  const commentMutation = useMutation(
+    (comment: string) => {
+      const truncatedComment = comment.substring(0, MAX_COMMENT_LENGTH);
+      return addComment(+category, +postId, truncatedComment);
     },
-  });
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("detailPost");
+        console.log('댓글 작성 완료!');
+        resetComment();
+      },
+    }
+  );
   
   const deleteCommentMutation = useMutation((commentId:number) =>deleteComment(+category, +postId, commentId),{
     onSuccess: () => {
@@ -117,14 +124,20 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
       console.log('댓글 삭제 완료!');
     },
   });
-  const editCommentMutation = useMutation((commentId:number) =>editComment(+category, +postId, commentId, editcomment),{
-    onSuccess: () => {
-      queryClient.invalidateQueries('detailPost');
-      setEditInput(false)
-      resetEditComment()
-      console.log('댓글 수정 완료!');
+  const editCommentMutation = useMutation(
+    (commentId: number) => {
+      const truncatedEditComment = editcomment.substring(0, MAX_COMMENT_LENGTH);
+      return editComment(+category, +postId, commentId, truncatedEditComment);
     },
-  });
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('detailPost');
+        setEditInput(false);
+        resetEditComment();
+        console.log('댓글 수정 완료!');
+      },
+    }
+  );
   
   if (isLoading) {
     return <Spinner />;
@@ -178,7 +191,7 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
     deleteCommentMutation.mutate(commentId);
   };
 
-  const handleEditComment = (commentId: number) => { // 댓글 삭제
+  const handleEditComment = (commentId: number) => { // 댓글 수정
     editCommentMutation.mutate(commentId);
   };
 
@@ -521,8 +534,14 @@ const StCommentButtonSet = styled.span`
 `;
 const StComment = styled.div`
   font-size:20px;
-  height:70px;
-  width:100%;
+  min-height:60x;
+  width:1100px;
+  margin-bottom:10px;
+  overflow:hidden;
+  word-wrap:break-word;
+  display: -webkit-box; // 얘네를 추가히준다
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 `;
 
 const StCommentNickName = styled.span`
