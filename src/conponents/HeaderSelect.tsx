@@ -17,6 +17,7 @@ function HeaderSelect({position, isSelectOpen}:selectForm) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+
   const selectList = ['마이페이지', '쪽지함', '로그아웃'];
   
   const logoutMutation = useMutation(logout, {
@@ -33,8 +34,6 @@ function HeaderSelect({position, isSelectOpen}:selectForm) {
           return navigate("/mypage")
         case '쪽지함' :
           return navigate("/chat/main")
-        // case '스크랩' :
-        //   return navigate("/")
         case '로그아웃' :
           return logoutMutation.mutate()
         default : 

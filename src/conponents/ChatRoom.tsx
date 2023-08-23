@@ -50,19 +50,31 @@ export const ChatRoom = () => {
   const nickname = getCookie("nickname");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const date = new Date();
-  const nowHours =
-    String(date.getHours()).padStart(2, "0") +
-    ":" +
-    String(date.getMinutes()).padStart(2, "0");
+
+  const formatTime = () => {
+    const dateObject = new Date();
+    const formattedTime = dateObject.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+    return formattedTime;
+};
   const [modal, setModal] = useState<boolean>(false);
+
+
   const {
     isLoading: isLoading1,
     isError: isError1,
     data: chatMessages,
-  } = useQuery<ChatRoomForm[]>(["chatMessage", roomCode], () =>
-    fetchChatMessage(roomCode!)
-  );
+  } = useQuery<ChatRoomForm[]>(["chatMessage", roomCode], () => fetchChatMessage(roomCode!),{
+      onSuccess: () => {
+        
+        // 여기에 데이터 가져오기 성공 후 실행할 작업을 추가할 수 있습니다.
+      },
+    })
+
+  
   const {
     isLoading: isLoading2,
     isError: isError2,
@@ -70,8 +82,6 @@ export const ChatRoom = () => {
   } = useQuery(["chatroom", roomCode], () => fetchChatRoom(roomCode!));
   const countryImage =
     countryImages[chatRoomIn?.country] || countryImages["한국"];
-
-  // console.log("chatMessages", chatMessages)
 
   // 채팅방 삭제하기
   const deleteChatMutation = useMutation((id: number) => deleteChatRoom(id), {
@@ -113,7 +123,6 @@ export const ChatRoom = () => {
         heartbeatIncoming: 4000,
         heartbeatOutgoing: 4000,
       });
-
       clientdata.onConnect = function () {
         console.log("Connect 구독");
         clientdata.subscribe(`/sub/chat/room/${roomCode}`, function (
@@ -161,7 +170,7 @@ export const ChatRoom = () => {
       //메세지 전송
       destination: "/pub/message",
       body: JSON.stringify({
-        sentTime: nowHours,
+        sentTime: formatTime(),
         sender: nickname,
         roomId: roomCode,
         message: chat,
@@ -173,6 +182,7 @@ export const ChatRoom = () => {
 
   useEffect(() => {
     queryClient.invalidateQueries("chatroom");
+    setBeforeChat(chatMessages)
     connect();
     setChatList([]);
    
@@ -194,7 +204,7 @@ export const ChatRoom = () => {
   }, [chats]);
 
   if (isLoading1 || isLoading2) {
-    return <Spinner />;
+    return <Spinner/>;
   }
 
   if (isError1 || isError2) {
@@ -220,8 +230,8 @@ export const ChatRoom = () => {
         <StPostTitle>{`[${chatRoomIn?.country}]  ${chatRoomIn?.title}`}</StPostTitle>
       </StPost>
       <StChatContainer ref={chatContainerRef}>
-        {!!beforeChat &&
-          beforeChat.map((e: any, i: number) =>
+        {!!chatMessages &&
+          chatMessages.map((e: any, i: number) =>
             e.sender == nickname ? ( // 메세지를 보낸사람 확인해서 채팅창 구분
               <StSendMessageBox key={i}>
                 <StSendMessage>
@@ -242,7 +252,6 @@ export const ChatRoom = () => {
               </StReceiveMessageBox>
             )
           )}
-
         {!!chats &&
           chats.map((e: any, i: number) =>
             e.sender == nickname ? ( // 메세지를 보낸사람 확인해서 채팅창 구분
