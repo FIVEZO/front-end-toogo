@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useInput from "../hooks/useInput";
 import { useMutation } from "react-query";
 import { addPost } from "../api/api";
@@ -12,20 +12,23 @@ import Header from "../conponents/Header";
 import Footer from "../conponents/Footer";
 import NavigationBox from "../conponents/NavigationBox";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  selectedCountryState,
-  selectedDateState,
-} from "../recoil/post/NavigationBar";
+import {selectedCountryState,selectedDateState,} from "../recoil/NavigationBar";
+import { peplecountState } from "../recoil/peplecountState";
 
 function Post() {
   const param = Number(useParams().id);
-  const [title, handleTitleChange] = useInput();
-  const [contents, handleContentsChange] = useInput();
-  const [meetDate, handleMeetDateChange] =  useInput();
+  const [title, setTitle] = useState('');
+  const [contents, setContents] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [showContentsAlert, setShowContentsAlert] = useState(false);
+
+  const peple = useRecoilValue(peplecountState);
+  const [, setPeple] = useRecoilState(peplecountState);
   const selectedCountry = useRecoilValue(selectedCountryState);
+  const [, setSelectedCountry] = useRecoilState(selectedCountryState);
   const [, setFormattedDate] = useRecoilState(selectedDateState);
   const formattedDate = useRecoilValue(selectedDateState);
-  const [, setSelectedCountry] = useRecoilState(selectedCountryState);
+
   const [MarkerPosition, setMarkerPosition] =
     useState<null | locationFormValues>(null);
   const [latitudeMarkerPosition, setLatitudeMarkerPosition] =
@@ -42,49 +45,79 @@ function Post() {
     }
   };
 
+  // 제목 30자 이상 안넘어가게하는 핸들러
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = event.target.value;
+
+    if (newTitle.length <= 20) {
+      setTitle(newTitle);
+      setShowAlert(false);
+    } else {
+      setShowAlert(true);
+    }
+  };
+
+  const handleContentsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newContents = event.target.value;
+  
+    if (newContents.length <= 1000) {
+      setContents(newContents);
+      setShowContentsAlert(false);
+    } else {
+      setShowContentsAlert(true);
+    }
+  };
+
   // ----------------------------------------게시글 등록
   const postMutation = useMutation(
     (postData: postFormValues) => addPost(param, postData),
     {
       onSuccess: () => {
-        navigate("/");
+        navigate(-1);
         setFormattedDate("");
         setSelectedCountry("");
+        setPeple(0);
       },
     }
   );
 
   const postHandler = (event: React.FormEvent) => {
     event.preventDefault();
-
-    const postData: postFormValues = {
-      title,
-      contents,
-      country: selectedCountry,
-      meetDate: formattedDate,
-      latitude: latitudeMarkerPosition,
-      longitude: longitudeMarkerPosition,
-    };
-    postMutation.mutate(postData);
+  
+      // 게시글 등록 로직
+      const postData: postFormValues = {
+        title,
+        contents,
+        peple,
+        country: selectedCountry,
+        meetDate: formattedDate,
+        latitude: latitudeMarkerPosition,
+        longitude: longitudeMarkerPosition,
+      };
+      postMutation.mutate(postData);
+  
   };
+
+  useEffect(() => {
+    setFormattedDate("");
+    setSelectedCountry("");
+    setPeple(0);
+  }, []); 
 
   return (
     <div>
 
     <Header/>
-    <NavigationBox/>
+    <NavigationBox id={param} />
     <Layout>
 
-  
       <StInputLabel>제목</StInputLabel>
-      <Input type="text" placeholder="제목을 입력해주세요" value={title} onChange={handleTitleChange} size={"postTitle"} color={'#cfced7'}/>
-
-      {/* <StInputLabel>내용</StInputLabel>
-      <Input type="text" placeholder="내용을 입력해주세요" value={contents} onChange={handleContentsChange} size={'postContents'} color={'#cfced7'}/> */}
-
-
+      <Input type="text" placeholder="제목을 입력해주세요" value={title} onChange={handleTitleChange} size={"postTitle"} color={'#cfced7'} maxLength={20} />
+      {showAlert && <div style={{ color: 'red' }}>20자 이내로 작성해 주세요.</div>}
+      
       <StInputLabel>내용</StInputLabel>
-      <ContentInput placeholder="내용을 입력해주세요"  onChange={handleContentsChange} />
+      <ContentInput placeholder="내용을 입력해주세요"  value={contents} onChange={handleContentsChange}  maxLength={1000}/>
+      {showContentsAlert && (<div style={{ color: 'red' }}>1000자 이내로 작성해 주세요.</div>)}
 
       <StInputLabel>위치</StInputLabel>
       <Map onMarkerPosition={MarkerPosition} onMarkerPositionChange={handleMarkerPositionChange}/>
@@ -92,7 +125,7 @@ function Post() {
       
       <StButtonSet>
         <Button name={"취소"} size={'post'} color={"negative"} onClick={()=>navigate(-1)} />
-        <Button name={"작성완료"} size={'post'} color={""} onClick={postHandler}/>
+        <Button name={"작성완료"} size={'post'} color={""} onClick={postHandler}  />
       </StButtonSet>
       
     </Layout>
@@ -120,6 +153,8 @@ const ContentInput = styled.textarea`
   &::placeholder { 
     color:  #dddce3;;
   }
+  overflow: hidden;
+  white-space: pre-wrap;
 `
 
 const Layout = styled.div`

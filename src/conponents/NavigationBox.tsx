@@ -4,7 +4,7 @@ import { CustomCalendar } from './CustomCalender';
 import SelectCountry from './SelectCountry';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { selectedCountryState, selectedDateState } from '../recoil/post/NavigationBar';
+import { selectedCountryState, selectedDateState } from '../recoil/NavigationBar';
 import HowMany from './HowMany';
 import { peplecountState } from '../recoil/peplecountState';
 import { getDetailPosts } from '../api/api';
@@ -14,38 +14,14 @@ interface InnerBoxProps {
     highlighted: boolean;
   }
 
-  function NavigationBox() {
-    const param = Number(useParams().id);
+  function NavigationBox({ id }: { id: number }) {
     const [selectedCountry, setSelectedCountry] = useRecoilState(selectedCountryState);
     const [selectedBox, setSelectedBox] = useState(0);
     const [isWhele, setIsWhele] = useState(false);
     const [isDate, setIsDate] = useState(false);
     const [isTime, setIsTime] = useState(false);
-    const [selectedTime, setSelectedTime] = useState("");
     const [formattedDate, setFormattedDate] = useRecoilState(selectedDateState);
-    const [peplecount, setPeplecount] = useRecoilState(peplecountState);
-
-
-    const params = useParams().id;
-    let category = "";
-    let postId = "";
-  
-    if (params?.includes("&")) {
-      [category, postId] = params.split("&");
-    }
-  
-    const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
-      getDetailPosts(+category, +postId)
-    );
-  
-    useEffect(() => {
-      if (data) {
-        setSelectedCountry(data.country);
-        setFormattedDate(data.meetDate);
-      }
-    }, [data, setSelectedCountry, setFormattedDate]);
-
-    
+    const [peple, setPeple] = useRecoilState(peplecountState);
 
     const handleBoxClick = (index: number) => {
         setSelectedBox(index);
@@ -60,8 +36,6 @@ interface InnerBoxProps {
         } else if (index === 2) {
           setIsTime(true);
         }
-
-       
       };
             
   return (
@@ -86,7 +60,7 @@ interface InnerBoxProps {
                 <InnerBox onClick={() =>{handleBoxClick(2); setIsTime(true);}} highlighted={selectedBox === 2}>
                 <TextBox>
                         <TextContent>모집 인원</TextContent>
-                        <TextContent2>{peplecount ? `${peplecount}명` : "인원수를 선택해주세요."}</TextContent2>
+                        <TextContent2>{peple ? `${peple}명` : "인원수를 선택해주세요."}</TextContent2>
                     </TextBox>
                 </InnerBox>
             </NavRayout>
@@ -94,15 +68,9 @@ interface InnerBoxProps {
     
         {/* 모달 부분 */}
         <ModalRayout>
-            {isWhele && (
-            <SelectCountry id={param} onClick={setSelectedCountry} />
-            )}
-            {isDate && (
-           <CustomCalendar setFormattedDate={setFormattedDate} /> 
-            )}
-            {isTime && (
-             <HowMany />
-            )}
+          {isWhele && <SelectCountry id={id} onClick={setSelectedCountry} />}
+          {isDate && <CustomCalendar setFormattedDate={setFormattedDate} />}
+          {isTime && <HowMany />}
         </ModalRayout>
     </>
   )
@@ -157,6 +125,7 @@ const InnerBox = styled.div<InnerBoxProps>`
     width: 331px;
     height: 84px;
     display: flex;
+    cursor: pointer;
     padding: 20.4px 140px 20.4px 38px;
   ${({ highlighted }) => highlighted && `
     width: 331px;
