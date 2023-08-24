@@ -20,35 +20,76 @@ import { ReactComponent as Winking3Big } from "../conponents/assets/emoticon/win
 import { ReactComponent as Winking4Big } from "../conponents/assets/emoticon/winking4big.svg";
 import { ReactComponent as Winking5Big } from "../conponents/assets/emoticon/winking5big.svg";
 import { logOff } from "../redux/modules/loginSlice";
-import { nickCheck, changePassword, logout, deleteUser } from "../api/api";
+import {
+  nickCheck,
+  changePassword,
+  logout,
+  deleteUser,
+  editUser,
+} from "../api/api";
+import { editUserFromValue, changePasswordFormValue } from "../types/acount";
 
 export const Account = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("changeNickname");
-  const [nickname, handleNicknameChange] = useInput();
+  const [newNickname, handleNewNickname] = useInput();
+  const [newIntroduction, handleNewIntroduction] = useInput();
+  const [newEmoticon, setNewEmoticon] = useState<string>("");
   const [nicknameChecks, setNicknameChecks] = useState<boolean | string>(false);
-  const [introduction, handleIntroductionChange] = useInput();
   const [emoticonModalOpen, setemoticonModalOpen] = useState(false);
   const [cancelmemberModalOpen, setcancelmemberModalOpen] = useState(false);
+
   const [password, handlePasswordChange] = useInput();
-  const [passwordConfirm, handlePasswordConfirmChange] = useInput();
+  const [newpassword, handleNewPasswordChange] = useInput();
+  const [newpasswordConfirm, handleNewPasswordConfirmChange] = useInput();
+  const [newpasswordCheck, setNewPasswordCheck] = useState<boolean | string>(
+    false
+  );
   const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false);
-  const [passwordConfirmCheck, setPasswordConfirmCheck] = useState<
+  const [newpasswordConfirmCheck, setNewPasswordConfirmCheck] = useState<
     boolean | string
   >(false);
+
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
-  const newPassword: {
-    password: string;
-  } = {
-    password: "",
+  //---------------------------------------------------- 쿠키에서 닉네임,이메일,이모티콘 가져오기
+  function getCookie(cookieName: string) {
+    var cookieValue = null;
+    if (document.cookie) {
+      var array = document.cookie.split(escape(cookieName) + "=");
+      if (array.length >= 2) {
+        var arraySub = array[1].split(";");
+        cookieValue = unescape(arraySub[0]);
+      }
+    }
+    return cookieValue;
+  }
+
+  const nickname = getCookie("nickname");
+  const email = getCookie("email");
+  // const emoticon = getCookie("emoticon");
+  const emoticon = 1;
+
+  //---------------------------------------------------- 'emoticon' 값에 따라 다른 이모티콘 컴포넌트를 렌더링
+  const emoticonComponents = {
+    1: <Winking1Big />,
+    2: <Winking2Big />,
+    3: <Winking3Big />,
+    4: <Winking4Big />,
+    5: <Winking5Big />,
   };
 
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  const selectedEmoticon = emoticonComponents[emoticon];
+
+  //---------------------------------------------------- newImoticon 값 업데이트 기능
+  const updateNewEmoticon = (emoticonValue: string) => {
+    setNewEmoticon(emoticonValue);
+  };
 
   //---------------------------------------------------- 닉네임 중복확인 기능
   const nickCheckMutation = useMutation(nickCheck, {
@@ -66,7 +107,7 @@ export const Account = () => {
 
   const nickCheckHandler = (event: FormEvent<Element>) => {
     event.preventDefault();
-    nickCheckMutation.mutate(nickname);
+    nickCheckMutation.mutate(newNickname);
   };
 
   //---------------------------------------------------- 로그아웃 기능
@@ -94,8 +135,33 @@ export const Account = () => {
     deleteUserMutation.mutate();
   };
 
-  //---------------------------------------------------- 비밀번호 유효성 검사
-  const signupHandler = (event: React.FormEvent) => {
+  //---------------------------------------------------- 내 정보 수정 기능
+  const editUserMutation = useMutation(editUser, {
+    onSuccess: () => {
+      alert("내 정보 수정이 완료되었습니다.");
+    },
+  });
+
+  const editUserHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const newUserInfomation: editUserFromValue = {
+      newEmoticon,
+      newNickname,
+      newIntroduction,
+    };
+    editUserMutation.mutate(newUserInfomation);
+  };
+
+  //---------------------------------------------------- 비밀번호 변경 기능
+
+  const pwchangeMutation = useMutation(changePassword, {
+    onSuccess: () => {
+      alert("비밀번호 변경 완료!");
+    },
+  });
+
+  const changepasswordHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
     let hasError = false;
@@ -107,22 +173,30 @@ export const Account = () => {
       setPasswordCheck(false);
     }
 
-    if (password !== passwordConfirm) {
-      setPasswordConfirmCheck("비밀번호가 일치하지 않습니다");
+    if (!passwordRegex.test(newpassword)) {
+      setNewPasswordCheck("비밀번호는 8자리 이상, 영문과 숫자를 포함해주세요.");
       hasError = true;
     } else {
-      setPasswordConfirmCheck(false);
+      setNewPasswordCheck(false);
     }
 
-    pwchangeMutation.mutate(newPassword.password);
-  };
+    if (newpassword !== newpasswordConfirm) {
+      setNewPasswordConfirmCheck("비밀번호가 일치하지 않습니다");
+      hasError = true;
+    } else {
+      setNewPasswordConfirmCheck(false);
+    }
 
-  //---------------------------------------------------- 비밀번호 변경 기능
-  const pwchangeMutation = useMutation(changePassword, {
-    onSuccess: () => {
-      alert("비밀번호 변경 완료!");
-    },
-  });
+    if (hasError) {
+      return;
+    }
+
+    const newPassword: changePasswordFormValue = {
+      password,
+      newpassword,
+    };
+    pwchangeMutation.mutate(newPassword);
+  };
 
   return (
     <div>
@@ -143,11 +217,11 @@ export const Account = () => {
         </PostTap>
       </PageBox>
       {/* ----------------------------------------------------------------------------- 내 정보 수정 칸 */}
-      {/* ------------------------------------------------------------------ 이모티콘 수정 */}
+      {/* ------------------------------------------------------------------ 이모티콘 수정 버튼 */}
       {activeTab === "changeNickname" && (
         <ContentBox>
           <MainEmoticon>
-            <Winking1Big />
+            {selectedEmoticon}
             <PenIconBox onClick={() => setemoticonModalOpen(true)}>
               <PenIcon />
             </PenIconBox>
@@ -157,23 +231,38 @@ export const Account = () => {
             <EmoticonModalOverlay onClick={() => setemoticonModalOpen(false)}>
               <EmoticonModalContent onClick={(e) => e.stopPropagation()}>
                 <Emoticons>
-                  <Emoticon>
+                  <Emoticon
+                    onClick={() => updateNewEmoticon("1")}
+                    style={{ color: newEmoticon === "1" ? "#2bde97" : "black" }}
+                  >
                     <Winking1 />
                     행복
                   </Emoticon>
-                  <Emoticon>
+                  <Emoticon
+                    onClick={() => updateNewEmoticon("2")}
+                    style={{ color: newEmoticon === "2" ? "#2bde97" : "black" }}
+                  >
                     <Winking2 />
                     언짢
                   </Emoticon>
-                  <Emoticon>
+                  <Emoticon
+                    onClick={() => updateNewEmoticon("3")}
+                    style={{ color: newEmoticon === "3" ? "#2bde97" : "black" }}
+                  >
                     <Winking3 />
                     심심
                   </Emoticon>
-                  <Emoticon>
+                  <Emoticon
+                    onClick={() => updateNewEmoticon("4")}
+                    style={{ color: newEmoticon === "4" ? "#2bde97" : "black" }}
+                  >
                     <Winking4 />
                     졸림
                   </Emoticon>
-                  <Emoticon>
+                  <Emoticon
+                    onClick={() => updateNewEmoticon("5")}
+                    style={{ color: newEmoticon === "5" ? "#2bde97" : "black" }}
+                  >
                     <Winking5 />
                     놀람
                   </Emoticon>
@@ -186,16 +275,16 @@ export const Account = () => {
               </EmoticonModalContent>
             </EmoticonModalOverlay>
           )}
-
-          <MailBox>hurshey12@gmail.com</MailBox>
+          <NameBox>{nickname}</NameBox>
+          <MailBox>{email}</MailBox>
           {/* ------------------------------------------------------------------ 닉네임/소개 수정 구간 */}
           <ChangeNicknameForm>
             <Label>닉네임</Label>
             <Input
               type="text"
               placeholder="2자 이상 10자 이하"
-              value={nickname}
-              onChange={handleNicknameChange}
+              value={newNickname}
+              onChange={handleNewNickname}
               size={"nicknameChange"}
               color={
                 nicknameChecks === "사용 가능한 닉네임입니다."
@@ -224,10 +313,12 @@ export const Account = () => {
             <IntroductionInputContainer>
               <IntroductionInput
                 placeholder={"소개글을 입력해주세요."}
+                value={newIntroduction}
+                onChange={handleNewIntroduction}
               ></IntroductionInput>
             </IntroductionInputContainer>
           </ChangeNicknameForm>
-          <SaveButton>저장하기</SaveButton>
+          <SaveButton onClick={editUserHandler}>저장하기</SaveButton>
           <LogoutCancelMembership>
             <Logout onClick={handleLogout}>로그아웃</Logout>|
             <CancelMembership onClick={() => setcancelmemberModalOpen(true)}>
@@ -282,8 +373,8 @@ export const Account = () => {
             <Input
               type="password"
               placeholder="영문,숫자 조합 8자 이상 15자 이하"
-              value={password}
-              onChange={handlePasswordChange}
+              value={newpassword}
+              onChange={handleNewPasswordChange}
               size={"signup"}
               color={passwordCheck ? "#E32D2D" : "#cfced7"}
               variant={"eyeIcon"}
@@ -295,19 +386,19 @@ export const Account = () => {
             <Input
               type="password"
               placeholder="비밀번호 확인"
-              value={passwordConfirm}
-              onChange={handlePasswordConfirmChange}
+              value={newpasswordConfirm}
+              onChange={handleNewPasswordConfirmChange}
               size={"signup"}
-              color={passwordConfirmCheck ? "#E32D2D" : "#cfced7"}
+              color={newpasswordConfirmCheck ? "#E32D2D" : "#cfced7"}
               variant={"eyeIcon"}
             />
-            {passwordConfirmCheck && (
+            {newpasswordConfirmCheck && (
               <StCheckMassage color={"#E32D2D"}>
-                {passwordConfirmCheck}
+                {newpasswordConfirmCheck}
               </StCheckMassage>
             )}
           </NewPasswordForm>
-          <SaveButton>저장하기</SaveButton>
+          <SaveButton onClick={changepasswordHandler}>저장하기</SaveButton>
         </ContentBox>
       )}
 
@@ -396,6 +487,21 @@ const PenIcon = styled(BiSolidPencil)`
   height: 25px;
 `;
 
+const NameBox = styled.div`
+  width: 182.1px;
+  height: 28px;
+  font-family: "Pretendard";
+  margin-top: 10.5px;
+  font-size: 23.6px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #112211;
+`;
+
 const MailBox = styled.div`
   width: 200px;
   color: #121;
@@ -464,6 +570,7 @@ const Emoticon = styled.div`
   line-height: 18px;
   letter-spacing: 0px;
   text-align: center;
+  cursor: pointer;
 `;
 
 const ChangeNicknameForm = styled.div``;

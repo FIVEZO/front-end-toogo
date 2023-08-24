@@ -1,7 +1,7 @@
 import axios from "axios";
 import { LoginFormValues, SignupFormValues } from "../types/login";
-
 import { postFormValues } from "../types/posts";
+import { editUserFromValue, changePasswordFormValue } from "../types/acount";
 
 function getCookie(cookieName: string) {
   var cookieValue = null;
@@ -71,6 +71,8 @@ const login = async (loginInformation: LoginFormValues) => {
   document.cookie = `access_token=${response.headers.accesstoken}; path=/;`;
   document.cookie = `refresh_token=${response.headers.refreshtoken}; path=/`;
   document.cookie = `nickname=${response.data.nickname}; path=/`;
+  document.cookie = `email=${response.data.email}; path=/`;
+  document.cookie = `emoticon=${response.data.emotion}; path=/`;
 
   // console.log("로그인", response)
   return response.data;
@@ -184,8 +186,15 @@ const addPost = async (category: number, postData: postFormValues) => {
 };
 
 // 게시글 수정
-const editPost = async (category: number, postId: number, postData : postFormValues) => {
-  const response = await instance.patch(`api/post/${category}/${postId}`, postData)
+const editPost = async (
+  category: number,
+  postId: number,
+  postData: postFormValues
+) => {
+  const response = await instance.patch(
+    `api/post/${category}/${postId}`,
+    postData
+  );
 
   // console.log("게시글 수정", response)
   return response.data;
@@ -273,15 +282,18 @@ const deleteUser = async () => {
 };
 
 // 내정보 수정
-const editUser = async (userInformation: string) => {
-  const response = await instance.patch(`api/mypage/update`, userInformation);
+const editUser = async (newUserInfomation: editUserFromValue) => {
+  const response = await instance.patch(
+    `api/mypage/edituser`,
+    newUserInfomation
+  );
   // console.log("내정보 수정", response)
   return response.data;
 };
 
 // 비밀번호 변경
-const changePassword = async (newPassword: string) => {
-  const response = await instance.post(`api/mypage/pwupdate`, newPassword);
+const changePassword = async (newPassword: changePasswordFormValue) => {
+  const response = await instance.patch(`api/mypage/pwupdate`, newPassword);
   // console.log("비밀번호 변경", response)
   return response.data;
 };

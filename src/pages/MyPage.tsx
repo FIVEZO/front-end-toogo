@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { ReactComponent as Winking1Big } from "../conponents/assets/emoticon/winking1big.svg";
+import { ReactComponent as Winking2Big } from "../conponents/assets/emoticon/winking2big.svg";
+import { ReactComponent as Winking3Big } from "../conponents/assets/emoticon/winking3big.svg";
+import { ReactComponent as Winking4Big } from "../conponents/assets/emoticon/winking4big.svg";
+import { ReactComponent as Winking5Big } from "../conponents/assets/emoticon/winking5big.svg";
 import { ReactComponent as Winking1 } from "../conponents/assets/emoticon/winking1.svg";
 import { BiSolidPencil } from "react-icons/bi";
 import Header from "../conponents/Header";
@@ -99,6 +103,7 @@ export const MyPage = () => {
   }
 
   const nickname = getCookie("nickname");
+  const email = getCookie("email");
 
   return (
     <>
@@ -111,7 +116,7 @@ export const MyPage = () => {
           </PenIconBox>
         </MainEmoticon>
         <NameBox>{nickname}</NameBox>
-        <MailBox>hurshey12@gmail.com</MailBox>
+        <MailBox>{email}</MailBox>
       </InfoBox>
 
       <PageBox>
