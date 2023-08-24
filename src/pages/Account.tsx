@@ -72,11 +72,15 @@ export const Account = () => {
 
   const nickname = getCookie("nickname");
   const email = getCookie("email");
-  // const emoticon = getCookie("emoticon");
-  const emoticon = 1;
+  const emoticon = getCookie("emoticon");
 
   //---------------------------------------------------- 'emoticon' 값에 따라 다른 이모티콘 컴포넌트를 렌더링
-  const emoticonComponents = {
+
+  type EmoticonComponents = {
+    [key: string]: JSX.Element;
+  };
+
+  const emoticonComponents: EmoticonComponents = {
     1: <Winking1Big />,
     2: <Winking2Big />,
     3: <Winking3Big />,
@@ -84,9 +88,9 @@ export const Account = () => {
     5: <Winking5Big />,
   };
 
-  const selectedEmoticon = emoticonComponents[emoticon];
+  const selectedEmoticon = emoticon ? emoticonComponents[emoticon] : null;
 
-  //---------------------------------------------------- newImoticon 값 업데이트 기능
+  //---------------------------------------------------- newEmoticon 값 업데이트 기능
   const updateNewEmoticon = (emoticonValue: string) => {
     setNewEmoticon(emoticonValue);
   };
@@ -139,11 +143,22 @@ export const Account = () => {
   const editUserMutation = useMutation(editUser, {
     onSuccess: () => {
       alert("내 정보 수정이 완료되었습니다.");
+      navigate("/mypage");
     },
   });
 
   const editUserHandler = (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (nicknameChecks === false) {
+      alert("닉네임 중복확인을 먼저 해주세요.");
+      return;
+    }
+
+    if (nicknameChecks === "이미 사용 중인 닉네임입니다.") {
+      alert("사용 가능한 닉네임을 입력해주세요.");
+      return;
+    }
 
     const newUserInfomation: editUserFromValue = {
       newEmoticon,

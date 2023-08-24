@@ -72,7 +72,7 @@ const login = async (loginInformation: LoginFormValues) => {
   document.cookie = `refresh_token=${response.headers.refreshtoken}; path=/`;
   document.cookie = `nickname=${response.data.nickname}; path=/`;
   document.cookie = `email=${response.data.email}; path=/`;
-  document.cookie = `emoticon=${response.data.emotion}; path=/`;
+  document.cookie = `emoticon=${response.data.emoticon}; path=/`;
 
   // console.log("로그인", response)
   return response.data;
@@ -120,6 +120,8 @@ const getKakaoToken = async (code: string | null) => {
     document.cookie = `access_token=${response.headers.accesstoken}; path=/;`;
     document.cookie = `refresh_token=${response.headers.refreshtoken}; path=/`;
     document.cookie = `nickname=${response.data.nickname}; path=/`;
+    document.cookie = `email=${response.data.email}; path=/`;
+    document.cookie = `emoticon=${response.data.emoticon}; path=/`;
 
     return response.data;
   } catch (error) {
@@ -287,6 +289,8 @@ const editUser = async (newUserInfomation: editUserFromValue) => {
     `api/mypage/edituser`,
     newUserInfomation
   );
+  document.cookie = `nickname=${response.data.newNickname}; path=/`;
+  document.cookie = `emoticon=${response.data.newEmoticon}; path=/`;
   // console.log("내정보 수정", response)
   return response.data;
 };
