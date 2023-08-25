@@ -10,6 +10,8 @@ import { RxAvatar } from "react-icons/rx";
 import { GoPaperAirplane } from "react-icons/go";
 import HeaderSelect from "./HeaderSelect";
 import BudgetModal from "./BudgetModal";
+import { Badge } from "@mui/material";
+import SeeAlert from "./SeeAlert";
 
 function Header() {
   const navigate = useNavigate();
@@ -91,8 +93,12 @@ function Header() {
           <LoginConditionButtons>
             <div ref ={buge}>
               <Bell onClick={budgetBoxClick}>
-                <HiOutlineBell color="#403F4E" size="24px" />
+                   <Badge color="error" badgeContent={2}>
+                   <HiOutlineBell color="#403F4E" size="24px" />
+                    </Badge>
               </Bell>
+         
+
               <BudgetModal  position={"absolute"} budgetOpen={budgetOpen} />
             </div>
             {/* <DM onClick={() => navigate("/chat/main")}>

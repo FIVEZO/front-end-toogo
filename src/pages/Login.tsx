@@ -10,6 +10,7 @@ import Input from "../conponents/Input";
 import Header from "../conponents/Header";
 import { useDispatch } from "react-redux";
 import { logIn } from "../redux/modules/loginSlice";
+import Footer from "../conponents/Footer";
 
 type ButtonProps = {
   backgroundColor?: string;
@@ -143,6 +144,7 @@ function Login() {
           </LoginAccountText>
         </LoginLayout>
       </CenteredContainer>
+      <Footer/>
     </>
   );
 }

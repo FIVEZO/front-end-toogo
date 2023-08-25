@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 
 
+
 function App() {
   return (
     <div>
@@ -18,7 +19,7 @@ function App() {
         <Router />
       </Provider>
       </ThemeProvider>
-  
+ 
     </div>
   );
 }

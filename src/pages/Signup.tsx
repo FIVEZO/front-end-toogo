@@ -9,6 +9,7 @@ import { emailCheck ,addUsers, nickCheck, authCodeCheck } from '../api/api';
 import Input from '../conponents/Input';
 import Header from '../conponents/Header';
 import "../fonts/Font.css";
+import Footer from '../conponents/Footer';
 
 
 type ButtonProps = {
@@ -255,6 +256,7 @@ const nickCheckHandler = (event: FormEvent<Element>) => {
         <Button  color={updateLoginButtonColor()} onClick={signupHandler} margin='32px 0 0 0' size="large" name="회원가입" />
         </SignupButton>
       </LoginLayout>
+      <Footer/>
   </div>
 );
   }

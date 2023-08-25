@@ -332,7 +332,7 @@ const DelateButton = styled.div`
 display: flex;
 align-items: center;
 justify-content: center;
-   width: 370px;
+  width: 370px;
   height: 70px;
   flex-grow: 0;
   margin: 80px 24px 0 0;
@@ -436,7 +436,7 @@ const MapBox = styled.div`
 const AreaBox = styled.div`
   width: 423px;
   height: 41px;
-  margin: 40px 0 0 0;
+  margin: 80px 0 0 0;
   font-family: Pretendard;
   font-size: 28px;
   font-weight: bold;
@@ -450,7 +450,7 @@ const AreaBox = styled.div`
 
 const ContentBox = styled.div`
   width: 753px;
-  height: 550px;
+  height: auto;
   font-family: Pretendard;
   font-size: 20px;
   margin-top: 20px;
