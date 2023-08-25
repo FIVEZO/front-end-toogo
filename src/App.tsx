@@ -6,20 +6,18 @@ import { Router } from './shared/Router';
 import { Reset } from 'styled-reset'
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
-
-
+import SeeAlert from './conponents/SeeAlert'
 
 function App() {
+  SeeAlert();
   return (
     <div>
-      
        <ThemeProvider theme={theme}>
         <Reset />
       <Provider store={store}>
         <Router />
       </Provider>
       </ThemeProvider>
- 
     </div>
   );
 }
