@@ -7,11 +7,10 @@ import "../fonts/Font.css";
 import { LuSearch } from "react-icons/lu";
 import { HiOutlineBell } from "react-icons/hi";
 import { RxAvatar } from "react-icons/rx";
-import { GoPaperAirplane } from "react-icons/go";
 import HeaderSelect from "./HeaderSelect";
 import BudgetModal from "./BudgetModal";
 import { Badge } from "@mui/material";
-import SeeAlert from "./SeeAlert";
+import SeeAlert from "./SseAlert";
 
 function Header() {
   const navigate = useNavigate();
