@@ -28,6 +28,7 @@ import {
   editUser,
 } from "../api/api";
 import { editUserFromValue, changePasswordFormValue } from "../types/acount";
+import { getCookie } from "../utils/cookieUtils";
 
 export const Account = () => {
   const navigate = useNavigate();
@@ -58,17 +59,6 @@ export const Account = () => {
   };
 
   //---------------------------------------------------- 쿠키에서 닉네임,이메일,이모티콘 가져오기
-  function getCookie(cookieName: string) {
-    var cookieValue = null;
-    if (document.cookie) {
-      var array = document.cookie.split(escape(cookieName) + "=");
-      if (array.length >= 2) {
-        var arraySub = array[1].split(";");
-        cookieValue = unescape(arraySub[0]);
-      }
-    }
-    return cookieValue;
-  }
 
   const nickname = getCookie("nickname");
   const email = getCookie("email");
@@ -208,7 +198,7 @@ export const Account = () => {
 
     const newPassword: changePasswordFormValue = {
       password,
-      newpassword,
+      newPassword: newpassword
     };
     pwchangeMutation.mutate(newPassword);
   };

@@ -16,6 +16,7 @@ import { cardItem } from "../types/posts";
 import Footer from "../conponents/Footer";
 import Spinner from "../conponents/Spinner";
 import "../fonts/Font.css";
+import { getCookie } from "../utils/cookieUtils";
 
 export const MyPage = () => {
   const [activeTab, setActiveTab] = useState("postList");
@@ -88,19 +89,6 @@ export const MyPage = () => {
     }
     return null;
   };
-
-  //쿠키에서 닉네임 가져오기
-  function getCookie(cookieName: string) {
-    var cookieValue = null;
-    if (document.cookie) {
-      var array = document.cookie.split(escape(cookieName) + "=");
-      if (array.length >= 2) {
-        var arraySub = array[1].split(";");
-        cookieValue = unescape(arraySub[0]);
-      }
-    }
-    return cookieValue;
-  }
 
   const nickname = getCookie("nickname");
   const email = getCookie("email");

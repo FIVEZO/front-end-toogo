@@ -6,5 +6,5 @@ export type editUserFromValue = {
 
 export type changePasswordFormValue = {
   password: string;
-  newpassword: string;
+  newPassword: string;
 };
