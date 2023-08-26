@@ -1,19 +1,7 @@
 import React, {useEffect, useState} from 'react';
+import { getCookie } from '../utils/cookieUtils';
 // 기본적으로 제공되는 eventsource 가 아닌 추가로 설치한 eventsource 를 사용
 const EventSource = require('eventsource');
-
-
-function getCookie(cookieName: string) {
-    var cookieValue = null;
-    if (document.cookie) {
-      var array = document.cookie.split(escape(cookieName) + "=");
-      if (array.length >= 2) {
-        var arraySub = array[1].split(";");
-        cookieValue = unescape(arraySub[0]);
-      }
-    }
-    return cookieValue;
-  }
 
 function SeeAlert() {
     // Server Sent Event 로 가져온 data 를 화면에 보여주기 위한 state 변수

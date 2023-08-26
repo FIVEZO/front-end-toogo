@@ -2,18 +2,9 @@ import axios from "axios";
 import { LoginFormValues, SignupFormValues } from "../types/login";
 import { postFormValues } from "../types/posts";
 import { editUserFromValue, changePasswordFormValue } from "../types/acount";
+import { getCookie } from "../utils/cookieUtils";
 
-function getCookie(cookieName: string) {
-  var cookieValue = null;
-  if (document.cookie) {
-    var array = document.cookie.split(escape(cookieName) + "=");
-    if (array.length >= 2) {
-      var arraySub = array[1].split(";");
-      cookieValue = unescape(arraySub[0]);
-    }
-  }
-  return cookieValue;
-}
+
 
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,

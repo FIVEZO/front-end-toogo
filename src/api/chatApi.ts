@@ -1,18 +1,6 @@
 import axios from "axios";
 import { createChat } from "../types/posts";
-
-function getCookie(cookieName: string) {
-    var cookieValue = null;
-    if (document.cookie) {
-    var array = document.cookie.split(escape(cookieName) + "=");
-    if (array.length >= 2) {
-    var arraySub = array[1].split(";");
-    cookieValue = unescape(arraySub[0]);
-    }
-    }
-    return cookieValue;
-    }
-
+import { getCookie } from "../utils/cookieUtils";
   
   export const chatInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
