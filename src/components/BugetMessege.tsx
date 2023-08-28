@@ -1,9 +1,18 @@
 import React from 'react'
 import { styled } from 'styled-components'
 import { Avatar } from "@mui/material";
-import { ReactComponent as Winking1 } from "../components/assets/emoticon/winking1.svg";
+import { ReactComponent as Winking1 } from "../conponents/assets/emoticon/winking1.svg";
+import { useQuery } from 'react-query';
+import { NotificationFormValues } from '../types/posts';
 
-function BugetMessege() {
+function BugetMessege({ items }: { items: NotificationFormValues }) {
+  const {
+    sender,
+    createdAt,
+    readStatus,
+    contents,
+    message,
+  } = items;
    
 
   return (
@@ -13,9 +22,9 @@ function BugetMessege() {
             </Avata>
         <TextUpeer>
             <TextRayout>
-                <TextName>민서</TextName>님이 쪽지를 신청했습니다. 
+                <TextName>{sender}</TextName>님의 {message}
             </TextRayout>
-            <TextMessege>“저랑 오늘 와인한잔 마시면 좋을 거 같아서 연락을 ...”</TextMessege>
+            <TextMessege>{contents}</TextMessege>
         </TextUpeer>
 
     </TextBoxRayout>
