@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { locationFormValues } from '../types/posts';
-import Input from './Input';
+import { locationFormValues } from '../../../types/posts';
+import Input from '../../../components/Input';
 import { styled } from 'styled-components';
 
 const Map: React.FC<{

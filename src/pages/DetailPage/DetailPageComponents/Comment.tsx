@@ -96,6 +96,7 @@ export const Comment = ({ commentList }: { commentList: any }) => {
 
   //---------------------------------------------------- 'emoticon' 값에 따라 다른 이모티콘 컴포넌트를 렌더링
   const myEmoticon = getCookie("emoticon");
+
   type EmoticonComponents = {
     [key: string]: JSX.Element;
   };
@@ -110,6 +111,7 @@ export const Comment = ({ commentList }: { commentList: any }) => {
     };
     return emoticon ? emoticonComponents[emoticon] : null;
   }
+  
   return (
     <StCommentBox>
         {commentList?.map((item: any) => (

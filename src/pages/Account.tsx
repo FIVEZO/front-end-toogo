@@ -36,7 +36,7 @@ export const Account = () => {
   const [activeTab, setActiveTab] = useState("changeNickname");
   const [newNickname, handleNewNickname] = useInput();
   const [newIntroduction, handleNewIntroduction] = useInput();
-  const [newEmoticon, setNewEmoticon] = useState<string>("");
+  
   const [nicknameChecks, setNicknameChecks] = useState<boolean | string>(false);
   const [emoticonModalOpen, setemoticonModalOpen] = useState(false);
   const [cancelmemberModalOpen, setcancelmemberModalOpen] = useState(false);
@@ -74,10 +74,12 @@ export const Account = () => {
   };
 
   const selectedEmoticon = emoticon ? emoticonComponents[emoticon] : null;
-
+  const [newEmoticon, setNewEmoticon] = useState<any>(selectedEmoticon);
   //---------------------------------------------------- newEmoticon 값 업데이트 기능
   const updateNewEmoticon = (emoticonValue: string) => {
-    setNewEmoticon(emoticonValue);
+    setemoticonModalOpen(false)
+    const newSelectedEmoticon = emoticon ? emoticonComponents[emoticonValue] : null;
+    setNewEmoticon(newSelectedEmoticon);
   };
 
   //---------------------------------------------------- 닉네임 중복확인 기능
@@ -222,7 +224,7 @@ export const Account = () => {
       {activeTab === "changeNickname" && (
         <ContentBox>
           <MainEmoticon>
-            {selectedEmoticon}
+            {newEmoticon}
             <PenIconBox onClick={() => setemoticonModalOpen(true)}>
               <PenIcon />
             </PenIconBox>
