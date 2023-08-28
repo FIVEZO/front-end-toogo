@@ -12,8 +12,8 @@ import Header from "../conponents/Header";
 import Footer from "../conponents/Footer";
 import NavigationBox from "../conponents/NavigationBox";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {selectedCountryState,selectedDateState,} from "../recoil/NavigationBar";
-import { peplecountState } from "../recoil/peplecountState";
+import { selectedCountryState,selectedDateState, sliderValueState,} from "../recoil/NavigationBar";
+
 
 function Post() {
   const param = Number(useParams().id);
@@ -21,13 +21,13 @@ function Post() {
   const [contents, setContents] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [showContentsAlert, setShowContentsAlert] = useState(false);
-
-  const peple = useRecoilValue(peplecountState);
-  const [, setPeple] = useRecoilState(peplecountState);
   const selectedCountry = useRecoilValue(selectedCountryState);
   const [, setSelectedCountry] = useRecoilState(selectedCountryState);
   const [, setFormattedDate] = useRecoilState(selectedDateState);
   const formattedDate = useRecoilValue(selectedDateState);
+  const selectedPeple = useRecoilValue(sliderValueState);
+  const [, setSelectedPeple] = useRecoilState(sliderValueState);
+
 
   const [MarkerPosition, setMarkerPosition] =
     useState<null | locationFormValues>(null);
@@ -76,7 +76,8 @@ function Post() {
         navigate(-1);
         setFormattedDate("");
         setSelectedCountry("");
-        setPeple(0);
+        setSelectedPeple(""); 
+
       },
     }
   );
@@ -88,7 +89,7 @@ function Post() {
       const postData: postFormValues = {
         title,
         contents,
-        peple,
+        people: selectedPeple,
         country: selectedCountry,
         meetDate: formattedDate,
         latitude: latitudeMarkerPosition,
@@ -101,7 +102,7 @@ function Post() {
   useEffect(() => {
     setFormattedDate("");
     setSelectedCountry("");
-    setPeple(0);
+    setSelectedPeple(""); 
   }, []); 
 
   return (

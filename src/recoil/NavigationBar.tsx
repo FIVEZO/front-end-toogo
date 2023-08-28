@@ -2,10 +2,15 @@ import { atom } from 'recoil';
 
 export const selectedCountryState = atom({
   key: 'selectedCountryState',
-  default: '', // 초기값 설정
+  default: '', 
 });
 
 export const selectedDateState = atom<string>({
   key: 'selectedDateState',
   default: '',
+});
+
+export const sliderValueState = atom<string>({
+  key: 'sliderValueState',
+  default: '', 
 });

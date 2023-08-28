@@ -3,7 +3,7 @@ export type postFormValues = {
     contents: string
     country: string
     meetDate: string
-    peple: number
+    people: string
     latitude: number
     longitude: number
 }
@@ -32,3 +32,11 @@ export type createChat = {
     receiver:string
     postId:number
 }
+
+export type NotificationFormValues = {
+    sender: string;
+    createdAt: string; 
+    readStatus: boolean;
+    contents: string;
+    message : string;
+};

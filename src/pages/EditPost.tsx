@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import useInput from "../hooks/useInput";
 import { useMutation, useQuery } from "react-query";
 import {  editPost, getDetailPosts } from "../api/api";
 import { locationFormValues, postFormValues,  } from "../types/posts";
@@ -15,34 +14,33 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   selectedCountryState,
   selectedDateState,
+  sliderValueState,
 } from "../recoil/NavigationBar";
-import { peplecountState } from "../recoil/peplecountState";
 
 function EditPost() {
 
   const param = useParams().id;
   let category = "";
   let postId = "";
-  
   const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
   getDetailPosts(+category, +postId)
   );
-
   const [title, setTitle] = useState(data.title);
   const [contents, setContents] = useState(data.contents);
   const [showAlert, setShowAlert] = useState(false);
   const [showContentsAlert, setShowContentsAlert] = useState(false);
-
   if (param?.includes("&")) {
     [category, postId] = param.split("&");
   }
-  
-  const peple = useRecoilValue(peplecountState);
-  const [, setPeple] = useRecoilState(peplecountState);
   const selectedCountry = useRecoilValue(selectedCountryState);
   const [, setFormattedDate] = useRecoilState(selectedDateState);
   const [, setSelectedCountry] = useRecoilState(selectedCountryState);
   const formattedDate = useRecoilValue(selectedDateState);
+  const selectedPeple = useRecoilValue(sliderValueState);
+  const [, setSelectedPeple] = useRecoilState(sliderValueState);
+
+
+
   const [MarkerPosition, setMarkerPosition] =
     useState<null | locationFormValues>(null);
   const [latitudeMarkerPosition, setLatitudeMarkerPosition] =
@@ -89,7 +87,7 @@ function EditPost() {
           navigate(-1)
           setFormattedDate("");
           setSelectedCountry("");
-          setPeple(0);
+
         },
       }
   );  
@@ -101,7 +99,7 @@ function EditPost() {
     const postData: postFormValues = {
       title,
       contents,
-      peple,
+      people: selectedPeple,
       country: selectedCountry,
       meetDate: formattedDate,
       latitude: latitudeMarkerPosition,
@@ -113,7 +111,7 @@ function EditPost() {
   useEffect(() => {
     setFormattedDate("");
     setSelectedCountry("");
-    setPeple(0);
+
   }, []); 
 
   return (
