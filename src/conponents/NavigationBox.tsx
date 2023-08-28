@@ -9,6 +9,7 @@ import HowMany from './HowMany';
 import { peplecountState } from '../recoil/peplecountState';
 import { getDetailPosts } from '../api/api';
 import { useQuery } from 'react-query';
+import RangeModal from './RangeModal';
 
 interface InnerBoxProps {
     highlighted: boolean;
@@ -19,7 +20,7 @@ interface InnerBoxProps {
     const [selectedBox, setSelectedBox] = useState(0);
     const [isWhele, setIsWhele] = useState(false);
     const [isDate, setIsDate] = useState(false);
-    const [isTime, setIsTime] = useState(false);
+    const [isPeple, setIsPeple] = useState(false);
     const [formattedDate, setFormattedDate] = useRecoilState(selectedDateState);
     const [peple, setPeple] = useRecoilState(peplecountState);
 
@@ -27,14 +28,14 @@ interface InnerBoxProps {
         setSelectedBox(index);
         setIsWhele(false);
         setIsDate(false);
-        setIsTime(false);
+        setIsPeple(false);
         
         if (index === 0) {
           setIsWhele(true);
         } else if (index === 1) {
           setIsDate(true);
         } else if (index === 2) {
-          setIsTime(true);
+          setIsPeple(true);
         }
       };
             
@@ -57,7 +58,7 @@ interface InnerBoxProps {
                         <TextContent2>{formattedDate ? formattedDate : "날짜를 선택해주세요."}</TextContent2>
                     </TextBox>
                 </InnerBox>
-                <InnerBox onClick={() =>{handleBoxClick(2); setIsTime(true);}} highlighted={selectedBox === 2}>
+                <InnerBox onClick={() =>{handleBoxClick(2); setIsPeple(true);}} highlighted={selectedBox === 2}>
                 <TextBox>
                         <TextContent>모집 인원</TextContent>
                         <TextContent2>{peple ? `${peple}명` : "인원수를 선택해주세요."}</TextContent2>
@@ -70,7 +71,7 @@ interface InnerBoxProps {
         <ModalRayout>
           {isWhele && <SelectCountry id={id} onClick={setSelectedCountry} />}
           {isDate && <CustomCalendar setFormattedDate={setFormattedDate} />}
-          {isTime && <HowMany />}
+          {isPeple && <RangeModal/>}
         </ModalRayout>
     </>
   )
