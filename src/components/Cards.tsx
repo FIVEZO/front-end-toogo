@@ -6,66 +6,11 @@ import { Avatar } from "@mui/material";
 import { formatTimeAgo } from "./Time";
 import { useNavigate } from "react-router-dom";
 import { countryImages } from "../img/countryImages";
-
-const MySvg = () => (
-  <svg
-    viewBox="0 0 36 36"
-    fill="none"
-    role="img"
-    xmlns="http://www.w3.org/2000/svg"
-    width="80"
-    height="80"
-  >
-    <mask
-      id=":r9:"
-      maskUnits="userSpaceOnUse"
-      x="0"
-      y="0"
-      width="36"
-      height="36"
-    >
-      <rect width="36" height="36" rx="72" fill="#FFFFFF"></rect>
-    </mask>
-    <g mask="url(#:r9:)">
-      <rect width="36" height="36" fill="#ff7d10"></rect>
-      <rect
-        x="0"
-        y="0"
-        width="36"
-        height="36"
-        transform="translate(5 -1) rotate(155 18 18) scale(1.2)"
-        fill="#70ff56"
-        rx="6"
-      ></rect>
-      <g transform="translate(3 -4) rotate(-5 18 18)">
-        <path
-          d="M15 21c2 1 4 1 6 0"
-          stroke="#000000"
-          fill="none"
-          strokeLinecap="round"
-        ></path>
-        <rect
-          x="14"
-          y="14"
-          width="1.5"
-          height="2"
-          rx="1"
-          stroke="none"
-          fill="#000000"
-        ></rect>
-        <rect
-          x="20"
-          y="14"
-          width="1.5"
-          height="2"
-          rx="1"
-          stroke="none"
-          fill="#000000"
-        ></rect>
-      </g>
-    </g>
-  </svg>
-);
+import { ReactComponent as Winking1 } from "./assets/emoticon/winking1.svg";
+import { ReactComponent as Winking2 } from "./assets/emoticon/winking2.svg";
+import { ReactComponent as Winking3 } from "./assets/emoticon/winking3.svg";
+import { ReactComponent as Winking4 } from "./assets/emoticon/winking4.svg";
+import { ReactComponent as Winking5 } from "./assets/emoticon/winking5.svg";
 
 export const Cards = ({ items }: { items: cardItem }) => {
   const {
@@ -77,6 +22,7 @@ export const Cards = ({ items }: { items: cardItem }) => {
     createdAt,
     meetDate,
     category,
+    emoticon,
   } = items;
   const countryImage = countryImages[country] || countryImages["한국"];
   const formattedCreatedDate = formatTimeAgo(createdAt); // createdAt을 문자열로 변환하여 formatTimeAgo 함수에 전달
@@ -86,6 +32,19 @@ export const Cards = ({ items }: { items: cardItem }) => {
   const truncatedTitle = title.length > 15 ? title.slice(0, 15) + "..." : title;
   const navigate = useNavigate();
 
+  type EmoticonComponents = {
+    [key: string]: JSX.Element;
+  };
+  const emoticonComponents: EmoticonComponents = {
+    1: <Winking1 />,
+    2: <Winking2 />,
+    3: <Winking3 />,
+    4: <Winking4 />,
+    5: <Winking5 />,
+  };
+  const selectedEmoticon = emoticon ? emoticonComponents[emoticon] : null;
+
+
   return (
     <DivRayout onClick={() => navigate(`/detailpage/${category}&${id}`)}>
       <StyledCardImg border-radius="8px" variant="top" src={countryImage} />
@@ -93,7 +52,7 @@ export const Cards = ({ items }: { items: cardItem }) => {
         <AvatarLine>
           <AvatarPic>
             <Avatar alt="Avatar" sx={{ width: 24, height: 24 }}>
-              <MySvg />
+              {selectedEmoticon}
             </Avatar>
           </AvatarPic>
           <CardNickname>{nickname}</CardNickname>

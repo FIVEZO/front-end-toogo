@@ -5,20 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { BiSolidPencil } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
-import Header from "../conponents/Header";
-import Footer from "../conponents/Footer";
-import Input from "../conponents/Input";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Input from "../components/Input";
 import useInput from "../hooks/useInput";
-import { ReactComponent as Winking1 } from "../conponents/assets/emoticon/winking1.svg";
-import { ReactComponent as Winking2 } from "../conponents/assets/emoticon/winking2.svg";
-import { ReactComponent as Winking3 } from "../conponents/assets/emoticon/winking3.svg";
-import { ReactComponent as Winking4 } from "../conponents/assets/emoticon/winking4.svg";
-import { ReactComponent as Winking5 } from "../conponents/assets/emoticon/winking5.svg";
-import { ReactComponent as Winking1Big } from "../conponents/assets/emoticon/winking1big.svg";
-import { ReactComponent as Winking2Big } from "../conponents/assets/emoticon/winking2big.svg";
-import { ReactComponent as Winking3Big } from "../conponents/assets/emoticon/winking3big.svg";
-import { ReactComponent as Winking4Big } from "../conponents/assets/emoticon/winking4big.svg";
-import { ReactComponent as Winking5Big } from "../conponents/assets/emoticon/winking5big.svg";
+import { ReactComponent as Winking1 } from "../components/assets/emoticon/winking1.svg";
+import { ReactComponent as Winking2 } from "../components/assets/emoticon/winking2.svg";
+import { ReactComponent as Winking3 } from "../components/assets/emoticon/winking3.svg";
+import { ReactComponent as Winking4 } from "../components/assets/emoticon/winking4.svg";
+import { ReactComponent as Winking5 } from "../components/assets/emoticon/winking5.svg";
+import { ReactComponent as Winking1Big } from "../components/assets/emoticon/winking1big.svg";
+import { ReactComponent as Winking2Big } from "../components/assets/emoticon/winking2big.svg";
+import { ReactComponent as Winking3Big } from "../components/assets/emoticon/winking3big.svg";
+import { ReactComponent as Winking4Big } from "../components/assets/emoticon/winking4big.svg";
+import { ReactComponent as Winking5Big } from "../components/assets/emoticon/winking5big.svg";
 import { logOff } from "../redux/modules/loginSlice";
 import {
   nickCheck,
@@ -40,17 +40,12 @@ export const Account = () => {
   const [nicknameChecks, setNicknameChecks] = useState<boolean | string>(false);
   const [emoticonModalOpen, setemoticonModalOpen] = useState(false);
   const [cancelmemberModalOpen, setcancelmemberModalOpen] = useState(false);
-
   const [password, handlePasswordChange] = useInput();
   const [newpassword, handleNewPasswordChange] = useInput();
   const [newpasswordConfirm, handleNewPasswordConfirmChange] = useInput();
-  const [newpasswordCheck, setNewPasswordCheck] = useState<boolean | string>(
-    false
-  );
+  const [newpasswordCheck, setNewPasswordCheck] = useState<boolean | string>(false);
   const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false);
-  const [newpasswordConfirmCheck, setNewPasswordConfirmCheck] = useState<
-    boolean | string
-  >(false);
+  const [newpasswordConfirmCheck, setNewPasswordConfirmCheck] = useState<boolean | string>(false);
 
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
@@ -133,6 +128,7 @@ export const Account = () => {
   const editUserMutation = useMutation(editUser, {
     onSuccess: () => {
       alert("내 정보 수정이 완료되었습니다.");
+
       navigate("/mypage");
     },
   });

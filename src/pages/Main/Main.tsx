@@ -1,14 +1,15 @@
 import { css, styled } from 'styled-components';
 import React, { useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from 'react-query';
-import { getHomePosts } from '../api/api';
-import { Cards } from '../conponents/Cards';
-import { cardItem } from '../types/posts';
-import Header from '../conponents/Header';
+import { getHomePosts } from '../../api/api';
+import { Cards } from '../../components/Cards';
+import { cardItem } from '../../types/posts';
+import Header from '../../components/Header';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../conponents/Footer';
-import CardSlick from '../conponents/CardSlick';
-import Spinner from '../conponents/Spinner';
+import Footer from '../../components/Footer';
+import CardSlick from './MainComponents/CardSlick';
+import Spinner from '../../components/Spinner';
+import LoadingAndError from '../../components/LoadingAndError';
 
 
 export const Main: React.FC = () => {
@@ -26,30 +27,33 @@ export const Main: React.FC = () => {
   }, [isLoading, isError]);
 
 
-  if (isLoading) {
+  // if (isLoading) {
   
-    return <Spinner/>;
-  }
+  //   return <Spinner/>;
+  // }
 
-  if (isError) {
-    return <p>오류가 발생하였습니다...!</p>;
-  }
+  // if (isError) {
+  //   return <p>오류가 발생하였습니다...!</p>;
+  // }
   
   return (
-    <MainRayout>
-      <Header/>
-      <TopText>여행지를 선택하세요.</TopText>
-      <SecondText>대륙을 선택해서 동행글을 찾아보세요.</SecondText>
-      <CardSlick/>
-      <TopText>오이여행 Talk</TopText>
-      <SecondText>나와 맞는 여행동행과 이야기를 나누어 보아요!</SecondText>
-      <StCardContainer>
-      {showData && cardData?.map((item: cardItem) => (
-          <Cards key={item.id} items={item} />
-        ))}
-      </StCardContainer>
-      <Footer/>
-    </MainRayout>
+    <div>
+      <LoadingAndError isLoading={isLoading} isError={isError} />
+        <MainRayout>
+          <Header/>
+          <TopText>여행지를 선택하세요.</TopText>
+          <SecondText>대륙을 선택해서 동행글을 찾아보세요.</SecondText>
+          <CardSlick/>
+          <TopText>오이여행 Talk</TopText>
+          <SecondText>나와 맞는 여행동행과 이야기를 나누어 보아요!</SecondText>
+          <StCardContainer>
+          {showData && cardData?.map((item: cardItem) => (
+              <Cards key={item.id} items={item} />
+            ))}
+          </StCardContainer>
+          <Footer/>
+        </MainRayout>
+    </div>
   )
 }
 

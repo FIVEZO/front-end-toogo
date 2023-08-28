@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput';
 import { useMutation } from 'react-query';
 import { findPassword } from '../api/api';
-import Button from '../conponents/Button';
-import Input from '../conponents/Input';
+import Button from '../components/Button';
+import Input from '../components/Input';
 
   type ButtonProps = {
     backgroundColor?: string;

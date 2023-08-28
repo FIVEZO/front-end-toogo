@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import Header from '../conponents/Header';
-import Footer from '../conponents/Footer';
-import { cardItem } from '../types/posts';
-import { SearchCard } from '../conponents/SearchCard';
-import { getSearchPosts } from '../api/api';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import { cardItem } from '../../types/posts';
+import { SearchCard } from './SearchPageComponents/SearchCard';
+import { getSearchPosts } from '../../api/api';
 import { styled } from 'styled-components';
 import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
-import "../fonts/Font.css";
-import Spinner from '../conponents/Spinner';
+import "../../fonts/Font.css";
+import Spinner from '../../components/Spinner';
 
 export const SearchPage: React.FC = () => {
   const location = useLocation();
@@ -21,9 +21,6 @@ export const SearchPage: React.FC = () => {
     }
     return Promise.resolve(null);
   });
-
-  console.log("data",data)
-  console.log("keyword",keyword)
   
   if (isLoading) {
   
@@ -33,7 +30,6 @@ export const SearchPage: React.FC = () => {
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;
   }
-
 
   return (
     <div>

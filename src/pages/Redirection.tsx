@@ -4,7 +4,7 @@ import { getKakaoToken } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../redux/modules/loginSlice';
-import Spinner from '../conponents/Spinner';
+import Spinner from '../components/Spinner';
 
 const Redirection = () => {
 

@@ -1,29 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import { ReactComponent as Winking1Big } from "../conponents/assets/emoticon/winking1big.svg";
-import { ReactComponent as Winking2Big } from "../conponents/assets/emoticon/winking2big.svg";
-import { ReactComponent as Winking3Big } from "../conponents/assets/emoticon/winking3big.svg";
-import { ReactComponent as Winking4Big } from "../conponents/assets/emoticon/winking4big.svg";
-import { ReactComponent as Winking5Big } from "../conponents/assets/emoticon/winking5big.svg";
-import { ReactComponent as Winking1 } from "../conponents/assets/emoticon/winking1.svg";
+import { ReactComponent as Winking1Big } from "../components/assets/emoticon/winking1big.svg";
+import { ReactComponent as Winking2Big } from "../components/assets/emoticon/winking2big.svg";
+import { ReactComponent as Winking3Big } from "../components/assets/emoticon/winking3big.svg";
+import { ReactComponent as Winking4Big } from "../components/assets/emoticon/winking4big.svg";
+import { ReactComponent as Winking5Big } from "../components/assets/emoticon/winking5big.svg";
+import { ReactComponent as Winking1 } from "../components/assets/emoticon/winking1.svg";
 import { BiSolidPencil } from "react-icons/bi";
-import Header from "../conponents/Header";
+import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getMyPosts, getScrapPosts } from "../api/api";
-import { Cards } from "../conponents/Cards";
+import { Cards } from "../components/Cards";
 import { cardItem } from "../types/posts";
-import Footer from "../conponents/Footer";
-import Spinner from "../conponents/Spinner";
+import Footer from "../components/Footer";
+import Spinner from "../components/Spinner";
 import "../fonts/Font.css";
 import { getCookie } from "../utils/cookieUtils";
 
 export const MyPage = () => {
   const [activeTab, setActiveTab] = useState("postList");
-  const [postListData, setPostListData] = useState<cardItem[]>([]);
-  const [scrapListData, setScrapListData] = useState<cardItem[]>([]);
   const [pagenum, setPagenum] = useState<number>(1);
   const navigate = useNavigate();
+
+  const emoticon = getCookie("emoticon");
+
+  type EmoticonComponents = {
+    [key: string]: JSX.Element;
+  };
+
+  const emoticonComponents: EmoticonComponents = {
+    1: <Winking1Big />,
+    2: <Winking2Big />,
+    3: <Winking3Big />,
+    4: <Winking4Big />,
+    5: <Winking5Big />,
+  };
+
+  const selectedEmoticon = emoticon ? emoticonComponents[emoticon] : null;
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
@@ -98,7 +112,7 @@ export const MyPage = () => {
       <Header />
       <InfoBox>
         <MainEmoticon>
-          <Winking1Big />
+          {selectedEmoticon}
           <PenIconBox onClick={() => navigate("/Account")}>
             <PenIcon />
           </PenIconBox>

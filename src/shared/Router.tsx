@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Main } from "../pages/Main";
+import { Main } from "../pages/Main/Main";
 import Login from "../pages/Login";
 import {Account} from "../pages/Account";
 import Redirection from "../pages/Redirection";
@@ -11,7 +11,7 @@ import { DetailPage } from "../pages/DetailPage/DetailPage";
 import Post from "../pages/Post";
 import EditPost from "../pages/EditPost";
 import { Chat } from "../pages/Chat/Chat";
-import { SearchPage } from "../pages/SearchPage";
+import { SearchPage } from "../pages/SearchPage/SearchPage";
 import { MyPage } from "../pages/MyPage";
 const queryClient = new QueryClient();
 
