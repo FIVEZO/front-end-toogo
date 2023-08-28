@@ -4,8 +4,8 @@ import MainCard from "./MainCard";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ReactComponent as Prev } from "./assets/prev.svg";
-import { ReactComponent as Next } from "./assets/next.svg";
+import { ReactComponent as Prev } from "../../../components/assets/prev.svg";
+import { ReactComponent as Next } from "../../../components/assets/next.svg";
 import { useNavigate } from "react-router-dom";
 
 const Responsive = () => {

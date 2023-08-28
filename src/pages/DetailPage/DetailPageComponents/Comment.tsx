@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import { styled } from 'styled-components';
-import Input from '../../../conponents/Input';
-import Button from '../../../conponents/Button';
+import Input from '../../../components/Input';
+import Button from '../../../components/Button';
 import { useMutation, useQueryClient } from 'react-query';
 import { addComment, deleteComment, editComment } from '../../../api/api';
 import useInput from '../../../hooks/useInput';
 import 댓글프로필 from '../../../img/댓글프로필.jpg'
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
-import { ReactComponent as Winking1 } from "../../../conponents/assets/emoticon/winking1.svg";
-import { ReactComponent as Winking2 } from "../../../conponents/assets/emoticon/winking2.svg";
-import { ReactComponent as Winking3 } from "../../../conponents/assets/emoticon/winking3.svg";
-import { ReactComponent as Winking4 } from "../../../conponents/assets/emoticon/winking4.svg";
-import { ReactComponent as Winking5 } from "../../../conponents/assets/emoticon/winking5.svg";
+import { ReactComponent as Winking1 } from "../../../components/assets/emoticon/winking1.svg";
+import { ReactComponent as Winking2 } from "../../../components/assets/emoticon/winking2.svg";
+import { ReactComponent as Winking3 } from "../../../components/assets/emoticon/winking3.svg";
+import { ReactComponent as Winking4 } from "../../../components/assets/emoticon/winking4.svg";
+import { ReactComponent as Winking5 } from "../../../components/assets/emoticon/winking5.svg";
 import { getCookie } from '../../../utils/cookieUtils';
 
 export const Comment = ({ commentList }: { commentList: any }) => {
@@ -95,24 +95,27 @@ export const Comment = ({ commentList }: { commentList: any }) => {
       };
 
   //---------------------------------------------------- 'emoticon' 값에 따라 다른 이모티콘 컴포넌트를 렌더링
-  const emoticon = getCookie("emoticon");
+  const myEmoticon = getCookie("emoticon");
   type EmoticonComponents = {
     [key: string]: JSX.Element;
   };
-  const emoticonComponents: EmoticonComponents = {
-    1: <Winking1 />,
-    2: <Winking2 />,
-    3: <Winking3 />,
-    4: <Winking4 />,
-    5: <Winking5 />,
-  };
-  const selectedEmoticon = emoticon ? emoticonComponents[emoticon] : null;
 
+  const selectedEmoticon= (emoticon:string | null) => {
+    const emoticonComponents: EmoticonComponents = {
+      1: <Winking1 />,
+      2: <Winking2 />,
+      3: <Winking3 />,
+      4: <Winking4 />,
+      5: <Winking5 />,
+    };
+    return emoticon ? emoticonComponents[emoticon] : null;
+  }
   return (
     <StCommentBox>
         {commentList?.map((item: any) => (
           <StCommentList key={item.id}>
-            <StProfileImg src={댓글프로필} alt='프로필사진'/>
+            {selectedEmoticon(item.emoticon)}
+            {/* <StProfileImg src={댓글프로필} alt='프로필사진'/> */}
             <StContents>
               {editInput==item.id?
               <Input placeholder={'수정할 댓글을 적어주세요'} size={'editComment'} type={'text'} value={editcomment} onChange={handleEditCommentChange}/>
@@ -129,7 +132,7 @@ export const Comment = ({ commentList }: { commentList: any }) => {
           </StCommentList>
         ))}
         <StInputform onSubmit={commentHandler}>
-            {selectedEmoticon}
+            {selectedEmoticon(myEmoticon)}
           <Input placeholder={'댓글을 적어주세요'} size={'comment'} type={'text'} value={comment} onChange={handleCommentChange}/>
           <Button color={comment?'detailBtn':'negativeDetailBtn'} size={"addComment"} name={"등록하기"} disabled={!comment}/>
         </StInputform>

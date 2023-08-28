@@ -7,17 +7,18 @@ type ChatMessageProps = {
   };
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ message, sentTime, isSender }) => {
-    const MessageContainer = isSender ? StSendMessageBox : StReceiveMessageBox;
+    const MessageContainerBox = isSender ? StSendMessageBox : StReceiveMessageBox;
+    const StMessageBubble = isSender ? StSendMessage : StReceiveMessage
   
     return (
-      <MessageContainer>
-        <StSendMessage>
+      <MessageContainerBox>
+        <StMessageBubble>
           <div className="speech-bubble">
             <div className="text">{message}</div>
             <div className="time">{sentTime}</div>
           </div>
-        </StSendMessage>
-      </MessageContainer>
+        </StMessageBubble>
+      </MessageContainerBox>
     );
   };
 

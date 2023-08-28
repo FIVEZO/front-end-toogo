@@ -22,6 +22,8 @@ export type cardItem={
     contents: string,
     createdAt: string,
     meetDate: string,
+    emoticon: string,
+
 }
 
 export type cardData ={

@@ -4,12 +4,12 @@ import {  SignupFormValues } from '../types/login';
 import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks/useInput';
 import { useMutation } from 'react-query';
-import Button from '../conponents/Button';
+import Button from '../components/Button';
 import { emailCheck ,addUsers, nickCheck, authCodeCheck } from '../api/api';
-import Input from '../conponents/Input';
-import Header from '../conponents/Header';
+import Input from '../components/Input';
+import Header from '../components/Header';
 import "../fonts/Font.css";
-import Footer from '../conponents/Footer';
+import Footer from '../components/Footer';
 
 
 type ButtonProps = {

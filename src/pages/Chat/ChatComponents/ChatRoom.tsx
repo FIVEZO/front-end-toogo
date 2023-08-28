@@ -9,13 +9,14 @@ import {
   fetchChatMessage,
   fetchChatRoom,
 } from "../../../api/chatApi";
-import Spinner from "../../../conponents/Spinner";
+import Spinner from "../../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
-import { ChatMessage } from "./ChattingBubble";
+import { ChatMessage } from "./ChatMessage";
 import { getCookie } from "../../../utils/cookieUtils";
 import { ChatInput } from "./ChatInput";
 import { ChatPost } from "./ChatPost";
 import { ChatHeader } from "./ChatHeader";
+import LoadingAndError from "../../../components/LoadingAndError";
 
 type ReceiveData = {
   message: string;
@@ -51,10 +52,7 @@ export const ChatRoom = () => {
     isError: isError1,
     data: chatMessages,
   } = useQuery<ChatRoomForm[]>(["chatMessage", roomCode], () => fetchChatMessage(roomCode!),{
-      onSuccess: () => {
-        
-        // 여기에 데이터 가져오기 성공 후 실행할 작업을 추가할 수 있습니다.
-      },
+    refetchOnWindowFocus: false,
     })
 
   const {
@@ -181,6 +179,8 @@ export const ChatRoom = () => {
   }
 
   return (
+    <div>
+    {/* <LoadingAndError isLoading={isLoading1 || isLoading2} isError={isError1 || isError2} /> */}
     <Stlayout>
       <ChatHeader
         modal={modal}
@@ -212,6 +212,7 @@ export const ChatRoom = () => {
       </StChatContainer>
       <ChatInput sendChat={sendChat} chat={chat} setChat={setChat} />
     </Stlayout>
+    </div>
   );
 };
 

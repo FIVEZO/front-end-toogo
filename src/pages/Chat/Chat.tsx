@@ -2,10 +2,10 @@ import React from 'react'
 import { Spinner } from 'react-bootstrap';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import Header from '../../conponents/Header';
+import Header from '../../components/Header';
 import 프로필 from '../../img/프로필.jpg'
 import { ChatRoom } from './ChatComponents/ChatRoom';
-import Footer from '../../conponents/Footer';
+import Footer from '../../components/Footer';
 import { styled } from 'styled-components';
 import nonechat from "../../img/nonechat.jpg"
 import { fetchChatRooms } from '../../api/chatApi';

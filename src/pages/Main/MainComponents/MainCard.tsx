@@ -1,15 +1,15 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import backgroundImage1 from '../img/태국.jpg';
-import backgroundImage2 from '../img/영국.jpg';
-import backgroundImage3 from '../img/모로코.jpg';
-import backgroundImage4 from '../img/미국.jpg';
-import backgroundImage5 from '../img/호주.jpg';
-import Button from './Button';
+import backgroundImage1 from '../../../img/태국.jpg';
+import backgroundImage2 from '../../../img/영국.jpg';
+import backgroundImage3 from '../../../img/모로코.jpg';
+import backgroundImage4 from '../../../img/미국.jpg';
+import backgroundImage5 from '../../../img/호주.jpg';
+import Button from '../../../components/Button';
 import { useQuery } from 'react-query';
-import { getCountrySum } from '../api/api';
+import { getCountrySum } from '../../../api/api';
 
-import Spinner from './Spinner';
+import Spinner from '../../../components/Spinner';
 
 
 
