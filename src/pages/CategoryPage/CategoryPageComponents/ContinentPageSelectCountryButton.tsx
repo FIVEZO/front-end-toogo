@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import categorymarker from "../img/categorymarker.jpg";
-import "../fonts/Font.css";
+import categorymarker from "../../../img/categorymarker.jpg";
+import "../../../fonts/Font.css";
 import { RxReset } from "react-icons/rx";
 
 interface ContinentPageSelectCountryProps {

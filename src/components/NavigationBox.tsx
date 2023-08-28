@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { CustomCalendar } from './CustomCalender';
+import { CustomCalendar } from '../pages/Post/PostComponents/CustomCalender';
 import SelectCountry from './SelectCountry';
 import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';

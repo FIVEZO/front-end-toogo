@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import {  editPost, getDetailPosts } from "../api/api";
-import { locationFormValues, postFormValues,  } from "../types/posts";
+import {  editPost, getDetailPosts } from "../../api/api";
+import { locationFormValues, postFormValues,  } from "../../types/posts";
 import { useNavigate, useParams } from "react-router-dom";
-import Map from "../components/Map";
+import Map from "../Post/PostComponents/Map";
 import { styled } from "styled-components";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import NavigationBox from "../components/NavigationBox";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import NavigationBox from "../../components/NavigationBox";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   selectedCountryState,
   selectedDateState,
   sliderValueState,
-} from "../recoil/NavigationBar";
+} from "../../recoil/NavigationBar";
 
 function EditPost() {
 

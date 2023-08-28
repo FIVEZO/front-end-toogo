@@ -11,8 +11,6 @@ interface CustomCalendarProps {
 }
 
 export const CustomCalendar: React.FC<CustomCalendarProps> = ({ setFormattedDate }) => {
-
-    const [showCalendar, setShowCalendar] = useState<boolean>(false);   // 캘린더 여는 토글
     const today = new Date()
     const [date, setDate] = useState<Date>(today); 	// date 를 선언하고 기본값을 내일날짜로 지정
   
@@ -36,8 +34,6 @@ export const CustomCalendar: React.FC<CustomCalendarProps> = ({ setFormattedDate
     const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
     const day = inputDate.getDate().toString().padStart(2, '0');
     const formattedDate = `${month}월 ${day}일`;
-    
-    console.log(formattedDate); // Output: 2023년 09월 26일
  
     return (
     <div>
@@ -59,7 +55,6 @@ export const CustomCalendar: React.FC<CustomCalendarProps> = ({ setFormattedDate
     </div>
   )
 }
-
 
 const CalendarContainer = styled.div`
   display: flex;

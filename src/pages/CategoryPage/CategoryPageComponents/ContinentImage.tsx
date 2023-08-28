@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import "../fonts/Font.css";
+import "../../../fonts/Font.css";
 
 const continentData = [
   {

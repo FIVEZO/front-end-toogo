@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { deletePost, getDetailPosts, postScrap } from '../../api/api';
 import { styled } from 'styled-components';
 import { countryImages } from '../../img/countryImages';
-import GogleMap from '../../components/GogleMap';
+import GogleMap from './DetailPageComponents/GogleMap';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Footer from '../../components/Footer';
@@ -103,7 +103,7 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
     scrapPostSum,
     title,
     commentList,
-    newintroduction,
+    newIntroduction,
   } = data;
   const countryImage = countryImages[country] || countryImages["한국"];
 
@@ -185,7 +185,7 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
         </Container>
 <NickBox>
         <StNickname>{nickname} <div className="Line" />
-        <Stdiv>{newintroduction}</Stdiv>
+        <Stdiv>{newIntroduction}</Stdiv>
       </StNickname>
       <Button
         color={nickname==myNickName?'negativeDetailBtn':'detailBtn'} 
