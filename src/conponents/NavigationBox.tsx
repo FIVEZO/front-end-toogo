@@ -3,10 +3,8 @@ import { styled } from 'styled-components'
 import { CustomCalendar } from './CustomCalender';
 import SelectCountry from './SelectCountry';
 import { useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { selectedCountryState, selectedDateState } from '../recoil/NavigationBar';
-import HowMany from './HowMany';
-import { peplecountState } from '../recoil/peplecountState';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {  selectedCountryState, selectedDateState, sliderValueState } from '../recoil/NavigationBar';
 import { getDetailPosts } from '../api/api';
 import { useQuery } from 'react-query';
 import RangeModal from './RangeModal';
@@ -22,7 +20,8 @@ interface InnerBoxProps {
     const [isDate, setIsDate] = useState(false);
     const [isPeple, setIsPeple] = useState(false);
     const [formattedDate, setFormattedDate] = useRecoilState(selectedDateState);
-    const [peple, setPeple] = useRecoilState(peplecountState);
+    const [peoplecount, setPeoplecount] = useRecoilState(sliderValueState);
+    
 
     const handleBoxClick = (index: number) => {
         setSelectedBox(index);
@@ -61,7 +60,7 @@ interface InnerBoxProps {
                 <InnerBox onClick={() =>{handleBoxClick(2); setIsPeple(true);}} highlighted={selectedBox === 2}>
                 <TextBox>
                         <TextContent>모집 인원</TextContent>
-                        <TextContent2>{peple ? `${peple}명` : "인원수를 선택해주세요."}</TextContent2>
+                        <TextContent2>  {peoplecount ? `${peoplecount}명` : "인원수를 선택해주세요."}</TextContent2>
                     </TextBox>
                 </InnerBox>
             </NavRayout>

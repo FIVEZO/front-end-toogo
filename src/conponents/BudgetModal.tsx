@@ -22,7 +22,13 @@ function BudgetModal({position, budgetOpen}:selectForm) {
             0
           </BoxUpperNum>
       </BoxUpper>
-          <BugetMessege/>
+          <BugetMessege items={{
+            sender: '',
+            createdAt: '',
+            readStatus: false,
+            contents: '',
+            message: ''
+          }}/>
    </ModalRayout>
       )}
     </>

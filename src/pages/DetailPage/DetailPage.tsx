@@ -88,10 +88,11 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;
   }
-
+  
   const {
     contents,
     country,
+    people,
     createdAt,
     id,
     latitude,
@@ -165,7 +166,13 @@ const createChatMutation = useMutation((makeChatData:createChat) => createChatRo
                 <AreaBoxSpanBox margin={"39px 0 21px 0"}>
                   {country}
                 </AreaBoxSpanBox>
+
+                <DateBoxSpan margin={"39px 16px 21px 40px"}>모집인원</DateBoxSpan>
+                <AreaBoxSpanBox margin={"39px 0 21px 0"}>
+                  {people}명
+                </AreaBoxSpanBox>
               </DateBoxSpanBox>
+              
               <DateBoxSpanBox>
                 <DateBoxSpan margin={"0 16px 0 40px"}>날짜</DateBoxSpan>
                 <AreaBoxSpanBox margin={"0 16px 0 0"}>

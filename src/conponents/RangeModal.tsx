@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
 import { styled } from "styled-components";
-import Range from "./Range";
 import ReactSlider from 'react-slider'
+import { useRecoilState } from "recoil";
+import {  sliderValueState } from "../recoil/NavigationBar";
 
 function RangeModal() {
-  const handleSliderChange = (values: number | number[]) => {
-    if (Array.isArray(values)) {
-      setSliderValue([values[0], values[1] as number]);
-    }
+
+  const [sliderValue, setSliderValue] = useRecoilState<string>(sliderValueState);
+  const handleSliderChange = (value: number | number[]) => {
+    // 슬라이더 값이 변경될 때마다 문자열로 변경하여 state 업데이트
+    setSliderValue(String(value));
   };
-  
-  const [sliderValue, setSliderValue] = useState<[number, number]>([0, 1]);
+
+
   return (
   
     <div>
@@ -27,41 +29,36 @@ function RangeModal() {
           trackStyle={trackStyle}
           handleStyle={handleStyle}
           railStyle={railStyle}
-          range
-          defaultValue={[1, 2]} 
           step={1}
-          min={0}
+          min={1}
           max={9}
           onChange={handleSliderChange}
-          value={sliderValue}
+          value={Number(sliderValue)}
           allowCross={false}
           pushable
         />
-         <ReactSlider
-         className="horizontal-slider"
-         thumbClassName="example-thumb"
-         trackClassName="example-track"
-         value={sliderValue}
-         onChange={handleSliderChange}
-         defaultValue={[1, 2]}
-         ariaLabelledby={['first-slider-label', 'second-slider-label']}
-         ariaValuetext={state => `Thumb value ${state.valueNow}`}
-         renderThumb={(props, state) => (
-          <Thumb {...props}>
-            {state.valueNow}명
-          </Thumb>
-        )}
-         pearling
-         max={9}
-         min={0}
-         minDistance={1}
-         step={1}
-       
-      />
+   
+   <ReactSlider
+          className="horizontal-slider"
+          thumbClassName="example-thumb"
+          trackClassName="example-track"
+          value={Number(sliderValue)}
+          onChange={handleSliderChange}
+          defaultValue={1}
+          ariaLabelledby="slider-label"
+          ariaValuetext={(state) => `Thumb value ${state.valueNow}`}
+          renderThumb={(props, state) => (
+            <Thumb {...props}>{state.valueNow}명</Thumb>
+          )}
+          max={9}
+          min={1}
+          step={1}
+        />
       </Box>
     </div>
   );
 }
+
 export default RangeModal;
 const sliderStyle = {
   width: 386,

@@ -312,17 +312,12 @@ const getNote = async () => {
 
 // 마이페이지 내가받은 쪽지
 const getNotification = async () => {
-  const response = await instance.get(`api/notification/all`);
+  const response = await instance.get(`/api/notification/subscribe`);
   // console.log("내가받은 알림 조회", response)
   return response.data;
 };
 
-// 게시글 삭제
-const deleteNotification = async ( postId: number) => {
-  const response = await instance.delete(`/api/notification/delete/${postId}`);
-  // console.log("알림 삭제", response)
-  return response.data;
-};
+
 
 export {
   // 로그인, 회원가입
