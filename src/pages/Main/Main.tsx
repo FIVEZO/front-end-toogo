@@ -1,22 +1,18 @@
-import { css, styled } from 'styled-components';
+import { styled } from 'styled-components';
 import React, { useEffect, useState } from 'react'
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { getHomePosts } from '../../api/api';
 import { Cards } from '../../components/Cards';
 import { cardItem } from '../../types/posts';
 import Header from '../../components/Header';
-import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import CardSlick from './MainComponents/CardSlick';
 import Spinner from '../../components/Spinner';
-import LoadingAndError from '../../components/LoadingAndError';
-
 
 export const Main: React.FC = () => {
   const [showData, setShowData] = useState(false);
   const { isLoading, isError, data:cardData } = useQuery("mainPost", getHomePosts);
   
-  const navigate = useNavigate();
   useEffect(() => {
     const delay = 300; 
     if (!isLoading && !isError) {
@@ -26,19 +22,17 @@ export const Main: React.FC = () => {
     }
   }, [isLoading, isError]);
 
-
-  // if (isLoading) {
+  if (isLoading) {
   
-  //   return <Spinner/>;
-  // }
-
-  // if (isError) {
-  //   return <p>오류가 발생하였습니다...!</p>;
-  // }
+    return <Spinner/>;
+  }
+  
+  if (isError) {
+    return <p>오류가 발생하였습니다...!</p>;
+  }
   
   return (
     <div>
-      <LoadingAndError isLoading={isLoading} isError={isError} />
         <MainRayout>
           <Header/>
           <TopText>여행지를 선택하세요.</TopText>
