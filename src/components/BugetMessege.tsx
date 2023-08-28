@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from 'styled-components'
 import { Avatar } from "@mui/material";
-import { ReactComponent as Winking1 } from "../conponents/assets/emoticon/winking1.svg";
+import { ReactComponent as Winking1 } from "../components/assets/emoticon/winking1.svg";
 import { useQuery } from 'react-query';
 import { NotificationFormValues } from '../types/posts';
 
