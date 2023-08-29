@@ -41,4 +41,5 @@ export type NotificationFormValues = {
     readStatus: boolean;
     contents: string;
     message : string;
+    
 };

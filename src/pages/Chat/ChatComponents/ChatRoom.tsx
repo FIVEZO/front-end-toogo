@@ -78,7 +78,7 @@ export const ChatRoom = () => {
     // 소켓 연결
     try {
       const clientdata = new Client({
-        brokerURL: `wss://${process.env.REACT_APP_CHAT_URL}/ws-stomp`,
+        brokerURL: `${process.env.REACT_APP_CHAT_URL}/ws-stomp`,
         connectHeaders: {
           accessToken: accessToken || "",
           refreshToken: refreshToken || "",

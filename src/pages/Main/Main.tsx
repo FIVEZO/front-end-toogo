@@ -11,7 +11,9 @@ import Spinner from '../../components/Spinner';
 
 export const Main: React.FC = () => {
   const [showData, setShowData] = useState(false);
-  const { isLoading, isError, data:cardData } = useQuery("mainPost", getHomePosts);
+  const { isLoading, isError, data:cardData } = useQuery("mainPost", getHomePosts,{
+    refetchOnWindowFocus: false,
+    });
   
   useEffect(() => {
     const delay = 300; 

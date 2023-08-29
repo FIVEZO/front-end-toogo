@@ -37,7 +37,6 @@ export const Comment = ({ commentList }: { commentList: any }) => {
         {
           onSuccess: () => {
             queryClient.invalidateQueries("detailPost");
-            console.log('댓글 작성 완료!');
             resetComment();
           },
         }
@@ -51,9 +50,7 @@ export const Comment = ({ commentList }: { commentList: any }) => {
 //-----------------------------------------댓글 삭제
       const deleteCommentMutation = useMutation((commentId:number) =>deleteComment(+category, +postId, commentId),{
         onSuccess: () => {
-          queryClient.invalidateQueries('detailPost');
-          console.log('댓글 삭제 완료!');
-        },
+          queryClient.invalidateQueries('detailPost');        },
       });
 
       const handleDeleteComment = (commentId: number) => {
@@ -70,9 +67,7 @@ export const Comment = ({ commentList }: { commentList: any }) => {
           onSuccess: () => {
             queryClient.invalidateQueries('detailPost');
             setEditInput(false);
-            resetEditComment();
-            console.log('댓글 수정 완료!');
-          },
+            resetEditComment();          },
         }
       );
 
