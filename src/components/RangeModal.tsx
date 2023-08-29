@@ -2,28 +2,26 @@ import React, { useState } from "react";
 import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
 import { styled } from "styled-components";
-import ReactSlider from 'react-slider'
+import ReactSlider from "react-slider";
 import { useRecoilState } from "recoil";
-import {  sliderValueState } from "../recoil/NavigationBar";
+import { sliderValueState } from "../recoil/NavigationBar";
 
 function RangeModal() {
-
-  const [sliderValue, setSliderValue] = useRecoilState<string>(sliderValueState);
+  const [sliderValue, setSliderValue] =
+    useRecoilState<string>(sliderValueState);
   const handleSliderChange = (value: number | number[]) => {
     // 슬라이더 값이 변경될 때마다 문자열로 변경하여 state 업데이트
     setSliderValue(String(value));
   };
 
-
   return (
-  
     <div>
       <Box>
-        <TextBox>   
-        <TextPeple>인원</TextPeple>
-        <TextPepleMany>동행 인원을 선택해주세요.</TextPepleMany>
+        <TextBox>
+          <TextPeple>인원</TextPeple>
+          <TextPepleMany>동행 인원을 선택해주세요.</TextPepleMany>
         </TextBox>
-     
+
         <Slider
           style={sliderStyle}
           trackStyle={trackStyle}
@@ -37,8 +35,8 @@ function RangeModal() {
           allowCross={false}
           pushable
         />
-   
-   <ReactSlider
+
+        <ReactSlider
           className="horizontal-slider"
           thumbClassName="example-thumb"
           trackClassName="example-track"
@@ -99,7 +97,7 @@ const Thumb = styled.div`
   color: #747474;
 `;
 const TextPepleMany = styled.div`
-    width: 153px;
+  width: 153px;
   height: 16px;
   flex-grow: 0;
   font-family: Roboto;
@@ -111,9 +109,9 @@ const TextPepleMany = styled.div`
   letter-spacing: normal;
   text-align: left;
   color: #747474;
-`
+`;
 const TextPeple = styled.div`
-    width: 30px;
+  width: 30px;
   height: 19px;
   flex-grow: 0;
   font-family: Roboto;
@@ -125,9 +123,9 @@ const TextPeple = styled.div`
   letter-spacing: normal;
   text-align: left;
   color: #000;
-`
+`;
 const TextBox = styled.div`
-   width: 153px;
+  width: 153px;
   height: 43px;
   flex-grow: 0;
   display: flex;
@@ -137,13 +135,13 @@ const TextBox = styled.div`
   gap: 8px;
   margin: 0 171px 15px 1px;
   padding: 0;
-`
+`;
 const Box = styled.div`
-   width: 472px;
+  width: 472px;
   height: 157px;
   margin: 0px 389px 5px 696px;
   padding: 30px 43px 20px;
   border-radius: 8px;
   border: solid 1px #cfced7;
   background-color: #fff;
-`
+`;

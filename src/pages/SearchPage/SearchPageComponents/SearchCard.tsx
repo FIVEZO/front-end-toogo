@@ -1,17 +1,13 @@
 import React from "react";
 import { styled } from "styled-components";
 import Card from "react-bootstrap/Card";
-import { cardData, cardItem } from "../../../types/posts";
+import { cardItem } from "../../../types/posts";
 import { Avatar } from "@mui/material";
-import { ReactComponent as Winking1 } from "../../../components/assets/emoticon/winking1.svg";
-import { ReactComponent as Winking2 } from "../../../components/assets/emoticon/winking2.svg";
-import { ReactComponent as Winking3 } from "../../../components/assets/emoticon/winking3.svg";
-import { ReactComponent as Winking4 } from "../../../components/assets/emoticon/winking4.svg";
-import { ReactComponent as Winking5 } from "../../../components/assets/emoticon/winking5.svg";
 import { formatTimeAgo } from "../../../components/Time";
 import { useNavigate } from "react-router-dom";
 import { countryImages } from "../../../img/countryImages";
 import "../../../fonts/Font.css";
+import { selectedEmoticon } from "../../../utils/emoticonUtils";
 
 
 export const SearchCard = ({ items }: { items: cardItem }) => {
@@ -28,18 +24,6 @@ export const SearchCard = ({ items }: { items: cardItem }) => {
   } = items;
   const countryImage = countryImages[country] || countryImages["한국"];
   const formattedCreatedDate = formatTimeAgo(createdAt); // createdAt을 문자열로 변환하여 formatTimeAgo 함수에 전달
-
-  type EmoticonComponents = {
-    [key: string]: JSX.Element;
-  };
-  const emoticonComponents: EmoticonComponents = {
-    1: <Winking1 />,
-    2: <Winking2 />,
-    3: <Winking3 />,
-    4: <Winking4 />,
-    5: <Winking5 />,
-  };
-  const selectedEmoticon = emoticon ? emoticonComponents[emoticon] : null;
 
   // 내용이 26자가 넘어가면 자름
   const truncatedContents =
@@ -58,7 +42,7 @@ export const SearchCard = ({ items }: { items: cardItem }) => {
         <AvatarLine>
           <AvatarPic>
             <Avatar alt="Avatar" sx={{ width: 44, height: 44 }}>
-             {selectedEmoticon}
+             {selectedEmoticon(emoticon)}
             </Avatar>
           </AvatarPic>
           <NicknameAndTime>
