@@ -211,28 +211,39 @@ export const DetailPage = () => {
               {nickname} <div className="Line" />
               <Stdiv>{newIntroduction}</Stdiv>
             </StNickname>
-            <Button
-              color={nickname == myNickName ? "negativeDetailBtn" : "detailBtn"}
-              margin={"119px 0 16px 0"}
-              size={"detail"}
-              name={"쪽지 보내기"}
-              onClick={makeChatRoom}
-              disabled={nickname == myNickName}
-            />
+            {state ? (
+              <Button
+                color={
+                  nickname == myNickName ? "negativeDetailBtn" : "detailBtn"
+                }
+                margin={"119px 0 16px 0"}
+                size={"detail"}
+                name={"쪽지 보내기"}
+                onClick={makeChatRoom}
+                disabled={nickname == myNickName}
+              />
+            ) : (
+              <Button
+                color={"detailBtn"}
+                margin={"119px 0 16px 0"}
+                size={"detail"}
+                name={"로그인 후 쪽지 보내기"}
+                onClick={() => navigate("/login")}
+              />
+            )}
           </NickBox>
         </NickContainer>
         <MapBox>
           <GogleMap latitude={latitude} longitude={longitude} />
         </MapBox>
         <AreaBox>댓글</AreaBox>
-        <Comment commentList={commentList} />
+        <Comment commentList={commentList} postNickname={nickname} />
       </Layout>
       <Footer />
     </>
   );
 };
 
-// onClick={()=>handleDeleteComment(item.id)}
 
 const DelateButton = styled.div`
   display: flex;
@@ -252,6 +263,7 @@ const DelateButton = styled.div`
   color: #9a9a9a;
   cursor: pointer;
 `;
+        
 const ShaerBox = styled(FiShare2)`
   width: 28px;
   height: 30px;
@@ -264,6 +276,7 @@ const BookmarkBox = styled(FaRegBookmark)`
   height: 28px;
   cursor: pointer;
 `;
+
 const BookmarkBoxFill = styled(BsFillBookmarkCheckFill)`
   width: 32px;
   height: 28px;
@@ -325,6 +338,7 @@ const NickBox = styled.div`
   border: solid 1px rgba(0, 0, 0, 0.1);
   background-color: #fff;
 `;
+
 const Container = styled.div`
   width: 1200px;
   margin: auto;
@@ -383,6 +397,7 @@ const MainImg = styled.img`
   background-repeat: no-repeat;
   background-position: center;
 `;
+
 const StTitleBox = styled.div`
   width: 753px;
   height: 97px;
@@ -391,6 +406,7 @@ const StTitleBox = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
 const StTitle = styled.div`
   height: 41px;
   font-family: Pretendard;
