@@ -1,43 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
-import { ReactComponent as Winking1Big } from "../components/assets/emoticon/winking1big.svg";
-import { ReactComponent as Winking2Big } from "../components/assets/emoticon/winking2big.svg";
-import { ReactComponent as Winking3Big } from "../components/assets/emoticon/winking3big.svg";
-import { ReactComponent as Winking4Big } from "../components/assets/emoticon/winking4big.svg";
-import { ReactComponent as Winking5Big } from "../components/assets/emoticon/winking5big.svg";
-import { ReactComponent as Winking1 } from "../components/assets/emoticon/winking1.svg";
+import { ReactComponent as Winking6 } from "../../components/assets/emoticon/winking6.svg";
 import { BiSolidPencil } from "react-icons/bi";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { getMyPosts, getScrapPosts } from "../api/api";
-import { Cards } from "../components/Cards";
-import { cardItem } from "../types/posts";
-import Footer from "../components/Footer";
-import Spinner from "../components/Spinner";
-import "../fonts/Font.css";
-import { getCookie } from "../utils/cookieUtils";
+import { getMyPosts, getScrapPosts } from "../../api/api";
+import Footer from "../../components/Footer";
+import "../../fonts/Font.css";
+import { getCookie } from "../../utils/cookieUtils";
+import { selectedEmoticonBig } from "../../utils/emoticonUtils";
+import { MyPostTabContent } from "./MyPageComponents/MyPostTabContent";
+import { ScrapTabContent } from "./MyPageComponents/ScrapTabContent";
 
 export const MyPage = () => {
   const [activeTab, setActiveTab] = useState("postList");
   const [pagenum, setPagenum] = useState<number>(1);
   const navigate = useNavigate();
-
   const emoticon = getCookie("emoticon");
-
-  type EmoticonComponents = {
-    [key: string]: JSX.Element;
-  };
-
-  const emoticonComponents: EmoticonComponents = {
-    1: <Winking1Big />,
-    2: <Winking2Big />,
-    3: <Winking3Big />,
-    4: <Winking4Big />,
-    5: <Winking5Big />,
-  };
-
-  const selectedEmoticon = emoticon ? emoticonComponents[emoticon] : null;
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
@@ -55,55 +35,6 @@ export const MyPage = () => {
     data: scrapData,
   } = useQuery("myScrap", () => getScrapPosts(pagenum));
 
-  const renderTabMyPost = () => {
-    console.log("Rendering tab content with data:", postData);
-    if (activeTab === "postList") {
-      if (isLoadingPost) {
-        return <Spinner />;
-      }
-      if (isErrorPost) {
-        return <p>Error loading post data...</p>;
-      }
-      return postData.data && postData.data.length > 0 ? (
-        <StCardContainer>
-          {postData.data.map((item: cardItem) => (
-            <Cards key={item.id} items={item} />
-          ))}
-        </StCardContainer>
-      ) : (
-        <ContentBox>
-          <MiniSvg />
-          <MibiText>아직 작성한 글이 없어요</MibiText>
-        </ContentBox>
-      );
-    }
-    return null;
-  };
-
-  const renderTabScrap = () => {
-    if (activeTab === "scrapList") {
-      if (isLoadingScrap) {
-        return <Spinner />;
-      }
-      if (isErrorScrap) {
-        return <p>Error loading scrap data...</p>;
-      }
-      return scrapData.data && scrapData.data.length > 0 ? (
-        <StCardContainer>
-          {scrapData.data.map((item: cardItem) => (
-            <Cards key={item.id} items={item} />
-          ))}
-        </StCardContainer>
-      ) : (
-        <ContentBox>
-          <MiniSvg />
-          <MibiText>아직 스크랩한 글이 없어요</MibiText>
-        </ContentBox>
-      );
-    }
-    return null;
-  };
-
   const nickname = getCookie("nickname");
   const email = getCookie("email");
 
@@ -112,7 +43,7 @@ export const MyPage = () => {
       <Header />
       <InfoBox>
         <MainEmoticon>
-          {selectedEmoticon}
+          {selectedEmoticonBig(emoticon)}
           <PenIconBox onClick={() => navigate("/Account")}>
             <PenIcon />
           </PenIconBox>
@@ -136,24 +67,18 @@ export const MyPage = () => {
           스크랩한 글
         </PostTap>
       </PageBox>
-
-      {/* 게시글 없으면 글 없어요 박스 만들기 */}
-      {renderTabMyPost()}
-      {renderTabScrap()}
-
-      {activeTab === "postList" && !renderTabMyPost() && (
-        <ContentBox>
-          <MiniSvg />
-          <MibiText>아직 작성한 글이 없어요</MibiText>
-        </ContentBox>
-      )}
-
-      {activeTab === "scrapList" && !renderTabScrap() && (
-        <ContentBox>
-          <MiniSvg />
-          <MibiText>아직 스크랩한 글이 없어요</MibiText>
-        </ContentBox>
-      )}
+      <MyPostTabContent
+        activeTab={activeTab}
+        isLoading={isLoadingPost}
+        isError={isErrorPost}
+        data={postData}
+      />
+      <ScrapTabContent
+        activeTab={activeTab}
+        isLoading={isLoadingScrap}
+        isError={isErrorScrap}
+        data={scrapData}
+      />
       <Footer />
     </>
   );
@@ -282,7 +207,7 @@ const ContentBox = styled.div`
   align-items: center;
 `;
 
-const MiniSvg = styled(Winking1)`
+const MiniSvg = styled(Winking6)`
   width: 50px;
   height: 50px;
 `;
