@@ -17,17 +17,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../types/login";
 import { Comment } from "./DetailPageComponents/Comment";
 import { getCookie } from "../../utils/cookieUtils";
-
-function formatDatetime(datetime: string) {
-  const date = new Date(datetime);
-  const formattedDatetime = `${date.getFullYear()}.${(date.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")} ${date
-    .getHours()
-    .toString()
-    .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
-  return formattedDatetime;
-}
+import moment from "moment";
 
 export const DetailPage = () => {
   const myNickName = getCookie("nickname");
@@ -163,26 +153,30 @@ export const DetailPage = () => {
                 <div>
                   <StTitle>{title}</StTitle>
                   <StCountry>
-                    [{continentMapping[+category]}] {country} ·{" "}
-                    {formatDatetime(createdAt)}{" "}
+                    <p>
+                      [{continentMapping[+category]}] {country}
+                    </p>
+                    |<p>{`${moment(createdAt).format("YYYY.MM.DD HH:mm")}`}</p>
+                    {state && myNickName === nickname ? <p>|</p> : null}
                     {state && myNickName === nickname ? (
-                      <>
-                        <StDeleteButton onClick={moveToUpdate}>
-                          · 수정{" "}
-                        </StDeleteButton>
-                        <StDeleteButton onClick={handleDeletePost}>
-                          · 삭제{" "}
-                        </StDeleteButton>
-                      </>
+                      <DelateButton onClick={moveToUpdate}>수정</DelateButton>
+                    ) : null}
+                    {state && myNickName === nickname ? <p>|</p> : null}
+                    {state && myNickName === nickname ? (
+                      <DelateButton onClick={handleDeletePost}>
+                        삭제
+                      </DelateButton>
                     ) : null}
                   </StCountry>
                 </div>
                 <div>
-                  {scrap ? (
-                    <BookmarkBoxFill onClick={handleScrap} />
-                  ) : (
-                    <BookmarkBox onClick={handleScrap} />
-                  )}
+                  {state ? (
+                    scrap ? (
+                      <BookmarkBoxFill onClick={handleScrap} />
+                    ) : (
+                      <BookmarkBox onClick={handleScrap} />
+                    )
+                  ) : null}
                   <ShaerBox onClick={handleCopyClipBoard} />
                 </div>
               </StTitleBox>
@@ -243,7 +237,6 @@ export const DetailPage = () => {
           <GogleMap latitude={latitude} longitude={longitude} />
         </MapBox>
         <AreaBox>댓글</AreaBox>
-
         <Comment commentList={commentList} postNickname={nickname} />
       </Layout>
       <Footer />
@@ -251,6 +244,26 @@ export const DetailPage = () => {
   );
 };
 
+
+const DelateButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 25px;
+  border: none;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #9a9a9a;
+  cursor: pointer;
+`;
+        
 const ShaerBox = styled(FiShare2)`
   width: 28px;
   height: 30px;
@@ -263,6 +276,7 @@ const BookmarkBox = styled(FaRegBookmark)`
   height: 28px;
   cursor: pointer;
 `;
+
 const BookmarkBoxFill = styled(BsFillBookmarkCheckFill)`
   width: 32px;
   height: 28px;
@@ -324,6 +338,7 @@ const NickBox = styled.div`
   border: solid 1px rgba(0, 0, 0, 0.1);
   background-color: #fff;
 `;
+
 const Container = styled.div`
   width: 1200px;
   margin: auto;
@@ -382,6 +397,7 @@ const MainImg = styled.img`
   background-repeat: no-repeat;
   background-position: center;
 `;
+
 const StTitleBox = styled.div`
   width: 753px;
   height: 97px;
@@ -390,6 +406,7 @@ const StTitleBox = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
 const StTitle = styled.div`
   height: 41px;
   font-family: Pretendard;
@@ -442,9 +459,6 @@ const StCountry = styled.div`
   letter-spacing: normal;
   text-align: left;
   color: #9a9a9a;
-`;
-
-const StDeleteButton = styled.span`
-  color: #9a9a9a;
-  cursor: pointer;
+  display: flex;
+  gap: 12px;
 `;
