@@ -170,11 +170,13 @@ export const DetailPage = () => {
                   </StCountry>
                 </div>
                 <div>
-                  {scrap ? (
-                    <BookmarkBoxFill onClick={handleScrap} />
-                  ) : (
-                    <BookmarkBox onClick={handleScrap} />
-                  )}
+                  {state ? (
+                    scrap ? (
+                      <BookmarkBoxFill onClick={handleScrap} />
+                    ) : (
+                      <BookmarkBox onClick={handleScrap} />
+                    )
+                  ) : null}
                   <ShaerBox onClick={handleCopyClipBoard} />
                 </div>
               </StTitleBox>
