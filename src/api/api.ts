@@ -350,4 +350,5 @@ export {
   getNote,
   getMyPosts,
   changePassword,
+  getNotification,
 };

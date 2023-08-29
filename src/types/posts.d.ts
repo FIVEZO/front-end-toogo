@@ -35,6 +35,7 @@ export type createChat = {
 };
 
 export type NotificationFormValues = {
+
   sender: string;
   createdAt: string;
   readStatus: boolean;
@@ -48,3 +49,4 @@ export interface TabContentProps {
   isError: boolean;
   data: { data: cardItem[] };
 }
+
