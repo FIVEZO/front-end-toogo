@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
-import { getCategoryPosts, getCategoryCountryPosts } from "../api/api";
+import { getCategoryPosts, getCategoryCountryPosts } from "../../api/api";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
-import { cardItem } from "../types/posts";
-import { Cards } from "../components/Cards";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Continent from "../components/ContinentImage";
-import FixedWritingButton from "../components/FixedWritingButton";
-import ContinentPageSelectCountry from "../components/ContinentPageSelectCountryButton";
-import PageMovingButton from "../components/PageMovingButton";
-import { RootState } from "../types/login";
+import { cardItem } from "../../types/posts";
+import { Cards } from "../../components/Cards";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import Continent from "./CategoryPageComponents/ContinentImage";
+import FixedWritingButton from "./CategoryPageComponents/FixedWritingButton";
+import ContinentPageSelectCountry from "./CategoryPageComponents/ContinentPageSelectCountryButton";
+import PageMovingButton from "../../components/PageMovingButton";
+import { RootState } from "../../types/login";
 import { useSelector } from "react-redux";
-import Spinner from "../components/Spinner";
+import Spinner from "../../components/Spinner";
 
 
 export const CategoryPage = () => {

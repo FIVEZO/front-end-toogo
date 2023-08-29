@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { css, styled } from "styled-components";
-import { LoginFormValues } from "../types/login";
+import { LoginFormValues } from "../../types/login";
 import { useNavigate } from "react-router-dom";
-import useInput from "../hooks/useInput";
+import useInput from "../../hooks/useInput";
 import { useMutation } from "react-query";
-import { login } from "../api/api";
-import Button from "../components/Button";
-import Input from "../components/Input";
-import Header from "../components/Header";
+import { login } from "../../api/api";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
+import Header from "../../components/Header";
 import { useDispatch } from "react-redux";
-import { logIn } from "../redux/modules/loginSlice";
-import Footer from "../components/Footer";
+import { logIn } from "../../redux/modules/loginSlice";
+import Footer from "../../components/Footer";
 
 type ButtonProps = {
   backgroundColor?: string;

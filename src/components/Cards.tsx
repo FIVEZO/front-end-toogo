@@ -6,11 +6,7 @@ import { Avatar } from "@mui/material";
 import { formatTimeAgo } from "./Time";
 import { useNavigate } from "react-router-dom";
 import { countryImages } from "../img/countryImages";
-import { ReactComponent as Winking1 } from "./assets/emoticon/winking1.svg";
-import { ReactComponent as Winking2 } from "./assets/emoticon/winking2.svg";
-import { ReactComponent as Winking3 } from "./assets/emoticon/winking3.svg";
-import { ReactComponent as Winking4 } from "./assets/emoticon/winking4.svg";
-import { ReactComponent as Winking5 } from "./assets/emoticon/winking5.svg";
+import { selectedEmoticon } from "../utils/emoticonUtils";
 
 export const Cards = ({ items }: { items: cardItem }) => {
   const {
@@ -32,19 +28,6 @@ export const Cards = ({ items }: { items: cardItem }) => {
   const truncatedTitle = title.length > 15 ? title.slice(0, 15) + "..." : title;
   const navigate = useNavigate();
 
-  type EmoticonComponents = {
-    [key: string]: JSX.Element;
-  };
-  const emoticonComponents: EmoticonComponents = {
-    1: <Winking1 />,
-    2: <Winking2 />,
-    3: <Winking3 />,
-    4: <Winking4 />,
-    5: <Winking5 />,
-  };
-  const selectedEmoticon = emoticon ? emoticonComponents[emoticon] : null;
-
-
   return (
     <DivRayout onClick={() => navigate(`/detailpage/${category}&${id}`)}>
       <StyledCardImg border-radius="8px" variant="top" src={countryImage} />
@@ -52,7 +35,7 @@ export const Cards = ({ items }: { items: cardItem }) => {
         <AvatarLine>
           <AvatarPic>
             <Avatar alt="Avatar" sx={{ width: 24, height: 24 }}>
-              {selectedEmoticon}
+              {selectedEmoticon(emoticon)}
             </Avatar>
           </AvatarPic>
           <CardNickname>{nickname}</CardNickname>

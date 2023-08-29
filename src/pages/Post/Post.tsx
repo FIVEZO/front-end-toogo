@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import useInput from "../hooks/useInput";
 import { useMutation } from "react-query";
-import { addPost } from "../api/api";
-import { locationFormValues, postFormValues } from "../types/posts";
+import { addPost } from "../../api/api";
+import { locationFormValues, postFormValues } from "../../types/posts";
 import { useNavigate, useParams } from "react-router-dom";
-import Map from "../components/Map";
+import Map from "./PostComponents/Map";
 import { styled } from "styled-components";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import NavigationBox from "../components/NavigationBox";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import NavigationBox from "../../components/NavigationBox";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedCountryState,selectedDateState, sliderValueState,} from "../recoil/NavigationBar";
+import { selectedCountryState,selectedDateState, sliderValueState,} from "../../recoil/NavigationBar";
 
 
 function Post() {

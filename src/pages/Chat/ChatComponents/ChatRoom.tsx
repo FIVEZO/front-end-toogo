@@ -37,24 +37,29 @@ export const ChatRoom = () => {
 
   const formatTime = () => {
     const dateObject = new Date();
-    const formattedTime = dateObject.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
+    const formattedTime = dateObject.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
     });
     return formattedTime;
-};
+  };
   const [modal, setModal] = useState<boolean>(false);
 
-
+  // 예전 대화목록 받아오기
   const {
     isLoading: isLoading1,
     isError: isError1,
     data: chatMessages,
-  } = useQuery<ChatRoomForm[]>(["chatMessage", roomCode], () => fetchChatMessage(roomCode!),{
-    refetchOnWindowFocus: false,
-    })
+  } = useQuery<ChatRoomForm[]>(
+    ["chatMessage", roomCode],
+    () => fetchChatMessage(roomCode!),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
+  // 단일 채팅방 선택 조회
   const {
     isLoading: isLoading2,
     isError: isError2,
@@ -149,10 +154,10 @@ export const ChatRoom = () => {
 
   useEffect(() => {
     queryClient.invalidateQueries("chatroom");
-    setBeforeChat(chatMessages)
+    setBeforeChat(chatMessages);
     connect();
     setChatList([]);
-   
+
     return () => {
       disConnect(); // 웹소켓 연결 해제
       setBeforeChat([]); // beforeChat 상태 초기화
@@ -171,7 +176,7 @@ export const ChatRoom = () => {
   }, [chats]);
 
   if (isLoading1 || isLoading2) {
-    return <Spinner/>;
+    return <Spinner />;
   }
 
   if (isError1 || isError2) {
@@ -180,38 +185,38 @@ export const ChatRoom = () => {
 
   return (
     <div>
-    {/* <LoadingAndError isLoading={isLoading1 || isLoading2} isError={isError1 || isError2} /> */}
-    <Stlayout>
-      <ChatHeader
-        modal={modal}
-        chatRoomIn={chatRoomIn}
-        setModal={setModal}
-        deleteChat={deleteChat}
-      />
-      <ChatPost chatRoomIn={chatRoomIn} navigate={navigate} />
-      {/* 채팅 컴포넌트 사용 */}
-      <StChatContainer ref={chatContainerRef}>
-        {!!chatMessages &&
-          chatMessages.map((e: any, i: number) => (
-            <ChatMessage
-              key={i}
-              message={e.message}
-              sentTime={e.sentTime}
-              isSender={e.sender === nickname}
-            />
-          ))}
-        {!!chats &&
-          chats.map((e: any, i: number) => (
-            <ChatMessage
-              key={i}
-              message={e.message}
-              sentTime={e.sentTime}
-              isSender={e.sender === nickname}
-            />
-          ))}
-      </StChatContainer>
-      <ChatInput sendChat={sendChat} chat={chat} setChat={setChat} />
-    </Stlayout>
+      {/* <LoadingAndError isLoading={isLoading1 || isLoading2} isError={isError1 || isError2} /> */}
+      <Stlayout>
+        <ChatHeader
+          modal={modal}
+          chatRoomIn={chatRoomIn}
+          setModal={setModal}
+          deleteChat={deleteChat}
+        />
+        <ChatPost chatRoomIn={chatRoomIn} navigate={navigate} />
+        {/* 채팅 컴포넌트 사용 */}
+        <StChatContainer ref={chatContainerRef}>
+          {!!chatMessages &&
+            chatMessages.map((e: any, i: number) => (
+              <ChatMessage
+                key={i}
+                message={e.message}
+                sentTime={e.sentTime}
+                isSender={e.senderId == chatRoomIn.myId}
+              />
+            ))}
+          {!!chats &&
+            chats.map((e: any, i: number) => (
+              <ChatMessage
+                key={i}
+                message={e.message}
+                sentTime={e.sentTime}
+                isSender={e.sender === nickname}
+              />
+            ))}
+        </StChatContainer>
+        <ChatInput sendChat={sendChat} chat={chat} setChat={setChat} />
+      </Stlayout>
     </div>
   );
 };

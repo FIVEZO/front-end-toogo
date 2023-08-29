@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LuEyeOff } from "react-icons/lu";
+import { LuEyeOff, LuEye } from "react-icons/lu";
 
 import React from "react";
 import Button from "./Button";
@@ -50,6 +50,7 @@ const Input: React.FC<InputProps> = ({
   maxLength,
   onButtonClick,
 }) => {
+  const [showPassword, setShowPassword] = React.useState(false);
   // 일반 인풋
   const renderInput = () => (
     <InputContainer size={size} color={color}>
@@ -66,12 +67,17 @@ const Input: React.FC<InputProps> = ({
   const renderEyeIcon = () => (
     <InputContainer size={size} color={color}>
       <InputField
-        type={type}
+        type={showPassword ? "text" : type} // Use "text" when showPassword is true
         placeholder={placeholder}
         value={value}
         onChange={onChange}
       />
-      <CustomEyeOffIcon />
+      {/* Toggle showPassword state on icon click */}
+      {showPassword ? (
+        <CustomEye onClick={() => setShowPassword(false)} />
+      ) : (
+        <CustomEyeOffIcon onClick={() => setShowPassword(true)} />
+      )}
     </InputContainer>
   );
 
@@ -138,6 +144,14 @@ const InputField = styled.input`
 const CustomEyeOffIcon = styled(LuEyeOff)`
   cursor: pointer;
   color: #cfced7;
+  margin-right: 16px;
+  width: 19.8px;
+  height: 17.6px;
+`;
+
+const CustomEye = styled(LuEye)`
+  cursor: pointer;
+  color: #5e5e5e;
   margin-right: 16px;
   width: 19.8px;
   height: 17.6px;
