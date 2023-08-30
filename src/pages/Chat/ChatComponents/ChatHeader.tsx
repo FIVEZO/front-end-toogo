@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { styled } from "styled-components";
-import 프로필 from "../../../img/프로필.jpg";
 import { Avatar } from "@mui/material";
 import { selectedEmoticon } from "../../../utils/emoticonUtils";
 
@@ -55,8 +54,6 @@ const StChatReceiver = styled.div`
   align-items: center;
   position: relative;
 `;
-
-const StProfileImg = styled.img``;
 const StName = styled.span`
   margin: 0 auto 0 29px;
 `;
