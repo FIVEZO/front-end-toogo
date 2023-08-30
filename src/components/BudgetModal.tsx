@@ -1,26 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import BugetMessege from './BugetMessege'
-import { useQuery } from 'react-query'
-import { getNotification } from '../api/api'
 import { NotificationFormValues } from '../types/posts'
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { getCookie } from '../utils/cookieUtils'
-import SseAlert from './SseAlert'
+import { useRecoilState } from 'recoil';
+import { eventDataListState } from '../recoil/Alert';
+import { useQuery, useQueryClient } from 'react-query';
+import { getNotification } from '../api/api';
 
 type selectForm = {
   position: string,
   budgetOpen: boolean
 }
 
-
-
 function BudgetModal({position, budgetOpen}:selectForm) {
-
-const [eventDataList, setEventDataList] = useState<any[]>([]); // eventData를 저장할 상태
+  const queryClient = useQueryClient();
+  const [eventDataList, setEventDataList] = useRecoilState(eventDataListState);
   const [isStarted, setIsStarted] = useState(false);
   const sse = useRef<EventSourcePolyfill | null>(null);
 
+
+  const { isLoading, isError, data:AlertData } = useQuery("getAlert", getNotification,{
+    refetchOnWindowFocus: false,
+    });
+  
   useEffect(() => {
     const accessToken = getCookie("access_token");
     const refreshToken = getCookie("refresh_token");
@@ -42,18 +46,24 @@ const [eventDataList, setEventDataList] = useState<any[]>([]); // eventData를 �
       console.log("[sse] 연결이 열렸습니다", { e });
     };
 
-    sse.current.addEventListener("addMessage", (event: any) => {
-      const eventData = JSON.parse(event.data);
-      console.log("메시지를 받았습니다:", eventData);
-   
-    });
+    // sse.current.addEventListener("addMessage", (event: any) => {
+    //   const eventData = JSON.parse(event.data);
+    //   console.log("메시지를 받았습니다:", eventData);
+    //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
+    // });
 
     sse.current.addEventListener("addComment", (event: any) => {
       const eventData = JSON.parse(event.data);
       console.log("댓글을 받았습니다:", eventData);
-      setEventDataList(eventDataList => [...eventDataList, eventData]); // 상태 업데이트
-
+      setEventDataList((eventDataList) => [...eventDataList, eventData]);
     });
+
+    sse.current.addEventListener("addMessageRoom", (event: any) => {
+      const eventData = JSON.parse(event.data);
+      console.log("메세지를 받았습니다:", eventData);
+      setEventDataList((eventDataList) => [...eventDataList, eventData]);
+    });
+
 
     sse.current.onerror = (err) => {
       console.log("[sse] 에러 발생", { err });
@@ -68,9 +78,22 @@ const [eventDataList, setEventDataList] = useState<any[]>([]); // eventData를 �
   }, []);
 
 console.log("eventDataList", eventDataList)
-  const [showData, setShowData] = useState(true);
-  return (
 
+// GET으로 데이터 받아서 SSE 데이터에 추가
+useEffect(() => {
+  if (AlertData) {
+    setEventDataList(AlertData);
+  }
+}, [AlertData]);
+
+useEffect(() => {
+  if (eventDataList) {
+    queryClient.invalidateQueries("getAlert");
+  }
+}, [eventDataList]);
+
+console.log("AlertData",AlertData)
+  return (
     <>
       {budgetOpen && (
      <ModalRayout position={position}>
@@ -79,22 +102,27 @@ console.log("eventDataList", eventDataList)
             새소식
           </BoxUpperText>
           <BoxUpperNum>
-            0
+            {eventDataList.length}
           </BoxUpperNum>
-      </BoxUpper>
-     
-      
-      {showData && eventDataList.map((item: NotificationFormValues, index: number) => (
-  <BugetMessege key={index} items={item} />
-))}
-
-  
+      </BoxUpper>    
+      {isStarted && (
+                 <ModalContent>
+                 {eventDataList.map((item: NotificationFormValues, index: number) => (
+                   <BugetMessege key={index} items={item} />
+                 ))}
+               </ModalContent>
+          )}
    </ModalRayout>
       )}
     </>
   )
       }
 
+const ModalContent = styled.div`
+max-height: 150px;
+  overflow-y: auto;
+`;
+    
 const ModalRayout = styled.div<{ position: string }>`
   width: 438px;
   height: 189px;

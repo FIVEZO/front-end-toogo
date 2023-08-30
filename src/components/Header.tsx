@@ -11,9 +11,14 @@ import HeaderSelect from "./HeaderSelect";
 import BudgetModal from "./BudgetModal";
 import { Badge } from "@mui/material";
 import SeeAlert from "./SseAlert";
+import { useQuery } from "react-query";
+import { getNotification } from "../api/api";
+import { useRecoilState } from "recoil";
+import { eventDataListState } from "../recoil/Alert";
 
 function Header() {
   const navigate = useNavigate();
+  const [eventDataList, setEventDataList] = useRecoilState(eventDataListState);
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const [budgetOpen, setBudgetOpen] = useState<boolean>(false);
   const state = useSelector((state: RootState) => state.isLogin.isLogin);
@@ -72,6 +77,12 @@ function Header() {
     }
   };
 
+  //-------------------------- 알림기능 겟
+
+  const { isLoading, isError, data:AlertData } = useQuery("getAlert", getNotification,{
+    refetchOnWindowFocus: false,
+    });
+
   return (
     <HeaderContainer>
       <HeaderContainer2>
@@ -92,9 +103,9 @@ function Header() {
           <LoginConditionButtons>
             <div ref ={buge}>
               <Bell onClick={budgetBoxClick}>
-                   <Badge color="error" badgeContent={2}>
-                   <HiOutlineBell color="#403F4E" size="24px" />
-                    </Badge>
+                   <Badge color="error" badgeContent={eventDataList.length}>
+                      <HiOutlineBell color="#403F4E" size="24px" />
+                   </Badge>
               </Bell>
          
 
