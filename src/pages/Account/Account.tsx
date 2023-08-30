@@ -25,6 +25,7 @@ import {
 import { editUserFromValue, changePasswordFormValue } from "../../types/acount";
 import { getCookie } from "../../utils/cookieUtils";
 import { selectedEmoticonBig } from "../../utils/emoticonUtils";
+import { AlertModal } from "../../components/AlertModal";
 
 export const Account = () => {
   const navigate = useNavigate();
@@ -46,7 +47,8 @@ export const Account = () => {
   const [newpasswordConfirmCheck, setNewPasswordConfirmCheck] = useState<
     boolean | string
   >(false);
-
+  const [changePasswordModal, setChangePasswordModal] =
+    useState<boolean>(false);
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   const handleTabClick = (tab: string) => {
@@ -105,7 +107,6 @@ export const Account = () => {
   //---------------------------------------------------- 회원 탈퇴 기능
   const deleteUserMutation = useMutation(deleteUser, {
     onSuccess: (data) => {
-      alert(data.msg);
       dispatch(logOff());
       navigate("/");
     },
@@ -141,13 +142,12 @@ export const Account = () => {
 
   const pwchangeMutation = useMutation(changePassword, {
     onSuccess: () => {
-      alert("비밀번호 변경 완료!");
+      setChangePasswordModal(true);
+      dispatch(logOff());
     },
   });
 
-  const changepasswordHandler = (event: React.FormEvent) => {
-    event.preventDefault();
-
+  const changepasswordHandler = () => {
     let hasError = false;
 
     if (!passwordRegex.test(password)) {
@@ -182,6 +182,14 @@ export const Account = () => {
     pwchangeMutation.mutate(newPassword);
   };
 
+  const emoticonOptions = [
+    { id: "1", component: Winking1, label: "행복" },
+    { id: "2", component: Winking2, label: "언짢" },
+    { id: "3", component: Winking3, label: "심심" },
+    { id: "4", component: Winking4, label: "졸림" },
+    { id: "5", component: Winking5, label: "놀람" },
+  ];
+
   return (
     <div>
       <Header />
@@ -215,41 +223,20 @@ export const Account = () => {
             <EmoticonModalOverlay onClick={() => setemoticonModalOpen(false)}>
               <EmoticonModalContent onClick={(e) => e.stopPropagation()}>
                 <Emoticons>
-                  <Emoticon
-                    onClick={() => updateNewEmoticon("1")}
-                    style={{ color: newEmoticon === "1" ? "#2bde97" : "black" }}
-                  >
-                    <Winking1 />
-                    행복
-                  </Emoticon>
-                  <Emoticon
-                    onClick={() => updateNewEmoticon("2")}
-                    style={{ color: newEmoticon === "2" ? "#2bde97" : "black" }}
-                  >
-                    <Winking2 />
-                    언짢
-                  </Emoticon>
-                  <Emoticon
-                    onClick={() => updateNewEmoticon("3")}
-                    style={{ color: newEmoticon === "3" ? "#2bde97" : "black" }}
-                  >
-                    <Winking3 />
-                    심심
-                  </Emoticon>
-                  <Emoticon
-                    onClick={() => updateNewEmoticon("4")}
-                    style={{ color: newEmoticon === "4" ? "#2bde97" : "black" }}
-                  >
-                    <Winking4 />
-                    졸림
-                  </Emoticon>
-                  <Emoticon
-                    onClick={() => updateNewEmoticon("5")}
-                    style={{ color: newEmoticon === "5" ? "#2bde97" : "black" }}
-                  >
-                    <Winking5 />
-                    놀람
-                  </Emoticon>
+                  {emoticonOptions.map(
+                    ({ id, component: EmoticonComponent, label }) => (
+                      <Emoticon
+                        key={id}
+                        onClick={() => updateNewEmoticon(id)}
+                        style={{
+                          color: newEmoticon === id ? "#2bde97" : "black",
+                        }}
+                      >
+                        <EmoticonComponent />
+                        {label}
+                      </Emoticon>
+                    )
+                  )}
                 </Emoticons>
                 <EmoticonModalCloseButton
                   onClick={() => setemoticonModalOpen(false)}
@@ -313,26 +300,11 @@ export const Account = () => {
       )}
       {/* ------------------------------------------------------------------ 회원 탈퇴 모달 */}
       {cancelmemberModalOpen && (
-        <CancelmemberModalOverlay
-          onClick={() => setcancelmemberModalOpen(false)}
-        >
-          <CancelmemberModalContent onClick={(e) => e.stopPropagation()}>
-            <Cancelmemberdiv1>정말 탈퇴하시겠습니까?</Cancelmemberdiv1>
-            <Cancelmemberdiv2>
-              탈퇴하면 모든 정보들이 삭제됩니다.
-            </Cancelmemberdiv2>
-            <CancelmemberButtons>
-              <CancelmemberButton1 onClick={handleDeleteUser}>
-                탈퇴
-              </CancelmemberButton1>
-              <CancelmemberButton2
-                onClick={() => setcancelmemberModalOpen(false)}
-              >
-                취소
-              </CancelmemberButton2>
-            </CancelmemberButtons>
-          </CancelmemberModalContent>
-        </CancelmemberModalOverlay>
+        <AlertModal
+          text={"CancelMembership"}
+          onButton1={handleDeleteUser}
+          onButton2={() => setcancelmemberModalOpen(false)}
+        />
       )}
       {/* ----------------------------------------------------------------------------- 비밀번호 수정 칸 */}
       {activeTab === "changePassword" && (
@@ -383,6 +355,12 @@ export const Account = () => {
             )}
           </NewPasswordForm>
           <SaveButton onClick={changepasswordHandler}>저장하기</SaveButton>
+          {changePasswordModal && (
+            <AlertModal
+              text={"ChangePassword"}
+              onButton2={() => navigate("/login")}
+            />
+          )}
         </ContentBox>
       )}
 
@@ -663,98 +641,6 @@ const CancelMembership = styled.button`
   font-weight: 400;
   line-height: 100%;
   padding: 0;
-`;
-
-const CancelmemberModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.6);
-`;
-
-const CancelmemberModalContent = styled.div`
-  width: 420px;
-  height: 256px;
-  border-radius: 8px;
-  border: 1px solid #cfced7;
-  background-color: white;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Cancelmemberdiv1 = styled.div`
-  width: 190px;
-  height: 32px;
-  font-family: Pretendard;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 32px;
-  letter-spacing: 0em;
-  text-align: center;
-  margin-top: 56px;
-`;
-
-const Cancelmemberdiv2 = styled.div`
-  width: 230px;
-  height: 26px;
-  font-family: Pretendard;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 26px;
-  letter-spacing: 0em;
-  text-align: center;
-  margin-top: 12px;
-`;
-
-const CancelmemberButtons = styled.div`
-  width: 265px;
-  height: 48px;
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin-top: 32px;
-`;
-
-const CancelmemberButton1 = styled.button`
-  width: 128px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Pretendard;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 22px;
-  letter-spacing: -0.20000000298023224px;
-  background-color: white;
-  color: #9a9a9a;
-  border: solid 1px #9a9a9a;
-  border-radius: 8px;
-`;
-
-const CancelmemberButton2 = styled.button`
-  width: 128px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Pretendard;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 22px;
-  letter-spacing: -0.20000000298023224px;
-  background-color: #2bde97;
-  color: white;
-  border: none;
-  border-radius: 8px;
 `;
 
 const OriginalPasswordForm = styled.div`

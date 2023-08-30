@@ -66,6 +66,8 @@ export const ChatRoom = () => {
     data: chatRoomIn,
   } = useQuery(["chatroom", roomCode], () => fetchChatRoom(roomCode!));
 
+  console.log("chatRoomIn", chatRoomIn);
+
   // 채팅방 삭제하기
   const deleteChatMutation = useMutation((id: number) => deleteChatRoom(id), {
     onSuccess: () => {
@@ -123,7 +125,7 @@ export const ChatRoom = () => {
   };
   const disConnect = () => {
     // 연결 끊기
-    console.log("asd");
+    console.log("소켓 연결 끊기");
     if (client) {
       setChatList([]);
       client.deactivate();
@@ -142,10 +144,11 @@ export const ChatRoom = () => {
       //메세지 전송
       destination: "/pub/message",
       body: JSON.stringify({
-        sentTime: formatTime(),
         sender: nickname,
+        receiver: chatRoomIn.roomName,
         roomId: roomCode,
         message: chat,
+        sentTime: formatTime(),
       }),
     });
 

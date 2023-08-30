@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import {  editPost, getDetailPosts } from "../../api/api";
-import { locationFormValues, postFormValues,  } from "../../types/posts";
+import { editPost, getDetailPosts } from "../../api/api";
+import { locationFormValues, postFormValues } from "../../types/posts";
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "../Post/PostComponents/Map";
 import { styled } from "styled-components";
@@ -9,7 +9,7 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import NavigationBox from "../../components/NavigationBox";
+import NavigationBox from "../Post/PostComponents/NavigationBox";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   selectedCountryState,
@@ -18,12 +18,12 @@ import {
 } from "../../recoil/NavigationBar";
 
 function EditPost() {
-
   const param = useParams().id;
   let category = "";
   let postId = "";
-  const { isLoading, isError, data } = useQuery(["detailPost", category, postId], () =>
-  getDetailPosts(+category, +postId)
+  const { isLoading, isError, data } = useQuery(
+    ["detailPost", category, postId],
+    () => getDetailPosts(+category, +postId)
   );
   const [title, setTitle] = useState(data.title);
   const [contents, setContents] = useState(data.contents);
@@ -38,8 +38,6 @@ function EditPost() {
   const formattedDate = useRecoilValue(selectedDateState);
   const selectedPeple = useRecoilValue(sliderValueState);
   const [, setSelectedPeple] = useRecoilState(sliderValueState);
-
-
 
   const [MarkerPosition, setMarkerPosition] =
     useState<null | locationFormValues>(null);
@@ -68,9 +66,11 @@ function EditPost() {
     }
   };
 
-  const handleContentsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleContentsChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const newContents = event.target.value;
-  
+
     if (newContents.length <= 1000) {
       setContents(newContents);
       setShowContentsAlert(false);
@@ -80,18 +80,15 @@ function EditPost() {
   };
   // ----------------------------------------게시글 수정
   const editPostMutation = useMutation(
-    (postData: postFormValues) =>
-      editPost(+category, +postId, postData),
-      {
-        onSuccess: () => {
-          navigate(-1)
-          setFormattedDate("");
-          setSelectedCountry("");
-
-        },
-      }
-  );  
-  
+    (postData: postFormValues) => editPost(+category, +postId, postData),
+    {
+      onSuccess: () => {
+        navigate(-1);
+        setFormattedDate("");
+        setSelectedCountry("");
+      },
+    }
+  );
 
   const handleEditPost = (event: React.FormEvent) => {
     event.preventDefault();
@@ -105,50 +102,70 @@ function EditPost() {
       latitude: latitudeMarkerPosition,
       longitude: longitudeMarkerPosition,
     };
-    
+
     editPostMutation.mutate(postData);
   };
   useEffect(() => {
     setFormattedDate("");
     setSelectedCountry("");
-
-  }, []); 
+  }, []);
 
   return (
     <div>
+      <Header />
+      <NavigationBox id={+category} />
+      <Layout>
+        <StInputLabel>제목</StInputLabel>
+        <Input
+          type="text"
+          placeholder="제목을 입력해주세요"
+          value={title}
+          onChange={handleTitleChange}
+          size={"postTitle"}
+          color={"#cfced7"}
+          maxLength={20}
+        />
+        {showAlert && (
+          <div style={{ color: "red" }}>20자 이내로 작성해 주세요.</div>
+        )}
 
-    <Header/>
-    <NavigationBox id={+category} />
-    <Layout>
+        <StInputLabel>내용</StInputLabel>
+        <ContentInput
+          placeholder="내용을 입력해주세요"
+          value={contents}
+          onChange={handleContentsChange}
+          maxLength={1000}
+        />
+        {showContentsAlert && (
+          <div style={{ color: "red" }}>1000자 이내로 작성해 주세요.</div>
+        )}
+        <StInputLabel>위치</StInputLabel>
+        <Map
+          onMarkerPosition={MarkerPosition}
+          onMarkerPositionChange={handleMarkerPositionChange}
+        />
 
-  
-    <StInputLabel>제목</StInputLabel>
-      <Input type="text" placeholder="제목을 입력해주세요" value={title} onChange={handleTitleChange} size={"postTitle"} color={'#cfced7'} maxLength={20} />
-      {showAlert && <div style={{ color: 'red' }}>20자 이내로 작성해 주세요.</div>}
-      
-      <StInputLabel>내용</StInputLabel>
-      <ContentInput placeholder="내용을 입력해주세요"  value={contents} onChange={handleContentsChange}  maxLength={1000}/>
-      {showContentsAlert && (
-  <div style={{ color: 'red' }}>1000자 이내로 작성해 주세요.</div>
-)}
-      <StInputLabel>위치</StInputLabel>
-      <Map onMarkerPosition={MarkerPosition} onMarkerPositionChange={handleMarkerPositionChange}/>
-      
-      
-      <StButtonSet>
-        <Button name={"취소"} size={'post'} color={"negative"} onClick={()=>navigate(-1)} />
-        <Button name={"작성완료"} size={'post'} color={""} onClick={handleEditPost}/>
-      </StButtonSet>
-      
-    </Layout>
-    <Footer/>
-
+        <StButtonSet>
+          <Button
+            name={"취소"}
+            size={"post"}
+            color={"negative"}
+            onClick={() => navigate(-1)}
+          />
+          <Button
+            name={"작성완료"}
+            size={"post"}
+            color={""}
+            onClick={handleEditPost}
+          />
+        </StButtonSet>
+      </Layout>
+      <Footer />
     </div>
   );
 }
 
 export default EditPost;
-
 
 const ContentInput = styled.textarea`
   width: 1200px;
@@ -162,10 +179,10 @@ const ContentInput = styled.textarea`
   background-color: #fff;
   outline: none;
   color: #484848;
-  &::placeholder { 
-    color:  #dddce3;;
+  &::placeholder {
+    color: #dddce3;
   }
-`
+`;
 
 const Layout = styled.div`
   width: 100%;

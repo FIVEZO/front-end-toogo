@@ -18,9 +18,12 @@ import { RootState } from "../../types/login";
 import { Comment } from "./DetailPageComponents/Comment";
 import { getCookie } from "../../utils/cookieUtils";
 import moment from "moment";
+import { useState } from "react";
+import { AlertModal } from "../../components/AlertModal";
 
 export const DetailPage = () => {
   const myNickName = getCookie("nickname");
+  const [deletePostModal, setDeletePostModal] = useState<boolean>(false);
   const state = useSelector((state: RootState) => state.isLogin.isLogin);
   const params = useParams().id;
   let category = "";
@@ -144,6 +147,13 @@ export const DetailPage = () => {
   return (
     <>
       <Header />
+      {deletePostModal && (
+        <AlertModal
+          text={"DeletePost"}
+          onButton1={() => setDeletePostModal(false)}
+          onButton2={handleDeletePost}
+        />
+      )}
       <Layout>
         <MainImg src={countryImage} alt={country} />
         <NickContainer>
@@ -157,15 +167,19 @@ export const DetailPage = () => {
                       [{continentMapping[+category]}] {country}
                     </p>
                     |<p>{`${moment(createdAt).format("YYYY.MM.DD HH:mm")}`}</p>
-                    {state && myNickName === nickname ? <p>|</p> : null}
                     {state && myNickName === nickname ? (
-                      <DelateButton onClick={moveToUpdate}>수정</DelateButton>
+                      <>
+                        <p>|</p>
+                        <DelateButton onClick={moveToUpdate}>수정</DelateButton>
+                      </>
                     ) : null}
-                    {state && myNickName === nickname ? <p>|</p> : null}
                     {state && myNickName === nickname ? (
-                      <DelateButton onClick={handleDeletePost}>
-                        삭제
-                      </DelateButton>
+                      <>
+                        <p>|</p>
+                        <DelateButton onClick={() => setDeletePostModal(true)}>
+                          삭제
+                        </DelateButton>
+                      </>
                     ) : null}
                   </StCountry>
                 </div>
@@ -244,7 +258,6 @@ export const DetailPage = () => {
   );
 };
 
-
 const DelateButton = styled.div`
   display: flex;
   align-items: center;
@@ -263,7 +276,7 @@ const DelateButton = styled.div`
   color: #9a9a9a;
   cursor: pointer;
 `;
-        
+
 const ShaerBox = styled(FiShare2)`
   width: 28px;
   height: 30px;

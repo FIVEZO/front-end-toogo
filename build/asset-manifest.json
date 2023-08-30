@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.4fa463b0.css",
-    "main.js": "/static/js/main.d674988f.js",
+    "main.css": "/static/css/main.ba226d1d.css",
+    "main.js": "/static/js/main.995191fa.js",
     "static/js/787.7d5bcd09.chunk.js": "/static/js/787.7d5bcd09.chunk.js",
     "static/media/에티오피아.jpg": "/static/media/에티오피아.608c69ebe89e08fdc5c3.jpg",
     "static/media/스웨덴.jpg": "/static/media/스웨덴.5f8041f1da2531459f20.jpg",
@@ -75,6 +75,7 @@
     "static/media/winking3.svg": "/static/media/winking3.65d29806b368082aa778e5976d0d7a3a.svg",
     "static/media/winking5big.svg": "/static/media/winking5big.88e347fb470edc7598986b8fe294e4f8.svg",
     "static/media/winking5.svg": "/static/media/winking5.b8a00decba43263f547b3512512e1775.svg",
+    "static/media/winking6.svg": "/static/media/winking6.b2b668e741840143c53696dfe8c6294e.svg",
     "static/media/winking2big.svg": "/static/media/winking2big.f81163629fa93031c93b142d816a0d84.svg",
     "static/media/winking2.svg": "/static/media/winking2.81583f4072fe368103856f0486404100.svg",
     "static/media/winking1big.svg": "/static/media/winking1big.831b8fb2a70d94edd8cb3cb38f0cc715.svg",
@@ -86,12 +87,12 @@
     "static/media/prev.svg": "/static/media/prev.7ffeef7c4134aa735640a30d408625bb.svg",
     "static/media/next.svg": "/static/media/next.1192ea6f48685dee4c70f3ea182e4e7c.svg",
     "index.html": "/index.html",
-    "main.4fa463b0.css.map": "/static/css/main.4fa463b0.css.map",
-    "main.d674988f.js.map": "/static/js/main.d674988f.js.map",
+    "main.ba226d1d.css.map": "/static/css/main.ba226d1d.css.map",
+    "main.995191fa.js.map": "/static/js/main.995191fa.js.map",
     "787.7d5bcd09.chunk.js.map": "/static/js/787.7d5bcd09.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4fa463b0.css",
-    "static/js/main.d674988f.js"
+    "static/css/main.ba226d1d.css",
+    "static/js/main.995191fa.js"
   ]
 }

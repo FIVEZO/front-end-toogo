@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import Input from "../../../components/Input";
@@ -33,8 +32,6 @@ export const Comment = ({
   if (params?.includes("&")) {
     [category, postId] = params.split("&");
   }
-
-  console.log("state", state);
   //-----------------------------------------댓글 작성
   const commentMutation = useMutation(
     (comment: string) => {
@@ -103,7 +100,6 @@ export const Comment = ({
       setEditInput(commentId);
     }
   };
-
 
   //---------------------------------------------------- 'emoticon' 값에 따라 다른 이모티콘 컴포넌트를 렌더링
   const myEmoticon = getCookie("emoticon");

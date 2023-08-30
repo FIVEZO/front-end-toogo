@@ -45,7 +45,6 @@ function Header() {
   };
   // --------------------------------------------------------------------------------
 
-
   const buge = useRef<HTMLDivElement | null>(null); // 창의 바깥부분을 클릭하였을때 창이 사라짐
   useEffect(() => {
     const clickOutside = (e: MouseEvent) => {
@@ -54,7 +53,7 @@ function Header() {
         buge.current &&
         !buge.current.contains(e.target as Node)
       )
-      setBudgetOpen(false);
+        setBudgetOpen(false);
     };
     document.addEventListener("mousedown", clickOutside);
     return () => {
@@ -79,9 +78,13 @@ function Header() {
 
   //-------------------------- 알림기능 겟
 
-  const { isLoading, isError, data:AlertData } = useQuery("getAlert", getNotification,{
+  const {
+    isLoading,
+    isError,
+    data: AlertData,
+  } = useQuery("getAlert", getNotification, {
     refetchOnWindowFocus: false,
-    });
+  });
 
   return (
     <HeaderContainer>
@@ -101,22 +104,15 @@ function Header() {
         </SearchContainer>
         {state ? (
           <LoginConditionButtons>
-            <div ref ={buge}>
+            <div ref={buge}>
               <Bell onClick={budgetBoxClick}>
-                   <Badge color="error" badgeContent={eventDataList.length}>
-                      <HiOutlineBell color="#403F4E" size="24px" />
-                   </Badge>
+                <Badge color="error" badgeContent={eventDataList.length}>
+                  <HiOutlineBell color="#403F4E" size="24px" />
+                </Badge>
               </Bell>
-         
 
-              <BudgetModal  position={"absolute"} budgetOpen={budgetOpen} />
+              <BudgetModal position={"absolute"} budgetOpen={budgetOpen} />
             </div>
-            {/* <DM onClick={() => navigate("/chat/main")}>
-              <GoPaperAirplane
-                size="23px"
-                style={{ transform: "rotate(-27deg)" }}
-              />
-            </DM> */}
             <div ref={node}>
               <Profile onClick={handleBox2Click}>
                 <RxAvatar color="#403F4E" size="26px" />
