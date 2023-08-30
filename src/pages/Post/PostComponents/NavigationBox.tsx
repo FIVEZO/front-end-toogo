@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+
 import { styled } from "styled-components";
 import { CustomCalendar } from "./CustomCalender";
 import SelectCountry from "./SelectCountry";
 import { useRecoilState, useRecoilValue } from "recoil";
+
 import {
   selectedCountryState,
   selectedDateState,
   sliderValueState,
 } from "../../../recoil/NavigationBar";
+
 import RangeModal from "./RangeModal";
 
 interface InnerBoxProps {
