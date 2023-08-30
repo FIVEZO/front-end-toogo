@@ -1,53 +1,57 @@
-import React, { useState } from 'react'
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import { cardItem } from '../../types/posts';
-import { SearchCard } from './SearchPageComponents/SearchCard';
-import { getSearchPosts } from '../../api/api';
-import { styled } from 'styled-components';
-import { useQuery } from 'react-query';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import { cardItem } from "../../types/posts";
+import { SearchCard } from "./SearchPageComponents/SearchCard";
+import { getSearchPosts } from "../../api/api";
+import { styled } from "styled-components";
+import { useQuery } from "react-query";
+import { useLocation } from "react-router-dom";
 import "../../fonts/Font.css";
-import Spinner from '../../components/Spinner';
+import Spinner from "../../components/Spinner";
+import SearchResultNotingPage from "./SearchPageComponents/SearchResultNotingPage";
 
 export const SearchPage: React.FC = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const keyword = searchParams.get('keyword'); 
-  const [page, setpage]= useState<number>(1);
-  const { isLoading, isError, data }= useQuery(["searchPosts", page, keyword], () => {
-    if (keyword) {
-      return getSearchPosts(page, keyword);
+  const keyword = searchParams.get("keyword");
+  const [page, setpage] = useState<number>(1);
+  const { isLoading, isError, data } = useQuery(
+    ["searchPosts", page, keyword],
+    () => {
+      if (keyword) {
+        return getSearchPosts(page, keyword);
+      }
+      return Promise.resolve(null);
     }
-    return Promise.resolve(null);
-  });
-  
+  );
+
   if (isLoading) {
-  
-    return <Spinner/>;
+    return <Spinner />;
   }
-  
+
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;
   }
 
   return (
     <div>
-        <Header/>
-        <SearchResult>
-          <SearchResult2>
-            <SearchResultKeyword>{keyword}</SearchResultKeyword> 검색결과
-          </SearchResult2>
-        </SearchResult>
-        <StCardContainer>
-      {data?.map((item : cardItem)=>(
-        <SearchCard key={item.id} items={item}/>
-      ))}
+      <Header />
+      <SearchResult>
+        <SearchResult2>
+          <SearchResultKeyword>{keyword}</SearchResultKeyword> 검색결과
+        </SearchResult2>
+      </SearchResult>
+      <StCardContainer>
+        {data?.map((item: cardItem) => (
+          <SearchCard key={item.id} items={item} />
+        ))}
       </StCardContainer>
-        <Footer/>
+      {data?.length === 0 && <SearchResultNotingPage />}
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
 const StCardContainer = styled.div`
   width: 100%;
@@ -79,5 +83,5 @@ const SearchResult2 = styled.div`
 `;
 
 const SearchResultKeyword = styled.span`
-  color: #2BDE97;
+  color: #2bde97;
 `;
