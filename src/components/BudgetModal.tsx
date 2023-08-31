@@ -8,6 +8,8 @@ import { useRecoilState } from 'recoil';
 import { eventDataListState } from '../recoil/Alert';
 import { useQuery, useQueryClient } from 'react-query';
 import { getNotification } from '../api/api';
+import { useSelector } from 'react-redux';
+import { RootState } from '../types/login';
 
 type selectForm = {
   position: string,
@@ -19,11 +21,12 @@ function BudgetModal({position, budgetOpen}:selectForm) {
   const [eventDataList, setEventDataList] = useRecoilState(eventDataListState);
   const [isStarted, setIsStarted] = useState(false);
   const sse = useRef<EventSourcePolyfill | null>(null);
-
-
+  
   const { isLoading, isError, data:AlertData } = useQuery("getAlert", getNotification,{
     refetchOnWindowFocus: false,
     });
+
+  
   
   useEffect(() => {
     const accessToken = getCookie("access_token");
@@ -46,11 +49,11 @@ function BudgetModal({position, budgetOpen}:selectForm) {
       console.log("[sse] 연결이 열렸습니다", { e });
     };
 
-    // sse.current.addEventListener("addMessage", (event: any) => {
-    //   const eventData = JSON.parse(event.data);
-    //   console.log("메시지를 받았습니다:", eventData);
-    //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
-    // });
+    sse.current.addEventListener("addMessage", (event: any) => {
+      const eventData = JSON.parse(event.data);
+      console.log("메시지를 받았습니다:", eventData);
+      setEventDataList((eventDataList) => [...eventDataList, eventData]);
+    });
 
     sse.current.addEventListener("addComment", (event: any) => {
       const eventData = JSON.parse(event.data);
@@ -58,11 +61,11 @@ function BudgetModal({position, budgetOpen}:selectForm) {
       setEventDataList((eventDataList) => [...eventDataList, eventData]);
     });
 
-    sse.current.addEventListener("addMessageRoom", (event: any) => {
-      const eventData = JSON.parse(event.data);
-      console.log("메세지를 받았습니다:", eventData);
-      setEventDataList((eventDataList) => [...eventDataList, eventData]);
-    });
+    // sse.current.addEventListener("addMessageRoom", (event: any) => {
+    //   const eventData = JSON.parse(event.data);
+    //   console.log("메세지를 받았습니다:", eventData);
+    //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
+    // });
 
 
     sse.current.onerror = (err) => {
@@ -107,7 +110,7 @@ console.log("AlertData",AlertData)
       </BoxUpper>    
       {isStarted && (
                  <ModalContent>
-                 {eventDataList.map((item: NotificationFormValues, index: number) => (
+                 {eventDataList?.map((item: NotificationFormValues, index: number) => (
                    <BugetMessege key={index} items={item} />
                  ))}
                </ModalContent>
