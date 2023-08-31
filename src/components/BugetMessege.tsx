@@ -10,41 +10,44 @@ import { deleteAlert } from "../api/api";
 import { useNavigate } from "react-router-dom";
 
 function BugetMessege({ items }: { items: NotificationFormValues }) {
-  const { id, sender, category, createdAt, readStatus, contents, roomId, message, emoticon  } = items;
+  const {
+    id,
+    sender,
+    category,
+    createdAt,
+    readStatus,
+    contents,
+    roomId,
+    message,
+    emoticon,
+  } = items;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   //40자 이상 짜르기
-  const truncatedContents = contents.length > 40 ? `${contents.slice(0, 40)}...` : contents;
+  const truncatedContents =
+    contents.length > 40 ? `${contents.slice(0, 40)}...` : contents;
 
   //---------------------------------------------------- 'emoticon' 값에 따라 다른 이모티콘 컴포넌트를 렌더링
   const myEmoticon = getCookie("emoticon");
 
   //-----------------------------------------알림 삭제
-  const deleteAlertMutation = useMutation(
-    ( id: number ) => deleteAlert(id),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getAlert");
-        console.log("알림 삭제 완료!");
-        // navigate(`/detailpage/${category}&${id}`);
-      },
-    }
-  );
+  const deleteAlertMutation = useMutation((id: number) => deleteAlert(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getAlert");
+      // console.log("알림 삭제 완료!");
+      // navigate(`/detailpage/${category}&${id}`);
+    },
+  });
 
   const handleDeleteAlert = (event: React.FormEvent) => {
     deleteAlertMutation.mutate(id);
   };
   //-----------------------------------------
 
-
-
-
   return (
     <TextBoxRayout>
       <Avata>
-        <EmoticonWrapper>
-          {selectedEmoticon(emoticon)}
-        </EmoticonWrapper>
+        <EmoticonWrapper>{selectedEmoticon(emoticon)}</EmoticonWrapper>
       </Avata>
       <TextUpeer onClick={handleDeleteAlert}>
         <TextRayout>
@@ -55,7 +58,6 @@ function BugetMessege({ items }: { items: NotificationFormValues }) {
     </TextBoxRayout>
   );
 }
-
 
 const Avata = styled.div`
   width: 62px;
@@ -68,8 +70,8 @@ const Avata = styled.div`
 `;
 
 const EmoticonWrapper = styled.div`
-  width: 32px; 
-  height: 32px; 
+  width: 32px;
+  height: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -81,7 +83,6 @@ const TextUpeer = styled.div`
   margin-top: 7px;
   display: flex;
   flex-direction: column;
-
 `;
 const TextMessege = styled.div`
   flex-grow: 1;
@@ -97,8 +98,6 @@ const TextMessege = styled.div`
   color: #484848;
 `;
 
-
-
 const TextBoxRayout = styled.div`
   width: 440px;
   height: 56px;
@@ -108,8 +107,8 @@ const TextBoxRayout = styled.div`
 
   justify-content: flex-start;
   align-items: flex-start;
-     &:hover {
-    background-color:#F4F5F6;
+  &:hover {
+    background-color: #f4f5f6;
   }
   cursor: pointer;
 `;

@@ -4,8 +4,6 @@ import { postFormValues } from "../types/posts";
 import { editUserFromValue, changePasswordFormValue } from "../types/acount";
 import { getCookie } from "../utils/cookieUtils";
 
-
-
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
 });
@@ -307,13 +305,12 @@ const getNote = async () => {
   return response.data;
 };
 
-
 //------------------------------알림 조회
 
 // 알림 목록 조회
 const getNotification = async () => {
   const response = await instance.get(`/api/notifications`);
-  // console.log("내가받은 알림 조회", response)
+  // console.log("내가받은 알림 조회", response);
   return response.data;
 };
 
@@ -323,7 +320,6 @@ const deleteAlert = async (id: number) => {
   // console.log("알림 삭제", response)
   return response.data;
 };
-
 
 export {
   // 로그인, 회원가입
@@ -357,5 +353,5 @@ export {
   getMyPosts,
   changePassword,
   getNotification,
-  deleteAlert
+  deleteAlert,
 };

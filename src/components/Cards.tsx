@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import Card from "react-bootstrap/Card";
 import { cardItem } from "../types/posts";
 import { Avatar } from "@mui/material";
-import { formatTimeAgo } from "./Time";
+import { formatTimeAgo } from "../utils/timeUtils";
 import { useNavigate } from "react-router-dom";
 import { countryImages } from "../img/countryImages";
 import { selectedEmoticon } from "../utils/emoticonUtils";

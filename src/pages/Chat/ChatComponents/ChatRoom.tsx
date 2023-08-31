@@ -16,8 +16,6 @@ import { getCookie } from "../../../utils/cookieUtils";
 import { ChatInput } from "./ChatInput";
 import { ChatPost } from "./ChatPost";
 import { ChatHeader } from "./ChatHeader";
-import LoadingAndError from "../../../components/LoadingAndError";
-
 type ReceiveData = {
   message: string;
 };
@@ -66,8 +64,6 @@ export const ChatRoom = () => {
     data: chatRoomIn,
   } = useQuery(["chatroom", roomCode], () => fetchChatRoom(roomCode!));
 
-  console.log("chatRoomIn", chatRoomIn);
-
   // 채팅방 삭제하기
   const deleteChatMutation = useMutation((id: number) => deleteChatRoom(id), {
     onSuccess: () => {
@@ -90,21 +86,17 @@ export const ChatRoom = () => {
           accessToken: accessToken || "",
           refreshToken: refreshToken || "",
         },
-        debug: function (str) {
-          console.log("debug", str);
-        },
+        debug: function (str) {},
         reconnectDelay: 5000, // 자동 재 연결
         heartbeatIncoming: 4000,
         heartbeatOutgoing: 4000,
       });
       clientdata.onConnect = function () {
-        console.log("Connect 구독");
         clientdata.subscribe(`/sub/chat/room/${roomCode}`, function (
           message: IMessage
         ) {
           if (message.body) {
             let msg = JSON.parse(message.body) as ReceiveData;
-            console.log("msg", msg);
             setChatList((chats: any) => [...chats, msg]);
           }
         } as messageCallbackType);
@@ -120,12 +112,11 @@ export const ChatRoom = () => {
       clientdata.activate(); // 클라이언트 활성화
       changeClient(clientdata); // 클라이언트 갱신
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
   const disConnect = () => {
     // 연결 끊기
-    console.log("소켓 연결 끊기");
     if (client) {
       setChatList([]);
       client.deactivate();
@@ -138,7 +129,6 @@ export const ChatRoom = () => {
     if (chat === "") {
       return;
     }
-    console.log(1);
     if (client === undefined) return;
     client.publish({
       //메세지 전송
