@@ -1,11 +1,11 @@
 import React from "react";
-import { ReactComponent as Winking7 } from "../../../components/assets/emoticon/winking7.svg";
+import { ReactComponent as Winking8 } from "../../../components/assets/emoticon/winking8.svg";
 import styled from "styled-components";
 
 const SearchResultNotingPage = () => {
   return (
     <ResultNoting>
-      <Winking7 />
+      <Winking8 />
       <ResultNotingText>
         검색 결과가 없습니다.
         <br />

@@ -11,6 +11,7 @@ import { getCookie } from "../../../utils/cookieUtils";
 import { selectedEmoticon } from "../../../utils/emoticonUtils";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../types/login";
+import CommentNoting from "./CommentNoting";
 
 export const Comment = ({
   commentList,
@@ -41,7 +42,6 @@ export const Comment = ({
     {
       onSuccess: () => {
         queryClient.invalidateQueries("detailPost");
-        console.log("댓글 작성 완료!");
         resetComment();
       },
     }
@@ -58,7 +58,6 @@ export const Comment = ({
     {
       onSuccess: () => {
         queryClient.invalidateQueries("detailPost");
-        console.log("댓글 삭제 완료!");
       },
     }
   );
@@ -78,7 +77,6 @@ export const Comment = ({
         queryClient.invalidateQueries("detailPost");
         setEditInput(false);
         resetEditComment();
-        console.log("댓글 수정 완료!");
       },
     }
   );
@@ -104,12 +102,9 @@ export const Comment = ({
   //---------------------------------------------------- 'emoticon' 값에 따라 다른 이모티콘 컴포넌트를 렌더링
   const myEmoticon = getCookie("emoticon");
 
-  type EmoticonComponents = {
-    [key: string]: JSX.Element;
-  };
-
   return (
     <StCommentBox>
+      {commentList?.length == 0 && <CommentNoting />}
       {commentList?.map((item: any) => (
         <StCommentList key={item.id}>
           {selectedEmoticon(item.emoticon)}

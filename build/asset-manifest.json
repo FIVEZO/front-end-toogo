@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.ba226d1d.css",
-    "main.js": "/static/js/main.995191fa.js",
+    "main.js": "/static/js/main.6c8b6900.js",
     "static/js/787.7d5bcd09.chunk.js": "/static/js/787.7d5bcd09.chunk.js",
     "static/media/에티오피아.jpg": "/static/media/에티오피아.608c69ebe89e08fdc5c3.jpg",
     "static/media/스웨덴.jpg": "/static/media/스웨덴.5f8041f1da2531459f20.jpg",
-    "static/media/한국.jpg": "/static/media/한국.acdfeb863714af278fb8.jpg",
     "static/media/대만.jpg": "/static/media/대만.2c02f534e5688bc4a506.jpg",
     "static/media/네덜란드.jpg": "/static/media/네덜란드.9a21e92ee3962dd265b6.jpg",
     "static/media/뉴질랜드.jpg": "/static/media/뉴질랜드.93a19e31b9822be49213.jpg",
     "static/media/베트남.jpg": "/static/media/베트남.19713695dcbdc011ec8b.jpg",
     "static/media/터키.jpg": "/static/media/터키.3a1119a48d7f58107cbc.jpg",
     "static/media/나미비아.jpg": "/static/media/나미비아.f95d4de529b2ccd37ec4.jpg",
+    "static/media/한국.jpg": "/static/media/한국.f260524d3b9890f5e5a2.jpg",
     "static/media/이집트.jpg": "/static/media/이집트.608cf89b43cbdb2e2237.jpg",
     "static/media/홍콩.jpg": "/static/media/홍콩.427f0cc94bccdf69fde1.jpg",
     "static/media/미얀마.jpg": "/static/media/미얀마.dc76e2336cae3f409d9e.jpg",
@@ -68,7 +68,8 @@
     "static/media/영국.jpg": "/static/media/영국.ddfb192980e6e68f975f.jpg",
     "static/media/라오스.jpg": "/static/media/라오스.752212f6646bff3a0112.jpg",
     "static/media/헝가리.jpg": "/static/media/헝가리.3fac3bf8041104111564.jpg",
-    "static/media/로딩중.jpg": "/static/media/로딩중.95d14bc7ec0eeb4ea3c8.jpg",
+    "static/media/로딩오이.jpg": "/static/media/로딩오이.2fbc424b2d658336430e.jpg",
+    "static/media/로딩중.jpg": "/static/media/로딩중.5ba0f5c8228d687e63df.jpg",
     "static/media/winking4big.svg": "/static/media/winking4big.70ebdd5639a2d93e29d546e6312f796c.svg",
     "static/media/winking4.svg": "/static/media/winking4.c77b3a4c401e2ccd9924b233a74c1741.svg",
     "static/media/winking3big.svg": "/static/media/winking3big.641c9d1593d21d9356e877c2cba2828c.svg",
@@ -80,6 +81,7 @@
     "static/media/winking2.svg": "/static/media/winking2.81583f4072fe368103856f0486404100.svg",
     "static/media/winking1big.svg": "/static/media/winking1big.831b8fb2a70d94edd8cb3cb38f0cc715.svg",
     "static/media/winking1.svg": "/static/media/winking1.e386675f0488b6f1f0bd5988a86014c7.svg",
+    "static/media/winking7.svg": "/static/media/winking7.86f3cbb72e7d72c84282577f6438e6e9.svg",
     "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
@@ -88,11 +90,11 @@
     "static/media/next.svg": "/static/media/next.1192ea6f48685dee4c70f3ea182e4e7c.svg",
     "index.html": "/index.html",
     "main.ba226d1d.css.map": "/static/css/main.ba226d1d.css.map",
-    "main.995191fa.js.map": "/static/js/main.995191fa.js.map",
+    "main.6c8b6900.js.map": "/static/js/main.6c8b6900.js.map",
     "787.7d5bcd09.chunk.js.map": "/static/js/787.7d5bcd09.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ba226d1d.css",
-    "static/js/main.995191fa.js"
+    "static/js/main.6c8b6900.js"
   ]
 }

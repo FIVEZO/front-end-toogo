@@ -6,7 +6,10 @@ interface LoadingAndErrorProps {
   isError: boolean;
 }
 
-const LoadingAndError: React.FC<LoadingAndErrorProps> = ({ isLoading, isError }) => {
+const LoadingAndError: React.FC<LoadingAndErrorProps> = ({
+  isLoading,
+  isError,
+}) => {
   if (isLoading) {
     return <Spinner />;
   }
@@ -14,7 +17,6 @@ const LoadingAndError: React.FC<LoadingAndErrorProps> = ({ isLoading, isError })
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;
   }
-
   return null;
 };
 
