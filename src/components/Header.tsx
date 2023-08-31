@@ -10,7 +10,6 @@ import { RxAvatar } from "react-icons/rx";
 import HeaderSelect from "./HeaderSelect";
 import BudgetModal from "./BudgetModal";
 import { Badge } from "@mui/material";
-import SeeAlert from "./SseAlert";
 import { useQuery } from "react-query";
 import { getNotification } from "../api/api";
 import { useRecoilState } from "recoil";

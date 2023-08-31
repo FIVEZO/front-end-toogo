@@ -45,6 +45,7 @@ export type NotificationFormValues = {
   emoticon: string;
   postId : number
   roomId : string
+  postId: number;
 };
 
 export interface TabContentProps {

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { LoginFormValues, SignupFormValues } from "../types/login";
 import { postFormValues } from "../types/posts";
 import { editUserFromValue, changePasswordFormValue } from "../types/acount";
@@ -9,6 +9,9 @@ import { getCookie } from "../utils/cookieUtils";
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
 });
+
+
+
 
 instance.interceptors.request.use(
   function (config) {

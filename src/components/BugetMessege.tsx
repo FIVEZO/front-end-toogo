@@ -10,7 +10,7 @@ import { deleteAlert } from "../api/api";
 import { useNavigate } from "react-router-dom";
 
 function BugetMessege({ items }: { items: NotificationFormValues }) {
-  const { id, sender, category, createdAt, readStatus, contents, roomId, message, emoticon  } = items;
+  const { id,sender,postId, category, createdAt, readStatus, contents, roomId, message, emoticon  } = items;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   //40자 이상 짜르기
@@ -26,7 +26,11 @@ function BugetMessege({ items }: { items: NotificationFormValues }) {
       onSuccess: () => {
         queryClient.invalidateQueries("getAlert");
         console.log("알림 삭제 완료!");
-        // navigate(`/detailpage/${category}&${id}`);
+        if (message === "댓글이 달렸습니다.") {
+          navigate(`/detailpage/${category}&${postId}`);
+        } else if (message === "메시지가 왔습니다.") {
+          navigate(`/chat/${roomId}`);
+        }
       },
     }
   );
@@ -49,6 +53,7 @@ function BugetMessege({ items }: { items: NotificationFormValues }) {
       <TextUpeer onClick={handleDeleteAlert}>
         <TextRayout>
           <TextName>{sender}</TextName>님의 {message}
+          
         </TextRayout>
         <TextMessege>{truncatedContents}</TextMessege>
       </TextUpeer>
@@ -100,7 +105,7 @@ const TextMessege = styled.div`
 
 
 const TextBoxRayout = styled.div`
-  width: 440px;
+  width: 435px;
   height: 56px;
   align-self: stretch;
   flex-grow: 0;
