@@ -111,7 +111,7 @@ const ContinentPageSelectCountry: React.FC<ContinentPageSelectCountryProps> = ({
   return (
     <ButtonContainer>
       <ToggleButton onClick={toggleContent}>
-        {isVisible ? "여행지 ∧" : "여행지 ∨"}
+        {isVisible ? "국가 선택 ∧" : "국가 선택 ∨"}
       </ToggleButton>
       <Content isVisible={isVisible}>
         <CountrySelect>
@@ -144,7 +144,7 @@ const ButtonContainer = styled.div`
 `;
 
 const ToggleButton = styled.button`
-  width: 175px;
+  width: 200px;
   height: 63px;
   background-color: white;
   color: #484848;

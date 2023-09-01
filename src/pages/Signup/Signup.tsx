@@ -307,7 +307,7 @@ export default Signup;
 
 const LoginLayout = styled.div`
   width: 384px;
-  margin: 200px auto auto auto;
+  margin: 200px auto 330px auto;
   display: flex;
   flex-direction: column;
 `;

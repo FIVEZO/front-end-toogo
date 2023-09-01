@@ -144,7 +144,7 @@ function Login() {
           </LoginAccountText>
         </LoginLayout>
       </CenteredContainer>
-      <Footer/>
+      <Footer />
     </>
   );
 }
@@ -218,7 +218,7 @@ const CenteredContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  margin: 200px auto 383px auto;
 `;
 
 const LoginLayout = styled.div`
