@@ -18,7 +18,7 @@ export const EditProfileForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [newNickname, handleNewNickname] = useInput();
-  const [newIntroduction, handleNewIntroduction] = useInput();
+  const [newIntroduction, setNewIntroduction] = useState("");
   const [nicknameChecks, setNicknameChecks] = useState<boolean | string>(false);
   const [emoticonModalOpen, setEmoticonModalOpen] = useState(false);
   const [cancelmemberModalOpen, setcancelmemberModalOpen] = useState(false);
@@ -125,6 +125,17 @@ export const EditProfileForm = () => {
     editUserMutation.mutate(newUserInfomation);
   };
 
+  const handleNewIntroductionChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const inputValue = event.target.value;
+
+    // 입력값이 70자 이하인 경우에만 업데이트
+    if (inputValue.length <= 70) {
+      setNewIntroduction(inputValue);
+    }
+  };
+
   return (
     <ContentBox>
       <MainEmoticon>
@@ -179,7 +190,7 @@ export const EditProfileForm = () => {
           <IntroductionInput
             placeholder={"소개글을 입력해주세요.(70자 이하)"}
             value={newIntroduction}
-            onChange={handleNewIntroduction}
+            onChange={handleNewIntroductionChange}
           ></IntroductionInput>
         </IntroductionInputContainer>
       </ChangeNicknameForm>

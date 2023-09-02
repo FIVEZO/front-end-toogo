@@ -25,7 +25,7 @@ export const EditPasswordForm = () => {
   >(false);
   const [changePasswordModal, setChangePasswordModal] =
     useState<boolean>(false);
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/;
 
   const pwchangeMutation = useMutation(changePassword, {
     onSuccess: () => {
@@ -38,14 +38,14 @@ export const EditPasswordForm = () => {
     let hasError = false;
 
     if (!passwordRegex.test(password)) {
-      setPasswordCheck("비밀번호는 8자리 이상, 영문과 숫자를 포함해주세요.");
+      setPasswordCheck("8자리 이상 15자이하, 영문과 숫자를 포함해주세요.");
       hasError = true;
     } else {
       setPasswordCheck(false);
     }
 
     if (!passwordRegex.test(newpassword)) {
-      setNewPasswordCheck("비밀번호는 8자리 이상, 영문과 숫자를 포함해주세요.");
+      setNewPasswordCheck("8자리 이상 15자이하, 영문과 숫자를 포함해주세요.");
       hasError = true;
     } else {
       setNewPasswordCheck(false);
@@ -75,7 +75,7 @@ export const EditPasswordForm = () => {
         <Label>기존 비밀번호</Label>
         <Input
           type="password"
-          placeholder="영문,숫자 조합 8자 이상 15자 이하"
+          placeholder="8자 이상 15자 이하 영문과 숫자를 입력해주세요"
           value={password}
           onChange={handlePasswordChange}
           size={"signup"}
@@ -90,7 +90,7 @@ export const EditPasswordForm = () => {
         <Label>새 비밀번호</Label>
         <Input
           type="password"
-          placeholder="영문,숫자 조합 8자 이상 15자 이하"
+          placeholder="8자 이상 15자 이하 영문과 숫자를 입력해주세요"
           value={newpassword}
           onChange={handleNewPasswordChange}
           size={"signup"}
