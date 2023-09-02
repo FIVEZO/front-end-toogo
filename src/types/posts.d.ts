@@ -35,16 +35,16 @@ export type createChat = {
 };
 
 export type NotificationFormValues = {
-  id:number;
+  id: number;
   category: number;
   sender: string;
   createdAt: string;
   readStatus: boolean;
-  contents: string;
+  contents?: string;
   message: string;
   emoticon: string;
-  postId : number
-  roomId : string
+  postId: number;
+  roomId: string;
   postId: number;
 };
 
@@ -54,4 +54,3 @@ export interface TabContentProps {
   isError: boolean;
   data: { data: cardItem[] };
 }
-

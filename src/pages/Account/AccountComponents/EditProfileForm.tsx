@@ -26,6 +26,7 @@ export const EditProfileForm = () => {
   const email = getCookie("email");
   const emoticon = getCookie("emoticon");
   const [newEmoticon, setNewEmoticon] = useState<any>(emoticon);
+  const [newnewNickname, setNewnewNickname] = useState<string>("");
 
   //---------------------------------------------------- newEmoticon 값 업데이트 기능
 
@@ -39,6 +40,7 @@ export const EditProfileForm = () => {
     onSuccess: (data) => {
       if (data) {
         setNicknameChecks("사용 가능한 닉네임입니다.");
+        setNewnewNickname(newNickname);
       } else {
         setNicknameChecks("이미 사용 중인 닉네임입니다.");
       }
@@ -89,6 +91,26 @@ export const EditProfileForm = () => {
     event.preventDefault();
     if (nicknameChecks === "이미 사용 중인 닉네임입니다.") {
       alert("사용 가능한 닉네임을 입력해주세요.");
+      return;
+    }
+    if (
+      newNickname !== "" &&
+      newNickname.length < 2 &&
+      newNickname.length > 10
+    ) {
+      alert("2글자 이상 10글자 이하 닉네임을 입력하세요.");
+      return;
+    }
+    if (newNickname !== "" && nicknameChecks === false) {
+      alert("닉네임 중복확인을 먼저 해주세요.");
+      return;
+    }
+    if (newNickname !== "" && newNickname !== newnewNickname) {
+      alert("닉네임 중복확인을 먼저 해주세요.");
+      return;
+    }
+    if (newIntroduction !== "" && newIntroduction.length > 70) {
+      alert("소개글을 70자 이하로 작성해주세요.");
       return;
     }
 
@@ -152,7 +174,7 @@ export const EditProfileForm = () => {
         <Label>소개</Label>
         <IntroductionInputContainer>
           <IntroductionInput
-            placeholder={"소개글을 입력해주세요."}
+            placeholder={"소개글을 입력해주세요.(70자 이하)"}
             value={newIntroduction}
             onChange={handleNewIntroduction}
           ></IntroductionInput>
