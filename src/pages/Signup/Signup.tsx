@@ -301,25 +301,16 @@ function Signup() {
           />
         </SignupButton>
       </LoginLayout>
-      <Footer2>
-        <Footer />
-      </Footer2>
+      <Footer />
     </div>
   );
 }
 
 export default Signup;
 
-const Footer2 = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
 const LoginLayout = styled.div`
   width: 384px;
-  margin: 200px auto 150px auto;
+  margin: 200px auto 200px auto;
   display: flex;
   flex-direction: column;
 `;

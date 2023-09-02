@@ -139,27 +139,18 @@ function Login() {
           </LoginAccountText>
         </LoginLayout>
       </CenteredContainer>
-      <Footer2>
-        <Footer />
-      </Footer2>
+      <Footer />
     </>
   );
 }
 
 export default Login;
 
-const Footer2 = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
 const CenteredContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 200px auto auto auto;
+  margin: 200px auto 200px auto;
 `;
 
 const LoginLayout = styled.div`
