@@ -307,9 +307,10 @@ export default Signup;
 
 const LoginLayout = styled.div`
   width: 384px;
-  margin: 200px auto auto auto;
+  margin: 200px auto 0 auto;
   display: flex;
   flex-direction: column;
+  min-height: 100% - 340px;
 `;
 
 const SignupText = styled.div`
