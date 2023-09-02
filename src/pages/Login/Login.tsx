@@ -134,62 +134,36 @@ function Login() {
             <IdText onClick={() => navigate("/findPassword")}>
               비밀번호찾기
             </IdText>
-            <AccountLien>|</AccountLien>
+            <AccountLine>|</AccountLine>
             <IdText onClick={() => navigate("/signup")}>회원가입</IdText>
           </LoginAccountText>
         </LoginLayout>
       </CenteredContainer>
-      <Footer />
+      <Footer2>
+        <Footer />
+      </Footer2>
     </>
   );
 }
 
 export default Login;
 
-const StCheckMassage = styled.div`
-  font-size: 14px;
-  margin: 0 auto 16px 0;
-  color: red;
-`;
-
-const AccountLien = styled.span`
-  width: 16px;
-  height: 16px;
-  margin-left: 8.5px;
-  margin-right: 8.5px;
-  font-family: Pretendard;
-  font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  letter-spacing: normal;
-  color: #636363;
-`;
-
-const Label = styled.label`
-  align-self: flex-start;
-  margin-bottom: 8px;
-  font-size: 16px;
-  font-family: Pretendard;
-  color: #403f4e;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  letter-spacing: normal;
+const Footer2 = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
 const CenteredContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10% auto 10% auto;
+  margin: 200px auto auto auto;
 `;
 
 const LoginLayout = styled.div`
   text-align: center;
-  margin-top: 200px;
 `;
 
 const LoginText = styled.div`
@@ -207,6 +181,25 @@ const LoginForm = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const Label = styled.label`
+  align-self: flex-start;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-family: Pretendard;
+  color: #403f4e;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+`;
+
+const StCheckMassage = styled.div`
+  font-size: 14px;
+  margin: 0 auto 16px 0;
+  color: red;
 `;
 
 const LoginButton = styled.div`
@@ -234,4 +227,19 @@ const IdText = styled.div`
   letter-spacing: normal;
   text-align: right;
   color: #403f4e;
+`;
+
+const AccountLine = styled.span`
+  width: 16px;
+  height: 16px;
+  margin-left: 8.5px;
+  margin-right: 8.5px;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  color: #636363;
 `;

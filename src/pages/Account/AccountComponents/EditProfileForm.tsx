@@ -38,11 +38,14 @@ export const EditProfileForm = () => {
   //---------------------------------------------------- 닉네임 중복확인 기능
   const nickCheckMutation = useMutation(nickCheck, {
     onSuccess: (data) => {
-      if (data) {
+      if (data.success == false) {
+        alert(data.msg);
+      }
+      if (data == true) {
         setNicknameChecks("사용 가능한 닉네임입니다.");
         setNewnewNickname(newNickname);
       } else {
-        setNicknameChecks("이미 사용 중인 닉네임입니다.");
+        setNicknameChecks("사용 불가능한 닉네임입니다.");
       }
     },
     onError: (error) => {
@@ -96,9 +99,9 @@ export const EditProfileForm = () => {
     if (
       newNickname !== "" &&
       newNickname.length < 2 &&
-      newNickname.length > 10
+      newNickname.length > 15
     ) {
-      alert("2글자 이상 10글자 이하 닉네임을 입력하세요.");
+      alert("2글자 이상 15글자 이하 닉네임을 입력하세요.");
       return;
     }
     if (newNickname !== "" && nicknameChecks === false) {
@@ -144,7 +147,7 @@ export const EditProfileForm = () => {
         <Label>닉네임</Label>
         <Input
           type="text"
-          placeholder="2자 이상 10자 이하"
+          placeholder="2자 이상 15자 이하"
           value={newNickname}
           onChange={handleNewNickname}
           size={"nicknameChange"}
@@ -242,7 +245,7 @@ const PenIcon = styled(BiSolidPencil)`
 `;
 
 const NameBox = styled.div`
-  width: 182.1px;
+  width: 320px;
   height: 28px;
   font-family: "Pretendard";
   margin-top: 10.5px;

@@ -147,10 +147,13 @@ function Signup() {
   // -------------------------------------------------닉네임 중복확인
   const nickCheckMutation = useMutation(nickCheck, {
     onSuccess: (data) => {
-      if (data) {
+      if (data.success == false) {
+        alert(data.msg);
+      }
+      if (data == true) {
         setNicknameChecks("사용 가능한 닉네임입니다.");
       } else {
-        setNicknameChecks("이미 사용 중인 닉네임입니다.");
+        setNicknameChecks("사용 불가능한 닉네임입니다.");
       }
     },
     onError: (error) => {
@@ -260,7 +263,7 @@ function Signup() {
           <Label>닉네임</Label>
           <Input
             type="text"
-            placeholder="2자 이상 10자 이하"
+            placeholder="2자 이상 15자 이하"
             value={nickname}
             onChange={handleNicknameChange}
             size={"signup"}
@@ -298,19 +301,27 @@ function Signup() {
           />
         </SignupButton>
       </LoginLayout>
-      <Footer />
+      <Footer2>
+        <Footer />
+      </Footer2>
     </div>
   );
 }
 
 export default Signup;
 
+const Footer2 = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
+
 const LoginLayout = styled.div`
   width: 384px;
-  margin: 10% auto 10% auto;
+  margin: 200px auto 150px auto;
   display: flex;
   flex-direction: column;
-  min-height: 100% - 340px;
 `;
 
 const SignupText = styled.div`
