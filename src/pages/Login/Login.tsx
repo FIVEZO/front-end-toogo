@@ -184,6 +184,7 @@ const CenteredContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 10% auto 10% auto;
 `;
 
 const LoginLayout = styled.div`

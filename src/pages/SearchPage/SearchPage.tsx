@@ -42,12 +42,15 @@ export const SearchPage: React.FC = () => {
           <SearchResultKeyword>{keyword}</SearchResultKeyword> 검색결과
         </SearchResult2>
       </SearchResult>
-      <StCardContainer>
-        {data?.map((item: cardItem) => (
-          <SearchCard key={item.id} items={item} />
-        ))}
-      </StCardContainer>
-      {data?.length === 0 && <SearchResultNotingPage />}
+      {data?.length === 0 ? (
+        <SearchResultNotingPage />
+      ) : (
+        <StCardContainer>
+          {data?.map((item: cardItem) => (
+            <SearchCard key={item.id} items={item} />
+          ))}
+        </StCardContainer>
+      )}
       <Footer />
     </div>
   );

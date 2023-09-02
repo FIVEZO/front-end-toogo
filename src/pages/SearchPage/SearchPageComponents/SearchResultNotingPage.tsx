@@ -21,7 +21,7 @@ const ResultNoting = styled.div`
   display: flex;
   width: 369px;
   height: 145px;
-  margin: auto;
+  margin: 20% auto 20% auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;
