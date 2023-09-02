@@ -310,6 +310,7 @@ const LoginLayout = styled.div`
   margin: 10% auto 10% auto;
   display: flex;
   flex-direction: column;
+  min-height: 100% - 340px;
 `;
 
 const SignupText = styled.div`
