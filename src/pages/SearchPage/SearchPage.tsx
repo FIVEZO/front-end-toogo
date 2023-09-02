@@ -59,7 +59,7 @@ export const SearchPage: React.FC = () => {
 const StCardContainer = styled.div`
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto 680px auto;
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   text-align: center;
