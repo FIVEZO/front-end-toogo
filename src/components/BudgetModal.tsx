@@ -4,10 +4,11 @@ import BugetMessege from "./BugetMessege";
 import { NotificationFormValues } from "../types/posts";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { getCookie } from "../utils/cookieUtils";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { eventDataListState } from "../recoil/Alert";
 import { useQuery, useQueryClient } from "react-query";
 import { getNotification } from "../api/api";
+import { isLoggedInState } from "../recoil/Auth";
 
 type selectForm = {
   position: string;
@@ -19,14 +20,17 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
   const [eventDataList, setEventDataList] = useRecoilState(eventDataListState);
   const [isStarted, setIsStarted] = useState(false);
   const sse = useRef<EventSourcePolyfill | null>(null);
+  const isLoggedIn = useRecoilValue(isLoggedInState);
 
-  const {
-    isLoading,
-    isError,
-    data: AlertData,
-  } = useQuery("getAlert", getNotification, {
-    refetchOnWindowFocus: false,
-  });
+  const { isLoading, isError, data: AlertData } = useQuery(
+    "getAlert",
+    getNotification,
+    {
+      refetchOnWindowFocus: false,
+      enabled: isLoggedIn, 
+    }
+  );
+
 
   useEffect(() => {
     const accessToken = getCookie("access_token");
@@ -49,9 +53,8 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
       console.log("[sse] 연결이 열렸습니다", { e });
     };
 
-    // sse.current.addEventListener("addMessage", (event: any) => {
+    // sse.current.addEventListener("addNotification", (event: any) => {
     //   const eventData = JSON.parse(event.data);
-    //   console.log("메시지를 받았습니다:", eventData);
     //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
     // });
 
@@ -94,8 +97,9 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
       queryClient.invalidateQueries("getAlert");
     }
   }, [eventDataList]);
-
+  console.log("isLoggedIn",isLoggedIn)
   // console.log("AlertData", AlertData);
+  
   return (
     <>
       {budgetOpen && (
@@ -106,11 +110,12 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
           </BoxUpper>
           {isStarted && (
             <ModalContent>
-              {eventDataList?.map(
-                (item: NotificationFormValues, index: number) => (
-                  <BugetMessege key={index} items={item} />
-                )
-              )}
+             {eventDataList
+                    ?.slice()
+                    .reverse()
+                    .map((item: NotificationFormValues, index: number) => (
+                      <BugetMessege key={index} items={item} />
+                    ))}
             </ModalContent>
           )}
         </ModalRayout>

@@ -271,7 +271,7 @@ const getNotification = async () => {
   return response.data;
 };
 
-// 게시글 삭제
+// 알림 삭제
 const deleteAlert = async (id: number) => {
   const response = await instance.delete(`/api/notification/${id}`);
   // console.log("알림 삭제", response)

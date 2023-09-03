@@ -28,7 +28,7 @@ function RangeModal() {
           handleStyle={handleStyle}
           railStyle={railStyle}
           step={1}
-          min={1}
+          min={0}
           max={9}
           onChange={handleSliderChange}
           value={Number(sliderValue)}
@@ -42,14 +42,14 @@ function RangeModal() {
           trackClassName="example-track"
           value={Number(sliderValue)}
           onChange={handleSliderChange}
-          defaultValue={1}
+          defaultValue={0}
           ariaLabelledby="slider-label"
           ariaValuetext={(state) => `Thumb value ${state.valueNow}`}
           renderThumb={(props, state) => (
             <Thumb {...props}>{state.valueNow}명</Thumb>
           )}
           max={9}
-          min={1}
+          min={0}
           step={1}
         />
       </Box>

@@ -11,6 +11,8 @@ import Header from "../../components/Header";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../redux/modules/loginSlice";
 import Footer from "../../components/Footer";
+import { useRecoilState } from "recoil";
+import { isLoggedInState } from "../../recoil/Auth";
 
 type ButtonProps = {
   backgroundColor?: string;
@@ -26,6 +28,9 @@ function Login() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
+
   // ----------------------------------------로그인 로직
   const loginMutation = useMutation(login, {
     onError: (error: any) => {
@@ -39,11 +44,12 @@ function Login() {
     onSuccess: () => {
       dispatch(logIn());
       navigate("/");
+       setIsLoggedIn(true);
     },
   });
 
   const loginHandler = (event: React.FormEvent) => {
-    event.preventDefault();
+    event.preventDefault(); 
     if (!emailRegex.test(email)) {
       setEmailCheck("유효한 이메일 주소를 입력해주세요.");
       return;

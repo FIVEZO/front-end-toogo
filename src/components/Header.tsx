@@ -75,15 +75,6 @@ function Header() {
     }
   };
 
-  //-------------------------- 알림기능 겟
-
-  const {
-    isLoading,
-    isError,
-    data: AlertData,
-  } = useQuery("getAlert", getNotification, {
-    refetchOnWindowFocus: false,
-  });
 
   return (
     <HeaderContainer>
@@ -136,6 +127,7 @@ function Header() {
 export default Header;
 
 const HeaderContainer = styled.header`
+
   display: flex;
   align-items: center;
   justify-content: center;

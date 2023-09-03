@@ -8,13 +8,25 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import CardSlick from './MainComponents/CardSlick';
 import Spinner from '../../components/Spinner';
+import VerticalSlider from '../../components/VerticalSlider';
 
 export const Main: React.FC = () => {
   const [showData, setShowData] = useState(false);
   const { isLoading, isError, data:cardData } = useQuery("mainPost", getHomePosts,{
     refetchOnWindowFocus: false,
     });
-  
+    const [showWelcomePage, setShowWelcomePage] = useState(true);
+    
+
+  // 프리 메인 페이지 세션 스토리지에 저장하기
+  useEffect(() => {
+    const hasClosed = sessionStorage.getItem("hasClosedWelcomePage");
+    if (hasClosed === "true") {
+      setShowWelcomePage(false);
+    }
+  }, []);
+
+
   useEffect(() => {
     const delay = 300; 
     if (!isLoading && !isError) {
@@ -35,6 +47,14 @@ export const Main: React.FC = () => {
   
   return (
     <div>
+      {showWelcomePage && (
+        <VerticalSlider
+          onClose={() => {
+            sessionStorage.setItem("hasClosedWelcomePage", "true");
+            setShowWelcomePage(false);
+          }}
+        />
+      )}
         <MainRayout>
           <Header/>
           <TopText>여행지를 선택하세요.</TopText>
@@ -49,6 +69,7 @@ export const Main: React.FC = () => {
           </StCardContainer>
           <Footer/>
         </MainRayout>
+        
     </div>
   )
 }
