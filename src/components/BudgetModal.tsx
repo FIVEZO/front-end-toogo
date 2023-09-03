@@ -6,14 +6,11 @@ import { EventSourcePolyfill } from "event-source-polyfill";
 import { getCookie } from "../utils/cookieUtils";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { eventDataListState } from "../recoil/Alert";
-import { useQuery, useQueryClient } from "react-query";
-import { getNotification } from "../api/api";
-
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { isLoggedInState } from "../recoil/Auth";
-
-import { useSelector } from "react-redux";
-import { RootState } from "../types/login";
-
+import { getAndDecryptTokenFromCookie } from "../utils/tokenUtils";
+import { getNotification } from "../api/alertApi";
+import { reissuingToken } from "../api/userApi";
 
 type selectForm = {
   position: string;
@@ -27,19 +24,25 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
   const sse = useRef<EventSourcePolyfill | null>(null);
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
-  const { isLoading, isError, data: AlertData } = useQuery(
-    "getAlert",
-    getNotification,
-    {
-      refetchOnWindowFocus: false,
-      enabled: isLoggedIn, 
-    }
-  );
+  const {
+    isLoading,
+    isError,
+    data: AlertData,
+  } = useQuery("getAlert", getNotification, {
+    refetchOnWindowFocus: false,
+    enabled: isLoggedIn,
+  });
 
+  // ---------------------------------------토큰 재발급
+  const reissuingMutation = useMutation(reissuingToken, {
+    onSuccess: (data) => {
+      // console.log("reissuingMutation", data);
+    },
+  });
 
   useEffect(() => {
     const accessToken = getCookie("access_token");
-    const refreshToken = getCookie("refresh_token");
+    const refreshToken = getAndDecryptTokenFromCookie();
 
     const eventSourceInitDict: any = {
       headers: {
@@ -55,40 +58,38 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
 
     sse.current.onopen = (e) => {
       setIsStarted(true);
-      console.log("[sse] 연결이 열렸습니다", { e });
+      // console.log("[sse] 연결이 열렸습니다", { e });
     };
 
-    // sse.current.addEventListener("addNotification", (event: any) => {
-    //   const eventData = JSON.parse(event.data);
-    //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
-    // });
-
-    // sse.current.addEventListener("addComment", (event: any) => {
-    //   const eventData = JSON.parse(event.data);
-    //   console.log("댓글을 받았습니다:", eventData);
-    //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
-    // });
-
-    // sse.current.addEventListener("addMessageRoom", (event: any) => {
-    //   const eventData = JSON.parse(event.data);
-    //   console.log("채팅방 개설", eventData);
-    //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
-    // });
-
-    sse.current.addEventListener("addNotification", (event: any) => {
+    sse.current.addEventListener("addComment", (event: any) => {
       const eventData = JSON.parse(event.data);
-      console.log("알림", eventData);
+      // console.log("댓글을 받았습니다:", eventData);
       setEventDataList((eventDataList) => [...eventDataList, eventData]);
     });
 
+    sse.current.addEventListener("addMessageRoom", (event: any) => {
+      const eventData = JSON.parse(event.data);
+      // console.log("채팅방 개설", eventData);
+      setEventDataList((eventDataList) => [...eventDataList, eventData]);
+    });
+
+    // sse.current.addEventListener("addNotification", (event: any) => {
+    //   const eventData = JSON.parse(event.data);
+    //   console.log("알림", eventData);
+    //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
+    // });
+
     sse.current.onerror = (err) => {
-      console.log("[sse] 에러 발생", { err });
+      // console.log("[sse] 에러 발생", { err });
+      if ("status" in err) {
+        reissuingMutation.mutate();
+      }
     };
 
     // 컴포넌트가 언마운트될 때 SSE 연결을 해제합니다.
     return () => {
       if (sse.current) {
-        console.log("SSE 연결 해제");
+        // console.log("SSE 연결 해제");
         sse.current.close();
       }
     };
@@ -108,9 +109,9 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
       queryClient.invalidateQueries("getAlert");
     }
   }, [eventDataList]);
-  console.log("isLoggedIn",isLoggedIn)
+  // console.log("isLoggedIn", isLoggedIn);
   // console.log("AlertData", AlertData);
-  
+
   return (
     <>
       {budgetOpen && (
@@ -121,12 +122,12 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
           </BoxUpper>
           {isStarted && (
             <ModalContent>
-             {eventDataList
-                    ?.slice()
-                    .reverse()
-                    .map((item: NotificationFormValues, index: number) => (
-                      <BugetMessege key={index} items={item} />
-                    ))}
+              {eventDataList
+                ?.slice()
+                .reverse()
+                .map((item: NotificationFormValues, index: number) => (
+                  <BugetMessege key={index} items={item} />
+                ))}
             </ModalContent>
           )}
         </ModalRayout>

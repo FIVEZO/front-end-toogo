@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { editPost, getDetailPosts } from "../../api/api";
+import { editPost, getDetailPosts } from "../../api/postApi";
 import { locationFormValues, postFormValues } from "../../types/posts";
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "../Post/PostComponents/Map";

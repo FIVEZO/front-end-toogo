@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { cardItem } from "../../types/posts";
 import { SearchCard } from "./SearchPageComponents/SearchCard";
-import { getSearchPosts } from "../../api/api";
+import { getSearchPosts } from "../../api/postApi";
 import { styled } from "styled-components";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";

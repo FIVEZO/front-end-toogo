@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { logOff } from "../redux/modules/loginSlice";
-import { logout } from "../api/api";
+import { logout } from "../api/userApi";
 
 type selectForm = {
   position: string;

@@ -5,7 +5,12 @@ import { useNavigate } from "react-router-dom";
 import useInput from "../../hooks/useInput";
 import { useMutation } from "react-query";
 import Button from "../../components/Button";
-import { emailCheck, addUsers, nickCheck, authCodeCheck } from "../../api/api";
+import {
+  emailCheck,
+  addUsers,
+  nickCheck,
+  authCodeCheck,
+} from "../../api/userApi";
 import Input from "../../components/Input";
 import Header from "../../components/Header";
 import "../../fonts/Font.css";

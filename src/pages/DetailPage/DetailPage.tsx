@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { deletePost, getDetailPosts, postScrap } from "../../api/api";
+import { deletePost, getDetailPosts, postScrap } from "../../api/postApi";
 import { styled } from "styled-components";
 import { countryImages } from "../../img/countryImages";
 import GogleMap from "./DetailPageComponents/GogleMap";
@@ -343,7 +343,7 @@ const Layout = styled.div`
 
 const NickBox = styled.div`
   width: 382px;
-  height: 350px;
+  height: 289px;
   flex-grow: 0;
   padding: 36px 27px 47px 30px;
   border-radius: 8px;
@@ -435,7 +435,7 @@ const StTitle = styled.div`
 
 const StNickname = styled.div`
   width: 191px;
-  height: 100px;
+  height: 27px;
   flex-grow: 0;
   margin: 0 133px 27px 1px;
   -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);

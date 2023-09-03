@@ -5,8 +5,9 @@ import { useMutation, useQueryClient } from "react-query";
 import { NotificationFormValues } from "../types/posts";
 import { getCookie } from "../utils/cookieUtils";
 import { selectedEmoticon } from "../utils/emoticonUtils";
-import { deleteAlert } from "../api/api";
+
 import { useNavigate } from "react-router-dom";
+import { deleteAlert } from "../api/alertApi";
 
 function BugetMessege({ items }: { items: NotificationFormValues }) {
   const {
@@ -30,11 +31,7 @@ function BugetMessege({ items }: { items: NotificationFormValues }) {
       contents.length > 40 ? `${contents.slice(0, 40)}...` : contents;
   }
 
-  const myEmoticon = getCookie("emoticon");
   const nickname = getCookie("nickname");
-
-  console.log("nickname", nickname);
-  console.log("sender", sender);
 
   //-----------------------------------------알림 삭제
   const deleteAlertMutation = useMutation((id: number) => deleteAlert(id), {
@@ -54,7 +51,6 @@ function BugetMessege({ items }: { items: NotificationFormValues }) {
   };
   //-----------------------------------------
   if (nickname == sender) {
-    console.log("ds");
   }
   return (
     <TextBoxRayout>

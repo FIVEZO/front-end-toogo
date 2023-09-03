@@ -5,13 +5,13 @@ import { BiSolidPencil } from "react-icons/bi";
 import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { getMyPosts, getScrapPosts } from "../../api/api";
 import Footer from "../../components/Footer";
 import "../../fonts/Font.css";
 import { getCookie } from "../../utils/cookieUtils";
 import { selectedEmoticonBig } from "../../utils/emoticonUtils";
 import { MyPostTabContent } from "./MyPageComponents/MyPostTabContent";
 import { ScrapTabContent } from "./MyPageComponents/ScrapTabContent";
+import { getMyPosts, getScrapPosts } from "../../api/myPageApi";
 
 export const MyPage = () => {
   const [activeTab, setActiveTab] = useState("postList");

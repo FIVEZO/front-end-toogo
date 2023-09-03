@@ -1,22 +1,25 @@
-import { styled } from 'styled-components';
-import React, { useEffect, useState } from 'react'
-import { useQuery } from 'react-query';
-import { getHomePosts } from '../../api/api';
-import { Cards } from '../../components/Cards';
-import { cardItem } from '../../types/posts';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import CardSlick from './MainComponents/CardSlick';
-import Spinner from '../../components/Spinner';
-import VerticalSlider from '../../components/VerticalSlider';
+import { styled } from "styled-components";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { getHomePosts } from "../../api/postApi";
+import { Cards } from "../../components/Cards";
+import { cardItem } from "../../types/posts";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import CardSlick from "./MainComponents/CardSlick";
+import Spinner from "../../components/Spinner";
+import VerticalSlider from "../../components/VerticalSlider";
 
 export const Main: React.FC = () => {
   const [showData, setShowData] = useState(false);
-  const { isLoading, isError, data:cardData } = useQuery("mainPost", getHomePosts,{
+  const {
+    isLoading,
+    isError,
+    data: cardData,
+  } = useQuery("mainPost", getHomePosts, {
     refetchOnWindowFocus: false,
-    });
-    const [showWelcomePage, setShowWelcomePage] = useState(true);
-    
+  });
+  const [showWelcomePage, setShowWelcomePage] = useState(true);
 
   // 프리 메인 페이지 세션 스토리지에 저장하기
   useEffect(() => {
@@ -26,9 +29,8 @@ export const Main: React.FC = () => {
     }
   }, []);
 
-
   useEffect(() => {
-    const delay = 300; 
+    const delay = 300;
     if (!isLoading && !isError) {
       setTimeout(() => {
         setShowData(true);
@@ -37,14 +39,13 @@ export const Main: React.FC = () => {
   }, [isLoading, isError]);
 
   if (isLoading) {
-  
-    return <Spinner/>;
+    return <Spinner />;
   }
-  
+
   if (isError) {
     return <p>오류가 발생하였습니다...!</p>;
   }
-  
+
   return (
     <div>
       {showWelcomePage && (
@@ -55,24 +56,24 @@ export const Main: React.FC = () => {
           }}
         />
       )}
-        <MainRayout>
-          <Header/>
-          <TopText>여행지를 선택하세요.</TopText>
-          <SecondText>대륙을 선택해서 동행글을 찾아보세요.</SecondText>
-          <CardSlick/>
-          <TopText>오이여행 Talk</TopText>
-          <SecondText>나와 맞는 여행동행과 이야기를 나누어 보아요!</SecondText>
-          <StCardContainer>
-          {showData && cardData?.map((item: cardItem) => (
+      <MainRayout>
+        <Header />
+        <TopText>여행지를 선택하세요.</TopText>
+        <SecondText>대륙을 선택해서 동행글을 찾아보세요.</SecondText>
+        <CardSlick />
+        <TopText>오이여행 Talk</TopText>
+        <SecondText>나와 맞는 여행동행과 이야기를 나누어 보아요!</SecondText>
+        <StCardContainer>
+          {showData &&
+            cardData?.map((item: cardItem) => (
               <Cards key={item.id} items={item} />
             ))}
-          </StCardContainer>
-          <Footer/>
-        </MainRayout>
-        
+        </StCardContainer>
+        <Footer />
+      </MainRayout>
     </div>
-  )
-}
+  );
+};
 
 const MainRayout = styled.div`
   display: flex;
@@ -121,10 +122,10 @@ const StCardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   text-align: center;
-  gap:24px;
+  gap: 24px;
 `;
 
 const StButton = styled.button`
-font-size: 20px;
-margin-top: 20px;
+  font-size: 20px;
+  margin-top: 20px;
 `;

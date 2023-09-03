@@ -4,7 +4,7 @@ import { LoginFormValues } from "../../types/login";
 import { useNavigate } from "react-router-dom";
 import useInput from "../../hooks/useInput";
 import { useMutation } from "react-query";
-import { login } from "../../api/api";
+import { login } from "../../api/userApi";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Header from "../../components/Header";
@@ -44,12 +44,12 @@ function Login() {
     onSuccess: () => {
       dispatch(logIn());
       navigate("/");
-       setIsLoggedIn(true);
+      setIsLoggedIn(true);
     },
   });
 
   const loginHandler = (event: React.FormEvent) => {
-    event.preventDefault(); 
+    event.preventDefault();
     if (!emailRegex.test(email)) {
       setEmailCheck("유효한 이메일 주소를 입력해주세요.");
       return;
