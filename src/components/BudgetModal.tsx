@@ -8,7 +8,12 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { eventDataListState } from "../recoil/Alert";
 import { useQuery, useQueryClient } from "react-query";
 import { getNotification } from "../api/api";
+
 import { isLoggedInState } from "../recoil/Auth";
+
+import { useSelector } from "react-redux";
+import { RootState } from "../types/login";
+
 
 type selectForm = {
   position: string;
@@ -58,20 +63,26 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
     //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
     // });
 
-    sse.current.addEventListener("addComment", (event: any) => {
-      const eventData = JSON.parse(event.data);
-      console.log("댓글을 받았습니다:", eventData);
-      setEventDataList((eventDataList) => [...eventDataList, eventData]);
-    });
+    // sse.current.addEventListener("addComment", (event: any) => {
+    //   const eventData = JSON.parse(event.data);
+    //   console.log("댓글을 받았습니다:", eventData);
+    //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
+    // });
 
-    sse.current.addEventListener("addMessageRoom", (event: any) => {
+    // sse.current.addEventListener("addMessageRoom", (event: any) => {
+    //   const eventData = JSON.parse(event.data);
+    //   console.log("채팅방 개설", eventData);
+    //   setEventDataList((eventDataList) => [...eventDataList, eventData]);
+    // });
+
+    sse.current.addEventListener("addNotification", (event: any) => {
       const eventData = JSON.parse(event.data);
-      console.log("채팅방 개설", eventData);
+      console.log("알림", eventData);
       setEventDataList((eventDataList) => [...eventDataList, eventData]);
     });
 
     sse.current.onerror = (err) => {
-      console.log("[sse] 에러 발생2", { err });
+      console.log("[sse] 에러 발생", { err });
     };
 
     // 컴포넌트가 언마운트될 때 SSE 연결을 해제합니다.
@@ -141,6 +152,7 @@ const ModalRayout = styled.div<{ position: string }>`
   background-color: #fff;
   box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.17);
   position: ${(props) => props.position};
+  z-index: 999;
 `;
 
 const BoxUpper = styled.div`

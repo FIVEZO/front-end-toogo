@@ -1,8 +1,5 @@
 import axios from "axios";
 import { deleteCookie, getCookie } from "../utils/cookieUtils";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logOff } from "../redux/modules/loginSlice";
 
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
@@ -20,34 +17,34 @@ instance.interceptors.request.use(
       config.headers.refreshToken = `${refreshToken}`;
     }
 
-    console.log("요청 완료", config);
+    // console.log("요청 완료", config);
     return config;
   },
   function (error) {
-    console.log("요청 에러", error);
+    // console.log("요청 에러", error);
     return Promise.reject(error);
   }
 );
 
 instance.interceptors.response.use(
   function (response) {
-    console.log("응답 완료", response);
+    // console.log("응답 완료", response);
 
     return response;
   },
   function (error) {
+    const accessToken = getCookie("access_token");
     console.log("응답 에러", error);
-    if (error.response.status == 403) {
-      const dispatch = useDispatch();
-      const navigate = useNavigate();
+
+    if (error.response.status === 403 && accessToken) {
+      console.log("403 에러");
       alert("세션이 만료되었습니다. 다시 로그인 해주세요.");
-      dispatch(logOff());
-      navigate("/");
-      // deleteCookie("access_token"); // 엑세스 토큰 삭제
-      // deleteCookie("refresh_token"); // 리프레쉬 토큰 삭제
-      // deleteCookie("nickname"); // 닉네임 삭제
-      // deleteCookie("emoticon"); // 이모티콘 삭제
-      // deleteCookie("email"); // 이메일 삭제
+      deleteCookie("access_token"); // 엑세스 토큰 삭제
+      deleteCookie("refresh_token"); // 리프레쉬 토큰 삭제
+      deleteCookie("nickname"); // 닉네임 삭제
+      deleteCookie("emoticon"); // 이모티콘 삭제
+      deleteCookie("email"); // 이메일 삭제
+      window.location.href = "/login";
     }
     if (error.message == "Request failed with status code 418") {
       document.cookie = `access_token=${error.response.headers.accesstoken}; path=/;`;
