@@ -77,14 +77,6 @@ function Header() {
 
   //-------------------------- 알림기능 겟
 
-  const {
-    isLoading,
-    isError,
-    data: AlertData,
-  } = useQuery("getAlert", getNotification, {
-    refetchOnWindowFocus: false,
-  });
-
   return (
     <HeaderContainer>
       <HeaderContainer2>

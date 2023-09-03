@@ -29,14 +29,18 @@ function BugetMessege({ items }: { items: NotificationFormValues }) {
     truncatedContents =
       contents.length > 40 ? `${contents.slice(0, 40)}...` : contents;
   }
-  //---------------------------------------------------- 'emoticon' 값에 따라 다른 이모티콘 컴포넌트를 렌더링
+
   const myEmoticon = getCookie("emoticon");
+  const nickname = getCookie("nickname");
+
+  console.log("nickname", nickname);
+  console.log("sender", sender);
 
   //-----------------------------------------알림 삭제
   const deleteAlertMutation = useMutation((id: number) => deleteAlert(id), {
     onSuccess: () => {
       queryClient.invalidateQueries("getAlert");
-      console.log("알림 삭제 완료!");
+      // console.log("알림 삭제 완료!");
       if (message === "댓글이 달렸습니다.") {
         navigate(`/detailpage/${category}&${postId}`);
       } else if (message === "채팅방이 생성되었습니다.") {
@@ -49,7 +53,9 @@ function BugetMessege({ items }: { items: NotificationFormValues }) {
     deleteAlertMutation.mutate(id);
   };
   //-----------------------------------------
-
+  if (nickname == sender) {
+    console.log("ds");
+  }
   return (
     <TextBoxRayout>
       <Avata>
