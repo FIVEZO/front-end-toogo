@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ba226d1d.css",
-    "main.js": "/static/js/main.6c8b6900.js",
+    "main.js": "/static/js/main.a361e985.js",
     "static/js/787.7d5bcd09.chunk.js": "/static/js/787.7d5bcd09.chunk.js",
     "static/media/에티오피아.jpg": "/static/media/에티오피아.608c69ebe89e08fdc5c3.jpg",
     "static/media/스웨덴.jpg": "/static/media/스웨덴.5f8041f1da2531459f20.jpg",
@@ -77,11 +77,11 @@
     "static/media/winking5big.svg": "/static/media/winking5big.88e347fb470edc7598986b8fe294e4f8.svg",
     "static/media/winking5.svg": "/static/media/winking5.b8a00decba43263f547b3512512e1775.svg",
     "static/media/winking6.svg": "/static/media/winking6.b2b668e741840143c53696dfe8c6294e.svg",
+    "static/media/winking8.svg": "/static/media/winking8.f9170e477ef6ab8de6092db1de4230b2.svg",
     "static/media/winking2big.svg": "/static/media/winking2big.f81163629fa93031c93b142d816a0d84.svg",
     "static/media/winking2.svg": "/static/media/winking2.81583f4072fe368103856f0486404100.svg",
     "static/media/winking1big.svg": "/static/media/winking1big.831b8fb2a70d94edd8cb3cb38f0cc715.svg",
     "static/media/winking1.svg": "/static/media/winking1.e386675f0488b6f1f0bd5988a86014c7.svg",
-    "static/media/winking7.svg": "/static/media/winking7.86f3cbb72e7d72c84282577f6438e6e9.svg",
     "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
@@ -90,11 +90,11 @@
     "static/media/next.svg": "/static/media/next.1192ea6f48685dee4c70f3ea182e4e7c.svg",
     "index.html": "/index.html",
     "main.ba226d1d.css.map": "/static/css/main.ba226d1d.css.map",
-    "main.6c8b6900.js.map": "/static/js/main.6c8b6900.js.map",
+    "main.a361e985.js.map": "/static/js/main.a361e985.js.map",
     "787.7d5bcd09.chunk.js.map": "/static/js/787.7d5bcd09.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ba226d1d.css",
-    "static/js/main.6c8b6900.js"
+    "static/js/main.a361e985.js"
   ]
 }

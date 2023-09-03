@@ -48,57 +48,65 @@ const Responsive = () => {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
       {
         breakpoint: 800,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2
-        }
+          initialSlide: 2,
+        },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
     <div>
       <StyledSlider {...settings} ref={sliderRef}>
         <div onClick={() => navigate("/categorypage/1")}>
-          <h3><MainCard cardType='아시아' backgroundImage={'아시아'} /></h3>
+          <h3>
+            <MainCard cardtype="아시아" backgroundImage={"아시아"} />
+          </h3>
         </div>
-      
+
         <div onClick={() => navigate("/categorypage/2")}>
-          <h3><MainCard cardType='아프리카' backgroundImage={'아프리카'} /></h3>
-        </div>  
-        
-        <div onClick={() => navigate("/categorypage/3")}>
-          <h3><MainCard cardType='유럽' backgroundImage={'유럽'} /></h3>
+          <h3>
+            <MainCard cardtype="아프리카" backgroundImage={"아프리카"} />
+          </h3>
         </div>
-        
+
+        <div onClick={() => navigate("/categorypage/3")}>
+          <h3>
+            <MainCard cardtype="유럽" backgroundImage={"유럽"} />
+          </h3>
+        </div>
+
         <div onClick={() => navigate("/categorypage/4")}>
-          <h3><MainCard cardType='오세아니아' backgroundImage={'오세아니아'} /></h3>
+          <h3>
+            <MainCard cardtype="오세아니아" backgroundImage={"오세아니아"} />
+          </h3>
         </div>
 
         <div onClick={() => navigate("/categorypage/5")}>
-          <h3><MainCard cardType='아메리카' backgroundImage={'아메리카'} /></h3>
+          <h3>
+            <MainCard cardtype="아메리카" backgroundImage={"아메리카"} />
+          </h3>
         </div>
-        
       </StyledSlider>
     </div>
   );
 };
 
 export default Responsive;
-
 
 const StyledSlider = styled(Slider)`
   height: 100%;

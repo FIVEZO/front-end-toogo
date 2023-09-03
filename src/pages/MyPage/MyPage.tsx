@@ -49,7 +49,7 @@ export const MyPage = () => {
           </PenIconBox>
         </MainEmoticon>
         <NameBox>{nickname}</NameBox>
-        <MailBox>{email}</MailBox>
+        {email && <MailBox>{email}</MailBox>}
       </InfoBox>
 
       <PageBox>
