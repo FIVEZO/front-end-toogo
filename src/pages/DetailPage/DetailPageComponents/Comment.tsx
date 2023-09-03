@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import { useMutation, useQueryClient } from "react-query";
-import { addComment, deleteComment, editComment } from "../../../api/api";
+import { addComment, deleteComment, editComment } from "../../../api/postApi";
 import useInput from "../../../hooks/useInput";
 import { useParams } from "react-router-dom";
 import moment from "moment";

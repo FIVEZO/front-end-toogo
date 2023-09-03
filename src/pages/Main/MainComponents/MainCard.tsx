@@ -7,7 +7,7 @@ import backgroundImage4 from "../../../img/미국.jpg";
 import backgroundImage5 from "../../../img/호주.jpg";
 import Button from "../../../components/Button";
 import { useQuery } from "react-query";
-import { getCountrySum } from "../../../api/api";
+import { getCountrySum } from "../../../api/postApi";
 
 import Spinner from "../../../components/Spinner";
 

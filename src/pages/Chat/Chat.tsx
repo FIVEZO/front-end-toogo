@@ -3,7 +3,6 @@ import { Spinner } from "react-bootstrap";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
-import 프로필 from "../../img/프로필.jpg";
 import { ChatRoom } from "./ChatComponents/ChatRoom";
 import Footer from "../../components/Footer";
 import { styled } from "styled-components";

@@ -112,7 +112,7 @@ export const ChatRoom = () => {
       clientdata.activate(); // 클라이언트 활성화
       changeClient(clientdata); // 클라이언트 갱신
     } catch (err) {
-      // console.log(err);
+      // console.log("채팅 에러", err);
     }
   };
   const disConnect = () => {

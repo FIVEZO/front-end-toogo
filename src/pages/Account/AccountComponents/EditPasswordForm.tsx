@@ -3,12 +3,13 @@ import { styled } from "styled-components";
 import { AlertModal } from "../../../components/AlertModal";
 import useInput from "../../../hooks/useInput";
 import { useMutation } from "react-query";
-import { changePassword } from "../../../api/api";
+
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logOff } from "../../../redux/modules/loginSlice";
 import { changePasswordFormValue } from "../../../types/acount";
 import Input from "../../../components/Input";
+import { changePassword } from "../../../api/myPageApi";
 
 export const EditPasswordForm = () => {
   const navigate = useNavigate();

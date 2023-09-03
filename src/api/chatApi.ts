@@ -1,4 +1,3 @@
-import axios from "axios";
 import { createChat } from "../types/posts";
 import { instance } from "./instance";
 

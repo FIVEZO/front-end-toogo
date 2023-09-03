@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ba226d1d.css",
-    "main.js": "/static/js/main.a361e985.js",
+    "main.js": "/static/js/main.b6b8bf24.js",
     "static/js/787.7d5bcd09.chunk.js": "/static/js/787.7d5bcd09.chunk.js",
     "static/media/에티오피아.jpg": "/static/media/에티오피아.608c69ebe89e08fdc5c3.jpg",
     "static/media/스웨덴.jpg": "/static/media/스웨덴.5f8041f1da2531459f20.jpg",
@@ -33,6 +33,7 @@
     "static/media/카타르.jpg": "/static/media/카타르.000bb4d88459b5867991.jpg",
     "static/media/인도.jpg": "/static/media/인도.9c821c1e7cf9efab7186.jpg",
     "static/media/말레이시아.jpg": "/static/media/말레이시아.0f411ca87427272f4f1b.jpg",
+    "static/media/0001.jpg": "/static/media/0001.ba2d81912eb997f68069.jpg",
     "static/media/캐나다.jpg": "/static/media/캐나다.0c68f6562909a24f1ec8.jpg",
     "static/media/벨기에.jpg": "/static/media/벨기에.7cc4654432ac17c76bd8.jpg",
     "static/media/싱가포르.jpg": "/static/media/싱가포르.6ce3f761f28b75752166.jpg",
@@ -90,11 +91,11 @@
     "static/media/next.svg": "/static/media/next.1192ea6f48685dee4c70f3ea182e4e7c.svg",
     "index.html": "/index.html",
     "main.ba226d1d.css.map": "/static/css/main.ba226d1d.css.map",
-    "main.a361e985.js.map": "/static/js/main.a361e985.js.map",
+    "main.b6b8bf24.js.map": "/static/js/main.b6b8bf24.js.map",
     "787.7d5bcd09.chunk.js.map": "/static/js/787.7d5bcd09.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ba226d1d.css",
-    "static/js/main.a361e985.js"
+    "static/js/main.b6b8bf24.js"
   ]
 }

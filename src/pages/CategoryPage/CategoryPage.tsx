@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
-import { getCategoryPosts, getCategoryCountryPosts } from "../../api/api";
+import { getCategoryPosts, getCategoryCountryPosts } from "../../api/postApi";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { cardItem } from "../../types/posts";
@@ -10,11 +10,10 @@ import Footer from "../../components/Footer";
 import Continent from "./CategoryPageComponents/ContinentImage";
 import FixedWritingButton from "./CategoryPageComponents/FixedWritingButton";
 import ContinentPageSelectCountry from "./CategoryPageComponents/ContinentPageSelectCountryButton";
-import PageMovingButton from "../../components/PageMovingButton";
+import PageMovingButton from "./CategoryPageComponents/PageMovingButton";
 import { RootState } from "../../types/login";
 import { useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
-
 
 export const CategoryPage = () => {
   const state = useSelector((state: RootState) => state.isLogin.isLogin);

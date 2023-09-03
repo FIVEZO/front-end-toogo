@@ -8,11 +8,12 @@ import { useDispatch } from "react-redux";
 import { getCookie } from "../../../utils/cookieUtils";
 import useInput from "../../../hooks/useInput";
 import { useMutation } from "react-query";
-import { deleteUser, editUser, logout, nickCheck } from "../../../api/api";
+import { logout, nickCheck } from "../../../api/userApi";
 import { logOff } from "../../../redux/modules/loginSlice";
 import { editUserFromValue } from "../../../types/acount";
 import { selectedEmoticonBig } from "../../../utils/emoticonUtils";
 import { AlertModal } from "../../../components/AlertModal";
+import { deleteUser, editUser } from "../../../api/myPageApi";
 
 export const EditProfileForm = () => {
   const navigate = useNavigate();

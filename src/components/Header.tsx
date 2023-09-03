@@ -10,10 +10,9 @@ import { RxAvatar } from "react-icons/rx";
 import HeaderSelect from "./HeaderSelect";
 import BudgetModal from "./BudgetModal";
 import { Badge } from "@mui/material";
-import { useQuery } from "react-query";
-import { getNotification } from "../api/api";
 import { useRecoilState } from "recoil";
 import { eventDataListState } from "../recoil/Alert";
+import ErrorBoundary from "./ErrorBoundary";
 
 function Header() {
   const navigate = useNavigate();
@@ -75,7 +74,6 @@ function Header() {
     }
   };
 
-
   return (
     <HeaderContainer>
       <HeaderContainer2>
@@ -100,8 +98,9 @@ function Header() {
                   <HiOutlineBell color="#403F4E" size="24px" />
                 </Badge>
               </Bell>
-
-              <BudgetModal position={"absolute"} budgetOpen={budgetOpen} />
+              <ErrorBoundary>
+                <BudgetModal position={"absolute"} budgetOpen={budgetOpen} />
+              </ErrorBoundary>
             </div>
             <div ref={node}>
               <Profile onClick={handleBox2Click}>
@@ -127,7 +126,6 @@ function Header() {
 export default Header;
 
 const HeaderContainer = styled.header`
-
   display: flex;
   align-items: center;
   justify-content: center;
