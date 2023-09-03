@@ -16,19 +16,24 @@ export const EditPasswordForm = () => {
   const [password, handlePasswordChange] = useInput();
   const [newpassword, handleNewPasswordChange] = useInput();
   const [newpasswordConfirm, handleNewPasswordConfirmChange] = useInput();
+  const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false);
   const [newpasswordCheck, setNewPasswordCheck] = useState<boolean | string>(
     false
   );
-  const [passwordCheck, setPasswordCheck] = useState<boolean | string>(false);
   const [newpasswordConfirmCheck, setNewPasswordConfirmCheck] = useState<
     boolean | string
   >(false);
   const [changePasswordModal, setChangePasswordModal] =
     useState<boolean>(false);
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/;
 
   const pwchangeMutation = useMutation(changePassword, {
-    onSuccess: () => {
+    onSuccess: (data) => {
+      if (data.success == false) {
+        setPasswordCheck(data.msg);
+        return;
+      }
       setChangePasswordModal(true);
       dispatch(logOff());
     },
@@ -37,15 +42,8 @@ export const EditPasswordForm = () => {
   const changepasswordHandler = () => {
     let hasError = false;
 
-    if (!passwordRegex.test(password)) {
-      setPasswordCheck("비밀번호는 8자리 이상, 영문과 숫자를 포함해주세요.");
-      hasError = true;
-    } else {
-      setPasswordCheck(false);
-    }
-
     if (!passwordRegex.test(newpassword)) {
-      setNewPasswordCheck("비밀번호는 8자리 이상, 영문과 숫자를 포함해주세요.");
+      setNewPasswordCheck("8자리 이상 15자이하, 영문과 숫자를 포함해주세요.");
       hasError = true;
     } else {
       setNewPasswordCheck(false);
@@ -75,7 +73,7 @@ export const EditPasswordForm = () => {
         <Label>기존 비밀번호</Label>
         <Input
           type="password"
-          placeholder="영문,숫자 조합 8자 이상 15자 이하"
+          placeholder="기존 비밀번호를 입력해주세요."
           value={password}
           onChange={handlePasswordChange}
           size={"signup"}
@@ -90,20 +88,20 @@ export const EditPasswordForm = () => {
         <Label>새 비밀번호</Label>
         <Input
           type="password"
-          placeholder="영문,숫자 조합 8자 이상 15자 이하"
+          placeholder="8자 이상 15자 이하 영문과 숫자를 입력해주세요"
           value={newpassword}
           onChange={handleNewPasswordChange}
           size={"signup"}
-          color={passwordCheck ? "#E32D2D" : "#cfced7"}
+          color={newpasswordCheck ? "#E32D2D" : "#cfced7"}
           variant={"eyeIcon"}
         />
-        {passwordCheck && (
-          <StCheckMassage color={"#E32D2D"}>{passwordCheck}</StCheckMassage>
+        {newpasswordCheck && (
+          <StCheckMassage color={"#E32D2D"}>{newpasswordCheck}</StCheckMassage>
         )}
         <Label>새 비밀번호 확인</Label>
         <Input
           type="password"
-          placeholder="비밀번호 확인"
+          placeholder="비밀번호를 다시 입력해주세요."
           value={newpasswordConfirm}
           onChange={handleNewPasswordConfirmChange}
           size={"signup"}

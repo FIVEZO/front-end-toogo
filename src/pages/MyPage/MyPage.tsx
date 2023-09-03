@@ -124,7 +124,7 @@ const PenIcon = styled(BiSolidPencil)`
 `;
 
 const NameBox = styled.div`
-  width: 182.1px;
+  width: 320px;
   height: 28px;
   font-family: "Pretendard";
   margin-top: 10.5px;

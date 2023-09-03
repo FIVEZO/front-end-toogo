@@ -22,7 +22,7 @@ export const SearchCard = ({ items }: { items: cardItem }) => {
     emoticon,
   } = items;
   const countryImage = countryImages[country] || countryImages["한국"];
-  const formattedCreatedDate = formatTimeAgo(createdAt); // createdAt을 문자열로 변환하여 formatTimeAgo 함수에 전달
+  const formattedCreatedDate = formatTimeAgo(createdAt);
 
   // 내용이 26자가 넘어가면 자름
   const truncatedContents =
@@ -162,4 +162,5 @@ const MeetingTime = styled.div`
   text-align: center;
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
