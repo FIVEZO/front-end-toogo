@@ -75,7 +75,6 @@ function Header() {
     }
   };
 
-  //-------------------------- 알림기능 겟
 
   return (
     <HeaderContainer>
@@ -128,6 +127,7 @@ function Header() {
 export default Header;
 
 const HeaderContainer = styled.header`
+
   display: flex;
   align-items: center;
   justify-content: center;
