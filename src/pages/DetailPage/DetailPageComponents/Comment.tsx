@@ -174,11 +174,6 @@ export const Comment = ({
 
 const StCommentBox = styled.div``;
 
-const StProfileImg = styled.img`
-  width: 55px;
-  height: 55px;
-`;
-
 const StCommentList = styled.div`
   padding: 30px 0;
   display: flex;
@@ -203,9 +198,10 @@ const StCommentButtonSet = styled.span`
 `;
 const StComment = styled.div`
   font-size: 20px;
-  min-height: 60x;
+  height: 60x;
   width: 1100px;
   margin-bottom: 10px;
+  margin-top: 8px;
   overflow: hidden;
   word-wrap: break-word;
   display: -webkit-box; // 얘네를 추가히준다

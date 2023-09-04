@@ -15,7 +15,7 @@ function Footer() {
             개발자 백태준 | 이남규 | 이상준 | 박영준 | 김나영 | 장승연
           </ProgrammersName>
         </SecondLine>
-        <CorporationName>©2023 오이여행 v1.1</CorporationName>
+        <CorporationName>©2023 오이여행 v1.2</CorporationName>
       </FooterContainer2>
     </FooterContainer>
   );

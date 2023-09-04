@@ -230,7 +230,7 @@ export const DetailPage = () => {
                 color={
                   nickname == myNickName ? "negativeDetailBtn" : "detailBtn"
                 }
-                margin={"119px 0 16px 0"}
+                margin={"145px 0 16px 0"}
                 size={"detail"}
                 name={"쪽지 보내기"}
                 onClick={makeChatRoom}
@@ -239,7 +239,7 @@ export const DetailPage = () => {
             ) : (
               <Button
                 color={"detailBtn"}
-                margin={"119px 0 16px 0"}
+                margin={"145px 0 16px 0"}
                 size={"detail"}
                 name={"로그인 후 쪽지 보내기"}
                 onClick={() => navigate("/login")}
@@ -343,9 +343,9 @@ const Layout = styled.div`
 
 const NickBox = styled.div`
   width: 382px;
-  height: 289px;
+  height: 300px;
   flex-grow: 0;
-  padding: 36px 27px 47px 30px;
+  padding: 36px 27px 20px 30px;
   border-radius: 8px;
   box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.1);
   border: solid 1px rgba(0, 0, 0, 0.1);
@@ -459,6 +459,7 @@ const StNickname = styled.div`
 
 const Stdiv = styled.div`
   width: 325px;
+  height: 400px;
   font-size: 16px;
 `;
 

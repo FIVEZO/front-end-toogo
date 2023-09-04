@@ -230,6 +230,7 @@ const ContentInput = styled.textarea`
   }
   overflow: hidden;
   white-space: pre-wrap;
+  resize: none;
 `;
 
 const Layout = styled.div`
