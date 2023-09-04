@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useNavigate, } from 'react-router-dom';
-import { PiPencilSimpleLine } from 'react-icons/pi';
+import React from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { PiPencilSimpleLine } from "react-icons/pi";
 
 interface FixedWritingButtonProps {
   id: number;
 }
 
-const FixedWritingButton: React.FC<FixedWritingButtonProps> = ({id}) => {
+const FixedWritingButton: React.FC<FixedWritingButtonProps> = ({ id }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -17,7 +17,7 @@ const FixedWritingButton: React.FC<FixedWritingButtonProps> = ({id}) => {
   return (
     <FixedWritingButtonWrapper>
       <WritingButton onClick={handleClick}>
-        <PiPencilSimpleLine color='white' size='36px'/>
+        <PiPencilSimpleLine color="white" size="36px" />
       </WritingButton>
     </FixedWritingButtonWrapper>
   );
@@ -29,17 +29,17 @@ const FixedWritingButtonWrapper = styled.div`
   position: fixed;
   bottom: 140px;
   right: 140px;
-  
+  z-index: 100;
 `;
 
 const WritingButton = styled.button`
-  background-color: #2BDE97;
+  background-color: #2bde97;
   border: none;
   border-radius: 1000px;
   width: 80px;
   height: 80px;
   transition: transform 0.2s ease;
   &:hover {
-  transform: translateY(-10px);
+    transform: translateY(-10px);
   }
 `;
