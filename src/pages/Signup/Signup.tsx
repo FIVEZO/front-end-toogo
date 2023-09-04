@@ -134,12 +134,16 @@ function Signup() {
   // --------------------------------------------------이메일 인증코드 확인
   const authCodeCheckMutation = useMutation(authCodeCheck, {
     onSuccess: (data) => {
-      // console.log("인증코드 확인", data);
-      setAuthCodeView(false);
-      setEmailChecks("사용 가능한 이메일입니다.");
+      console.log("인증코드 확인", data);
+      if (data) {
+        setAuthCodeView(false);
+        setEmailChecks("사용 가능한 이메일입니다.");
+      } else {
+        setAuthCodeChecks("인증코드가 일치하지 않습니다.");
+      }
     },
     onError: (error) => {
-      // console.error("인증코드 에러", error);
+      console.error("인증코드 에러", error);
       setAuthCodeChecks("인증코드가 일치하지 않습니다.");
     },
   });
