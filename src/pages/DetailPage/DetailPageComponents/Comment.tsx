@@ -206,6 +206,7 @@ const StComment = styled.div`
   min-height: 60x;
   width: 1100px;
   margin-bottom: 10px;
+  margin-top: 8px;
   overflow: hidden;
   word-wrap: break-word;
   display: -webkit-box; // 얘네를 추가히준다

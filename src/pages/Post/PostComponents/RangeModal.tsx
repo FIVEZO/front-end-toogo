@@ -84,7 +84,7 @@ const railStyle = {
 };
 
 const Thumb = styled.div`
-  width: 21px;
+  width: 30px;
   height: 16px;
   font-family: Roboto;
   font-size: 14px;
@@ -97,7 +97,7 @@ const Thumb = styled.div`
   color: #747474;
 `;
 const TextPepleMany = styled.div`
-  width: 153px;
+  width: 170px;
   height: 16px;
   flex-grow: 0;
   font-family: Roboto;
@@ -111,7 +111,7 @@ const TextPepleMany = styled.div`
   color: #747474;
 `;
 const TextPeple = styled.div`
-  width: 30px;
+  width: 50px;
   height: 19px;
   flex-grow: 0;
   font-family: Roboto;
