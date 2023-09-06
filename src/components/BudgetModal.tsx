@@ -42,12 +42,12 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
 
   useEffect(() => {
     const accessToken = getCookie("access_token");
-    const refreshToken = getAndDecryptTokenFromCookie();
+    // const refreshToken = getAndDecryptTokenFromCookie();
 
     const eventSourceInitDict: any = {
       headers: {
         accessToken: accessToken || "",
-        refreshToken: refreshToken || "",
+        // refreshToken: refreshToken || "",
       },
     };
 
@@ -82,7 +82,9 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
     sse.current.onerror = (err) => {
       // console.log("[sse] 에러 발생", { err });
       if ("status" in err) {
-        reissuingMutation.mutate();
+        if (err.status == 418) {
+          reissuingMutation.mutate();
+        }
       }
     };
 

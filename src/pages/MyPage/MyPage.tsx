@@ -37,6 +37,7 @@ export const MyPage = () => {
 
   const nickname = getCookie("nickname");
   const email = getCookie("email");
+  const sample = "";
 
   return (
     <>

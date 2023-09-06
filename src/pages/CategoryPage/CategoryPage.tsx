@@ -14,6 +14,7 @@ import PageMovingButton from "./CategoryPageComponents/PageMovingButton";
 import { RootState } from "../../types/login";
 import { useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
+import PostNoting from "./CategoryPageComponents/PostNoting";
 
 export const CategoryPage = () => {
   const state = useSelector((state: RootState) => state.isLogin.isLogin);
@@ -83,35 +84,39 @@ export const CategoryPage = () => {
       </StCardContainer>
 
       {state ? <FixedWritingButton id={param} /> : <></>}
+      {data?.data.length == 0 ? (
+        <PostNoting />
+      ) : (
+        <Pagebuttons>
+          <PageMovingButton
+            onClick={previousPage}
+            text="<"
+            color={page === 1 ? "#CFCED7" : "#2BDE97"}
+            backgroundColor="white"
+          />
+          {Array.from({ length: 5 }, (_, index) => {
+            const pageNumber = startPage + index;
+            return (
+              pageNumber <= endPage && (
+                <PageMovingButton
+                  key={pageNumber}
+                  onClick={() => goToPage(pageNumber)}
+                  text={`${pageNumber}`}
+                  color={pageNumber === page ? "white" : "#484848"}
+                  backgroundColor={pageNumber === page ? "#2BDE97" : "white"}
+                />
+              )
+            );
+          })}
+          <PageMovingButton
+            onClick={nextPage}
+            text=">"
+            color={page === totalPages ? "#CFCED7" : "#2BDE97"}
+            backgroundColor="white"
+          />
+        </Pagebuttons>
+      )}
 
-      <Pagebuttons>
-        <PageMovingButton
-          onClick={previousPage}
-          text="<"
-          color={page === 1 ? "#CFCED7" : "#2BDE97"}
-          backgroundColor="white"
-        />
-        {Array.from({ length: 5 }, (_, index) => {
-          const pageNumber = startPage + index;
-          return (
-            pageNumber <= endPage && (
-              <PageMovingButton
-                key={pageNumber}
-                onClick={() => goToPage(pageNumber)}
-                text={`${pageNumber}`}
-                color={pageNumber === page ? "white" : "#484848"}
-                backgroundColor={pageNumber === page ? "#2BDE97" : "white"}
-              />
-            )
-          );
-        })}
-        <PageMovingButton
-          onClick={nextPage}
-          text=">"
-          color={page === totalPages ? "#CFCED7" : "#2BDE97"}
-          backgroundColor="white"
-        />
-      </Pagebuttons>
       <Footer />
     </div>
   );

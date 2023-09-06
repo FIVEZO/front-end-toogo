@@ -127,14 +127,15 @@ export const Comment = ({
             )}`}</StTime>
             {item.nickname == myNickName ? (
               <StCommentButtonSet>
-                <StDeleteButton onClick={() => handleDeleteComment(item.id)}>
-                  {" "}
-                  · 삭제
-                </StDeleteButton>
-                {editInput == item.id && (
+                {editInput == item.id ? (
                   <StDeleteButton onClick={() => handleEditComment(item.id)}>
                     {" "}
                     · 완료
+                  </StDeleteButton>
+                ) : (
+                  <StDeleteButton onClick={() => handleDeleteComment(item.id)}>
+                    {" "}
+                    · 삭제
                   </StDeleteButton>
                 )}
                 <StDeleteButton onClick={() => handleEditToggle(item.id)}>

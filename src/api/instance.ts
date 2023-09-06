@@ -48,9 +48,9 @@ instance.interceptors.response.use(
 
     if (error.response.status === 403 && accessToken) {
       // console.log("403 에러");
-      alert("세션이 만료되었습니다. 다시 로그인 해주세요.");
-      deleteAllCookies();
-      window.location.href = "/login";
+      // alert("세션이 만료되었습니다. 다시 로그인 해주세요.");
+      // deleteAllCookies();
+      // window.location.href = "/login";
     }
     if (error.response.status == 418) {
       reissuingToken();

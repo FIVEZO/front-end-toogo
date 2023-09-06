@@ -18,8 +18,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // 에러가 발생한 경우 콘솔에 에러 정보를 출력합니다.
-    console.error("에러가 발생했습니다:", error);
-    console.error("에러 정보:", errorInfo);
+    // console.error("에러가 발생했습니다:", error);
+    // console.error("에러 정보:", errorInfo);
 
     // 에러 상태를 업데이트하여 렌더링을 다시 트리거합니다.
     this.setState({ hasError: true });

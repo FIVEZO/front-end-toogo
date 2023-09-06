@@ -16,6 +16,7 @@ import { getCookie } from "../../../utils/cookieUtils";
 import { ChatInput } from "./ChatInput";
 import { ChatPost } from "./ChatPost";
 import { ChatHeader } from "./ChatHeader";
+import { getAndDecryptTokenFromCookie } from "../../../utils/tokenUtils";
 type ReceiveData = {
   message: string;
 };
@@ -28,7 +29,7 @@ export const ChatRoom = () => {
   const [beforeChat, setBeforeChat] = useState<any>([]);
   const [client, changeClient] = useState<StompJs.Client>();
   const accessToken = getCookie("access_token");
-  const refreshToken = getCookie("refresh_token");
+  const refreshToken = getAndDecryptTokenFromCookie();
   const nickname = getCookie("nickname");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -84,7 +85,7 @@ export const ChatRoom = () => {
         brokerURL: `${process.env.REACT_APP_CHAT_URL}/ws-stomp`,
         connectHeaders: {
           accessToken: accessToken || "",
-          refreshToken: refreshToken || "",
+          // refreshToken: refreshToken || "",
         },
         debug: function (str) {},
         reconnectDelay: 5000, // 자동 재 연결
