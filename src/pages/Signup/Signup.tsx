@@ -134,7 +134,7 @@ function Signup() {
   // --------------------------------------------------이메일 인증코드 확인
   const authCodeCheckMutation = useMutation(authCodeCheck, {
     onSuccess: (data) => {
-      console.log("인증코드 확인", data);
+      // console.log("인증코드 확인", data);
       if (data) {
         setAuthCodeView(false);
         setEmailChecks("사용 가능한 이메일입니다.");
@@ -220,7 +220,7 @@ function Signup() {
             <Label>인증코드</Label>
             <Input
               type="text"
-              placeholder="이메일에 있는 인증코드를 입력해주세요"
+              placeholder="수신한 메일의 인증코드를 입력해 주세요"
               value={authCode}
               onChange={handleAuthCodeChange}
               size={"signup"}

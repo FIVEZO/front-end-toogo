@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ba226d1d.css",
-    "main.js": "/static/js/main.98d160bf.js",
+    "main.js": "/static/js/main.aaee494a.js",
     "static/js/787.7d5bcd09.chunk.js": "/static/js/787.7d5bcd09.chunk.js",
     "static/media/에티오피아.jpg": "/static/media/에티오피아.608c69ebe89e08fdc5c3.jpg",
     "static/media/스웨덴.jpg": "/static/media/스웨덴.5f8041f1da2531459f20.jpg",
@@ -91,11 +91,11 @@
     "static/media/next.svg": "/static/media/next.1192ea6f48685dee4c70f3ea182e4e7c.svg",
     "index.html": "/index.html",
     "main.ba226d1d.css.map": "/static/css/main.ba226d1d.css.map",
-    "main.98d160bf.js.map": "/static/js/main.98d160bf.js.map",
+    "main.aaee494a.js.map": "/static/js/main.aaee494a.js.map",
     "787.7d5bcd09.chunk.js.map": "/static/js/787.7d5bcd09.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ba226d1d.css",
-    "static/js/main.98d160bf.js"
+    "static/js/main.aaee494a.js"
   ]
 }

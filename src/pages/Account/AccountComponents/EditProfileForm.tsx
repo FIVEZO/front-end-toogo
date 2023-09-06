@@ -39,7 +39,7 @@ export const EditProfileForm = () => {
   //---------------------------------------------------- 닉네임 중복확인 기능
   const nickCheckMutation = useMutation(nickCheck, {
     onSuccess: (data) => {
-      console.log("닉네임 중복확인", data);
+      // console.log("닉네임 중복확인", data);
       if (data.success == false) {
         alert(data.msg);
       }

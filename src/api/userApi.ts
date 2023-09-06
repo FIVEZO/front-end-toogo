@@ -16,12 +16,14 @@ const addUsers = async (newUser: SignupFormValues) => {
 // 로그인
 const login = async (loginInformation: LoginFormValues) => {
   const response = await instance.post(`/api/auth/login`, loginInformation);
-  document.cookie = `access_token=${response.headers.accesstoken}; path=/;`;
-  // document.cookie = `refresh_token=${response.headers.refreshtoken}; path=/;`;
-  setEncryptedTokenInCookie(response.headers.refreshtoken);
-  document.cookie = `nickname=${response.data.nickname}; path=/`;
-  document.cookie = `email=${response.data.email}; path=/`;
-  document.cookie = `emoticon=${response.data.emoticon}; path=/`;
+  const accesstoken = response.headers.accesstoken;
+  if (accesstoken) {
+    document.cookie = `access_token=${accesstoken}; path=/;`;
+    setEncryptedTokenInCookie(response.headers.refreshtoken);
+    document.cookie = `nickname=${response.data.nickname}; path=/`;
+    document.cookie = `email=${response.data.email}; path=/`;
+    document.cookie = `emoticon=${response.data.emoticon}; path=/`;
+  }
 
   // console.log("로그인", response)
   return response.data;
@@ -66,12 +68,15 @@ const getKakaoToken = async (code: string | null) => {
   try {
     const response = await instance.get(`/api/auth/kakao?code=${code}`);
     // console.log("카카오 토큰", response)
-    document.cookie = `access_token=${response.headers.accesstoken}; path=/;`;
-    // document.cookie = `refresh_token=${response.headers.refreshtoken}; path=/;`;
-    setEncryptedTokenInCookie(response.headers.refreshtoken);
-    document.cookie = `nickname=${response.data.nickname}; path=/`;
-    document.cookie = `email=${response.data.email}; path=/`;
-    document.cookie = `emoticon=${response.data.emoticon}; path=/`;
+    const accesstoken = response.headers.accesstoken;
+    if (accesstoken) {
+      document.cookie = `access_token=${accesstoken}; path=/;`;
+      setEncryptedTokenInCookie(response.headers.refreshtoken);
+      document.cookie = `nickname=${response.data.nickname}; path=/`;
+      document.cookie = `email=${response.data.email}; path=/`;
+      document.cookie = `emoticon=${response.data.emoticon}; path=/`;
+    }
+
     return response.data;
   } catch (error) {
     console.error(error);
@@ -90,8 +95,11 @@ const reissuingToken = async () => {
   const response = await instance.post(`/api/auth/token`, {
     accessToken: getCookie("access_token"),
   });
-  document.cookie = `access_token=${response.headers.accesstoken}; path=/;`;
-  setEncryptedTokenInCookie(response.headers.refreshtoken);
+  const accesstoken = response.headers.accesstoken;
+  if (accesstoken) {
+    document.cookie = `access_token=${accesstoken}; path=/;`;
+    setEncryptedTokenInCookie(response.headers.refreshtoken);
+  }
   // console.log("토큰 재발급", response);
   return response.data;
 };
