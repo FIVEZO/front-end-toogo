@@ -164,6 +164,10 @@ const SearchContainer = styled.div`
   border-radius: 1000px;
   border: 1px solid #cfced7;
   background: white;
+  &:focus-within {
+    border-color: #2bde97; /* 포커스 시 보더 컬러 변경 */
+  }
+  
 `;
 
 const SearchInput = styled.input`
@@ -178,6 +182,10 @@ const SearchInput = styled.input`
   &::placeholder {
     color: #dddce3;
   }
+  &:focus::placeholder {
+    opacity: 0;
+  }
+
 `;
 
 const SearchButton = styled.button`

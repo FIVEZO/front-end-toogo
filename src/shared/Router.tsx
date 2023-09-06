@@ -13,6 +13,7 @@ import EditPost from "../pages/EditPost/EditPost";
 import { Chat } from "../pages/Chat/Chat";
 import { SearchPage } from "../pages/SearchPage/SearchPage";
 import { MyPage } from "../pages/MyPage/MyPage";
+// import PrePage from "../components/PrePage";
 const queryClient = new QueryClient();
 
 export const Router = () => {
@@ -28,6 +29,7 @@ export const Router = () => {
           <Route path="/account" element={<Account />} />
           <Route path="/post/:id" element={<Post />} />
           <Route path="/editpost/:id" element={<EditPost />} />
+          {/* <Route path="/prepage" element={<PrePage />} /> */}
           <Route path="/chat/:id" element={<Chat />} />
           <Route path="/findPassword" element={<FindPassword />} />
           <Route path="/categorypage/:id" element={<CategoryPage />} />

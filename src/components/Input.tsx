@@ -127,6 +127,10 @@ const InputContainer = styled.div<{ size: string; color?: string }>`
   justify-content: space-between;
   position: relative;
   /* box-shadow: 3px 0px 15px #c1c1c1; */
+  &:focus-within {
+    border-color: #2bde97; /* 포커스 시 보더 컬러 변경 */
+  }
+  
 `;
 
 const InputField = styled.input`
@@ -138,6 +142,9 @@ const InputField = styled.input`
   flex: 1;
   &::placeholder {
     color: #dddce3;
+  }
+  &:focus::placeholder {
+    opacity: 0;
   }
 `;
 
