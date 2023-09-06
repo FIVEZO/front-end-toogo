@@ -8,10 +8,14 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import CardSlick from "./MainComponents/CardSlick";
 import Spinner from "../../components/Spinner";
-import VerticalSlider from "../../components/VerticalSlider";
+import PrePage from "../../components/PrePage";
+
 
 export const Main: React.FC = () => {
-  const [showData, setShowData] = useState(false);
+  const [showData, setShowData] = useState(false);  
+  const visited = sessionStorage.getItem("visited");
+  const [showComponent, setShowComponent] = useState(visited);
+
   const {
     isLoading,
     isError,
@@ -19,15 +23,13 @@ export const Main: React.FC = () => {
   } = useQuery("mainPost", getHomePosts, {
     refetchOnWindowFocus: false,
   });
-  const [showWelcomePage, setShowWelcomePage] = useState(true);
 
-  // 프리 메인 페이지 세션 스토리지에 저장하기
-  useEffect(() => {
-    const hasClosed = sessionStorage.getItem("hasClosedWelcomePage");
-    if (hasClosed === "true") {
-      setShowWelcomePage(false);
+  useEffect(() => {  
+    if (!visited) {
+      sessionStorage.setItem("visited", "true");
     }
   }, []);
+
 
   useEffect(() => {
     const delay = 300;
@@ -48,15 +50,9 @@ export const Main: React.FC = () => {
 
   return (
     <div>
-      {showWelcomePage && (
-        <VerticalSlider
-          onClose={() => {
-            sessionStorage.setItem("hasClosedWelcomePage", "true");
-            setShowWelcomePage(false);
-          }}
-        />
-      )}
-      <MainRayout>
+      <div>
+        {!showComponent ? <PrePage setShowComponent={setShowComponent} /> : 
+        <MainRayout>
         <Header />
         <TopText>여행지를 선택하세요.</TopText>
         <SecondText>대륙을 선택해서 동행글을 찾아보세요.</SecondText>
@@ -70,7 +66,10 @@ export const Main: React.FC = () => {
             ))}
         </StCardContainer>
         <Footer />
-      </MainRayout>
+      </MainRayout>}
+      </div>
+
+     
     </div>
   );
 };
