@@ -13,10 +13,6 @@
 🚪도메인(IP) 주소
 🥒OE Trip 바로가기🥒 https://oetrip.site/
 
-🔑 FE / BE GitHub
-🥒 Front-End GitHub
-🥒 Back-End GitHub
-
 🏗 아키텍쳐
 <img width="1163" alt="스크린샷 2023-09-04 오후 12 23 20 (1)" src="https://github.com/FIVEZO/front-end-toogo/assets/132332533/5cd32776-7c28-4ecf-addc-e0f2be27d0e6">
 
