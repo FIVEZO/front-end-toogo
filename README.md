@@ -48,89 +48,75 @@ Front-End
 Back-End
 사용 기술 기술 설명
 
-stomp:	메세지 전송을 효율적을 하기 위해 탄생한 프로토콜이고, 기본적으로 pub/sub 구조로 되어있어 메세지를 전송하고 메세지를 받아 처리하는 부분이 확실히 정해져 있기 때문에 개발자 입장에서 명확하게 인지하고 개발할 수 있는 이점이 있다.
+1. stomp:	메세지 전송을 효율적을 하기 위해 탄생한 프로토콜이고, 기본적으로 pub/sub 구조로 되어있어 메세지를 전송하고 메세지를 받아 처리하는 부분이 확실히 정해져 있기 때문에 개발자 입장에서 명확하게 인지하고 개발할 수 있는 이점이 있다.
 
-AWS EC2:	여러 다른 AWS 서비스와의 유기적인 연동이 가능하기 때문에 채택
+2. AWS EC2:	여러 다른 AWS 서비스와의 유기적인 연동이 가능하기 때문에 채택
 
-Redis:	임시 데이터 사용과 캐싱에 적합하여 사용자의 빈번한 엑세스가 발생하는 데이터를 Redis에 저장하여 데이터 엑세스 속도를 높임
+3. Redis:	임시 데이터 사용과 캐싱에 적합하여 사용자의 빈번한 엑세스가 발생하는 데이터를 Redis에 저장하여 데이터 엑세스 속도를 높임
 
-QueryDSL:	복잡한 동적 쿼리를 쉽게 다루기 위해 채택
+4. QueryDSL:	복잡한 동적 쿼리를 쉽게 다루기 위해 채택
 
-WebSocket:	HTTP 통신으로 대화를 주고 받는 것을 고려했으나 대화를 전송할 때마다 요청이 가야만 하고 해당 페이지가 새로고침이 된 이후에야 전송된 내용을 조회할 수 있었다.
-
+5. WebSocket:	HTTP 통신으로 대화를 주고 받는 것을 고려했으나 대화를 전송할 때마다 요청이 가야만 하고 해당 페이지가 새로고침이 된 이후에야 전송된 내용을 조회할 수 있었다.
 따라서 하나의 HTTP 접속을 통해 클라이언트와 서버의 양방향 통신 및 그로 인한 서버 부하를 줄일 수 있는 Websocket 을 사용했다. 클라이언트에서의 요청이 없더라도 통신이 가능했다.
 
+6. SSE:	WebSocket 과 SSE 모두 실시간 통신이나, 알림 기능의 경우 양방향 통신은 불필요하기 때문에 단방향 통신인 SSE 를 사용
 
-SSE:	WebSocket 과 SSE 모두 실시간 통신이나, 알림 기능의 경우 양방향 통신은 불필요하기 때문에 단방향 통신인 SSE 를 사용
+7. Swagger:	백엔드가 구현한 API 를 문서화하여 프론트 쪽에서 이를 직관적으로 확인해 볼 수 있었다.
 
-Swagger:	백엔드가 구현한 API 를 문서화하여 프론트 쪽에서 이를 직관적으로 확인해 볼 수 있었다.
+8. 소셜 로그인:	카카오 소셜 로그인 기능을 추가하여 사용자가 더욱 편리하게 로그인 및 서비스를 이용할 수 있게 함
 
-소셜 로그인:	카카오 소셜 로그인 기능을 추가하여 사용자가 더욱 편리하게 로그인 및 서비스를 이용할 수 있게 함
+9. Refresh Token:	장기적으로 인증을 유지하고 accessToken을 갱신할 수 있음
 
-Refresh Token:	장기적으로 인증을 유지하고 accessToken을 갱신할 수 있음
+10. 이메일 인증 (SMTP):	인증으로 무분별한 사용자 접근 보안 강화
 
-이메일 인증 (SMTP):	인증으로 무분별한 사용자 접근 보안 강화
-
-CI/CD: GitHub Actions과 Docker를 이용하여 개발과 배포를 자동화 함
+11. CI/CD: GitHub Actions과 Docker를 이용하여 개발과 배포를 자동화 함
 
 
 💣트러블 슈팅
 
-Access Token 재발급
+1. Access Token 재발급
 
-문제 : 엑세스 토큰이 만료되어 인터셉터를 이용하여 서버에서 새로운 토큰을 발급 받았을때 기존의 토큰을 갈아 끼우는 것으로 코드를 짜두었으나 인터셉터를 거치치 않는 sse나 WebSocket 에서 토큰을 갈아끼우지 못하는 문제 발생
-
-해결과정:
-
-시도 1 : sse.current.onerror를 이용하여 에러를 케치한 후 에러와 같이 오는 새로운 토큰을 받으려 하였으나 sse의 에러에는 새로운 토큰 값을 받아오지 못하여 실패
-
-시도 2 :토큰이 만료 되었을때 새로운 토큰을 요청하는 Api를 만들어 토큰 만료 에러가 발생했을때 토큰을 요청 하도록 하여 해결
+- 문제 : 엑세스 토큰이 만료되어 인터셉터를 이용하여 서버에서 새로운 토큰을 발급 받았을때 기존의 토큰을 갈아 끼우는 것으로 코드를 짜두었으나 인터셉터를 거치치 않는 sse나 WebSocket 에서 토큰을 갈아끼우지 못하는 문제 발생
+- 해결과정:
+  - 시도 1 : sse.current.onerror를 이용하여 에러를 케치한 후 에러와 같이 오는 새로운 토큰을 받으려 하였으나 sse의 에러에는 새로운 토큰 값을 받아오지 못하여 실패
+  - 시도 2 :토큰이 만료 되었을때 새로운 토큰을 요청하는 Api를 만들어 토큰 만료 에러가 발생했을때 토큰을 요청 하도록 하여 해결
 
 
-Refresh Token 서버 통신 개선 및 암호화
 
-문제 : 토큰을 필요로 하는 통신마다 Access Token 과 Refresh Token 둘다 헤더에 담아 통신하였으나 비효율 적이고 토큰 탈취 위험성이 높다고 판단
+2. Refresh Token 서버 통신 개선 및 암호화
 
-해결과정: 토큰을 필요로 하는 통신마다 Access Token만 서버에 보내고, Access Token이 만료되었을 시에 Refresh Token을 보내 두개 의 토큰 모두 재발급하는 것으로 변경 추가로 Refresh Token은 crypto js를 이용하여 암호화후 쿠키에 보관하여 보안을 강화함
+- 문제 : 토큰을 필요로 하는 통신마다 Access Token 과 Refresh Token 둘다 헤더에 담아 통신하였으나 비효율 적이고 토큰 탈취 위험성이 높다고 판단
+-  해결과정: 토큰을 필요로 하는 통신마다 Access Token만 서버에 보내고, Access Token이 만료되었을 시에 Refresh Token을 보내 두개 의 토큰 모두 재발급하는 것으로 변경 추가로 Refresh Token은 crypto js를 이용하여 암호화후 쿠키에 보관하여 보안을 강화함
 
+3. SSE
 
-SSE
+- 문제 : 다른 유저와 소통을 위해 알림기능을 구현 하고자 했을때 기존의 HTTP 방식으로는 알림이 없을때에도 서버에 지속적인 요청으로 인해 많은 유저가 몰린다면 서버에 부담이 된다는 것을 알게 되었습니다.
+- 해결 : Server Sent Events 라는 기술을 통해 한번 서버와 연결이 되면 클라이언트쪽에서 지속적인 요청을 하지 않아도 실시간으로 데이터를 받아 올 수 있도록 하였습니다.
 
-문제 : 다른 유저와 소통을 위해 알림기능을 구현 하고자 했을때 기존의 HTTP 방식으로는 알림이 없을때에도 서버에 지속적인 요청으로 인해 많은 유저가 몰린다면 서버에 부담이 된다는 것을 알게 되었습니다.
+4. Redis
 
-해결 : Server Sent Events 라는 기술을 통해 한번 서버와 연결이 되면 클라이언트쪽에서 지속적인 요청을 하지 않아도 실시간으로 데이터를 받아 올 수 있도록 하였습니다.
+- 트러블 상황 : 채팅 기록을 Redis 에 저장하고 조회를 할 때 com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type java.lang.String from Object value (token JsonToken.START_OBJECT) 에러가 발생했다.
 
-
-Redis
-
-트러블 상황
-
-채팅 기록을 Redis 에 저장하고 조회를 할 때 com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type java.lang.String from Object value (token JsonToken.START_OBJECT) 에러가 발생했다.
-
-원인 및 해결 방법
-
-조회에 문제가 있다고 생각하고 접근했지만, 조회가 아닌 저장 방식에 문제가 있었다. redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(Message.class)); Jackson 라이브러리를 사용하여 객체를 JSON 형식으로 직렬화 및 역직렬화하는 방법으로 이를 해결 할 수 있었다.
+- 원인 및 해결 방법 : 조회에 문제가 있다고 생각하고 접근했지만, 조회가 아닌 저장 방식에 문제가 있었다. redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(Message.class)); Jackson 라이브러리를 사용하여 객체를 JSON 형식으로 직렬화 및 역직렬화하는 방법으로 이를 해결 할 수 있었다.
 
 
-Docker
+5. Docker
 
-문제 : redis와 연결이 되지 않음
+- 문제 : redis와 연결이 되지 않음
 
-해결과정:
+- 해결과정:
+  - 시도 1 : 이전에 jar 파일로 redis와 연결한 것 처럼 ec2에 설치한 redis와 연결을 시도하였으나 실패 함
+  - 시도 2 : docker에 redis image를 다운로드 받아서 연결을 시도하였으나 실패 함
+  - 시도 3 : docker 컨테이너끼리의 연결이 필요해서 network를 생성하여 배포하려는 image와 redis image를 같은 network로 연결하여 성공 함
 
-시도 1 : 이전에 jar 파일로 redis와 연결한 것 처럼 ec2에 설치한 redis와 연결을 시도하였으나 실패 함 시도 2 : docker에 redis image를 다운로드 받아서 연결을 시도하였으나 실패 함
+- 해결 : docker에서는 redis와 포트 연결도 필요하지만, 다른 컨테이너끼리의 연결도 필요해서 network 설정도 해야 함
 
-시도 3 : docker 컨테이너끼리의 연결이 필요해서 network를 생성하여 배포하려는 image와 redis image를 같은 network로 연결하여 성공 함
 
-해결 : docker에서는 redis와 포트 연결도 필요하지만, 다른 컨테이너끼리의 연결도 필요해서 network 설정도 해야 함
+6. 운영체제마다 다르게 나타나는 UI
+- 문제 : 프론트 엔드측은 모두 맥OS를 사용하여 디자인 구성을 하였으나 윈도우 운영체제에서는 다르게 표현이 되는 문제 발생
+- 해결과정: 윈도우 운영체제의 컴퓨터로 접속하여 다르게 나타나는 부분 수정하여 해결
 
-유저 피드백
 
-운영체제마다 다르게 나타나는 UI
-
-문제 : 프론트 엔드측은 모두 맥OS를 사용하여 디자인 구성을 하였으나 윈도우 운영체제에서는 다르게 표현이 되는 문제 발생
-
-해결과정: 윈도우 운영체제의 컴퓨터로 접속하여 다르게 나타나는 부분 수정하여 해결
 
 
 🔎주요기능
