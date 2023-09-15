@@ -1,5 +1,5 @@
 import axios from "axios";
-import { deleteAllCookies, getCookie } from "../utils/cookieUtils";
+import { getCookie } from "../utils/cookieUtils";
 import { getAndDecryptTokenFromCookie } from "../utils/tokenUtils";
 import { reissuingToken } from "./userApi";
 
@@ -16,7 +16,7 @@ instance.interceptors.request.use(
     const refreshToken = getAndDecryptTokenFromCookie();
     if (config.url == "/api/auth/token") {
       config.headers.refreshToken = `${refreshToken}`;
-      // console.log("요청 완료", config);
+      console.log("요청 완료", config);
       return config;
     }
 
@@ -44,15 +44,13 @@ instance.interceptors.response.use(
   function (error) {
     const accessToken = getCookie("access_token");
     // console.log("응답 에러", error);
-    // console.log("응답 에러 컨피그", { ...error.config });
 
     if (error.response.status === 403 && accessToken) {
-      // console.log("403 에러");
       // alert("세션이 만료되었습니다. 다시 로그인 해주세요.");
       // deleteAllCookies();
       // window.location.href = "/login";
     }
-    if (error.response.status == 418) {
+    if (error.response.status === 418) {
       reissuingToken();
     }
     return Promise.reject(error);

@@ -1,23 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { locationFormValues } from '../../../types/posts';
-import Input from '../../../components/Input';
-import { styled } from 'styled-components';
+import React, { useEffect, useRef, useState } from "react";
+import { locationFormValues } from "../../../types/posts";
+import { styled } from "styled-components";
 
 const Map: React.FC<{
   onMarkerPosition: locationFormValues | null;
   onMarkerPositionChange: (newPosition: locationFormValues) => void;
 }> = ({ onMarkerPosition, onMarkerPositionChange }) => {
-  
   const googleMapApiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
   const mapRef = useRef<HTMLDivElement | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [pinMarker, setPinMarker] = useState<google.maps.Marker | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [markerPosition, setMarkerPosition] = useState<google.maps.LatLng | null>(null);
-  
-  
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [markerPosition, setMarkerPosition] =
+    useState<google.maps.LatLng | null>(null);
+
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapApiKey}&libraries=places`;
     script.async = true;
     script.onload = initializeMap;
@@ -34,7 +32,7 @@ const Map: React.FC<{
         latitude: markerPosition.lat(),
         longitude: markerPosition.lng(),
       };
-      
+
       onMarkerPositionChange(data);
     }
   }, [markerPosition]);
@@ -47,9 +45,9 @@ const Map: React.FC<{
       };
       const newMap = new google.maps.Map(mapRef.current, mapOptions);
       setMap(newMap);
-  
+
       const geocoder = new google.maps.Geocoder();
-  
+
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -65,34 +63,41 @@ const Map: React.FC<{
             const marker = new google.maps.Marker({
               position: markerPosition,
               map: newMap,
-              title: 'Your Location',
+              title: "Your Location",
               draggable: false,
             });
-  
-            marker.addListener('dragend', () => {
+
+            marker.addListener("dragend", () => {
               const updatedPosition = marker.getPosition();
               if (updatedPosition) {
                 setMarkerPosition(updatedPosition);
-  
-                geocoder.geocode({ location: updatedPosition }, (results, status) => {
-                  if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
-                    const address = results[0].formatted_address;
-                  } else {
-                    console.error('Geocoding failed:', status);
+
+                geocoder.geocode(
+                  { location: updatedPosition },
+                  (results, status) => {
+                    if (
+                      status === google.maps.GeocoderStatus.OK &&
+                      results &&
+                      results[0]
+                    ) {
+                      const address = results[0].formatted_address;
+                    } else {
+                      console.error("Geocoding failed:", status);
+                    }
                   }
-                });
+                );
               }
             });
-  
+
             setMarkerPosition(markerPosition);
             newMap.setCenter(markerPosition);
           },
           (error) => {
-            console.error('Error getting geolocation data:', error);
+            console.error("Error getting geolocation data:", error);
           }
         );
       } else {
-        console.error('Geolocation not supported by this browser.');
+        console.error("Geolocation not supported by this browser.");
       }
     }
   };
@@ -101,38 +106,42 @@ const Map: React.FC<{
     if (map) {
       if (pinMarker) {
         pinMarker.setMap(null);
-        setPinMarker(null); 
+        setPinMarker(null);
       }
-  
+
       const marker = new google.maps.Marker({
         position: location,
         map: map,
-        title: 'Custom Pin',
+        title: "Custom Pin",
         draggable: true,
       });
-  
-      marker.addListener('dragend', () => {
+
+      marker.addListener("dragend", () => {
         setPinMarker(marker);
         const updatedPosition = marker.getPosition();
         if (updatedPosition) {
           setMarkerPosition(updatedPosition);
-      
+
           // Use a reverse geocoding service to get the address
           const geocoder = new google.maps.Geocoder();
           geocoder.geocode({ location: updatedPosition }, (results, status) => {
-            if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
+            if (
+              status === google.maps.GeocoderStatus.OK &&
+              results &&
+              results[0]
+            ) {
               const address = results[0].formatted_address;
               // Update address state or send data to backend
             } else {
-              console.error('Geocoding failed:', status);
+              console.error("Geocoding failed:", status);
             }
           });
         }
       });
-  
+
       setPinMarker(marker);
       setMarkerPosition(location);
-  
+
       // Use a reverse geocoding service to get the address for the initial marker position
       const geocoder = new google.maps.Geocoder();
       geocoder.geocode({ location }, (results, status) => {
@@ -140,36 +149,38 @@ const Map: React.FC<{
           const address = results[0].formatted_address;
           // Update address state or send data to backend for the initial position
         } else {
-          console.error('Geocoding failed:', status);
+          console.error("Geocoding failed:", status);
         }
       });
-  
+
       // Update address state or send data to backend for the initial position
       geocoder.geocode({ location: markerPosition }, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
           const address = results[0].formatted_address;
           // Update address state or send data to backend for the initial position
         } else {
-          console.error('Geocoding failed:', status);
+          console.error("Geocoding failed:", status);
         }
       });
-  
+
       map.panTo(location);
     }
   };
 
-
-  
   const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
       if (map && searchQuery) {
         const placesService = new google.maps.places.PlacesService(map);
         placesService.textSearch({ query: searchQuery }, (results, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK && results && results.length > 0) {
+          if (
+            status === google.maps.places.PlacesServiceStatus.OK &&
+            results &&
+            results.length > 0
+          ) {
             const place = results[0];
             const location = place.geometry?.location;
-  
+
             if (location) {
               updatePin(location);
             }
@@ -182,17 +193,17 @@ const Map: React.FC<{
   return (
     <div>
       <div>
-      <InputContainer>
-        <InputField 
-        type="text" 
-        placeholder="위치에 대한 설명을 최대한 상세히 적어주세요 ex:프랑스 파리 에펠탑 " 
-        value={searchQuery} 
-        onChange={(e) => setSearchQuery(e.target.value)} 
-        onKeyDown={handleSearch} 
-        />
-      </InputContainer>
+        <InputContainer>
+          <InputField
+            type="text"
+            placeholder="위치에 대한 설명을 최대한 상세히 적어주세요 ex:프랑스 파리 에펠탑 "
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearch}
+          />
+        </InputContainer>
       </div>
-      <div ref={mapRef} style={{ width: '100%', height: '480px' }} />
+      <div ref={mapRef} style={{ width: "100%", height: "480px" }} />
     </div>
   );
 };
@@ -200,7 +211,6 @@ const Map: React.FC<{
 export default Map;
 
 const InputContainer = styled.div`
-
   width: 100%;
   height: 70px;
   margin: 40px 0;
@@ -208,7 +218,7 @@ const InputContainer = styled.div`
   border-radius: 8.53px;
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   position: relative;
   /* box-shadow: 3px 0px 15px #c1c1c1; */
 `;
@@ -216,11 +226,11 @@ const InputContainer = styled.div`
 const InputField = styled.input`
   margin-left: 16px;
   font-size: 16px;
-  color: #403F4E;
+  color: #403f4e;
   border: none;
   outline: none;
   flex: 1;
   &::placeholder {
-    color: #dddce3; 
+    color: #dddce3;
   }
 `;
