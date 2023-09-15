@@ -1,10 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import backgroundImage1 from "../../../img/태국.jpg";
-import backgroundImage2 from "../../../img/영국.jpg";
-import backgroundImage3 from "../../../img/모로코.jpg";
-import backgroundImage4 from "../../../img/미국.jpg";
-import backgroundImage5 from "../../../img/호주.jpg";
+import backgroundImage1 from "../../../img/태국.webp";
+import backgroundImage2 from "../../../img/영국.webp";
+import backgroundImage3 from "../../../img/모로코.webp";
+import backgroundImage4 from "../../../img/미국.webp";
+import backgroundImage5 from "../../../img/호주.webp";
 import Button from "../../../components/Button";
 import { useQuery } from "react-query";
 import { getCountrySum } from "../../../api/postApi";

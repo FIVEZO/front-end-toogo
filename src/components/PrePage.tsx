@@ -2,29 +2,25 @@ import React, { Component, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Page1Image1 from "./assets/slider/Page1.jpg";
-import Page1Image2 from "./assets/slider/Page2.jpg";
-import Page1Image3 from "./assets/slider/Page3.jpg";
+import Page1Image1 from "./assets/slider/Page1.webp";
+import Page1Image2 from "./assets/slider/Page2.webp";
+import Page1Image3 from "./assets/slider/Page3.webp";
 import { styled } from "styled-components";
 import Header from "./Header";
 import { ReactComponent as Prev } from "../components/assets/prev.svg";
 import { ReactComponent as Next } from "../components/assets/next.svg";
 
-
-function VerticalMode({setShowComponent}:{setShowComponent:any}) {
-
-
-
-  const settings= {
+function VerticalMode({ setShowComponent }: { setShowComponent: any }) {
+  const settings = {
     dots: true,
-    
+
     nextArrow: (
-      <Div >
+      <Div>
         <Next />
       </Div>
     ),
     prevArrow: (
-      <DivPre >
+      <DivPre>
         <Prev />
       </DivPre>
     ),
@@ -36,27 +32,26 @@ function VerticalMode({setShowComponent}:{setShowComponent:any}) {
   };
 
   const goToMain = () => {
-    setShowComponent(true)
+    setShowComponent(true);
     // navigate("/");
   };
-  
+
   return (
-     <div>
-      <Header/>
+    <div>
+      <Header />
       <ButtonClick onClick={goToMain}>입장하기</ButtonClick>
-        <StSlider {...settings}> 
-          <div>
+      <StSlider {...settings}>
+        <div>
           <Stimg src={Page1Image1} alt="Image" />
-          </div>
-          <div>
+        </div>
+        <div>
           <Stimg src={Page1Image2} alt="Image" />
-          </div>
-          <div>
+        </div>
+        <div>
           <Stimg src={Page1Image3} alt="Image" />
-         
-          </div> 
-        </StSlider>
-      </div>
+        </div>
+      </StSlider>
+    </div>
   );
 }
 const Div = styled.div`
@@ -64,20 +59,19 @@ const Div = styled.div`
   right: 120px;
   top: 350px;
   z-index: 1;
-
 `;
 const DivPre = styled.div`
-position: fixed;
+  position: fixed;
   left: 120px;
   top: 350px;
   z-index: 1;
 `;
 const StSlider = styled(Slider)`
-width:98%;
-`
+  width: 98%;
+`;
 
 const Stimg = styled.img`
-    object-fit: contain; 
+  object-fit: contain;
   max-width: 100%;
   max-height: 83vh;
   width: auto;
@@ -104,7 +98,7 @@ const ButtonClick = styled.div`
   align-items: center;
   padding: 4px 8px;
   border-radius: 4px;
-  background-color: #34D996;
+  background-color: #34d996;
   font-family: Inter;
   font-size: 40px;
   font-weight: 800;
@@ -117,6 +111,5 @@ const ButtonClick = styled.div`
   cursor: pointer;
   z-index: 1000;
 `;
-
 
 export default VerticalMode;
