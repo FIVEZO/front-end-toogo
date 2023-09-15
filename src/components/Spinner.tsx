@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import 로딩중 from "../img/로딩중.jpg";
-import 로딩오이 from "../img/로딩오이.jpg";
+import 로딩중 from "../img/로딩중.webp";
+import 로딩오이 from "../img/로딩오이.webp";
 import styled from "styled-components";
 
 function Spinner() {

@@ -12,7 +12,6 @@ import BudgetModal from "./BudgetModal";
 import { Badge } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { eventDataListState } from "../recoil/Alert";
-import ErrorBoundary from "./ErrorBoundary";
 
 function Header() {
   const navigate = useNavigate();
@@ -98,9 +97,7 @@ function Header() {
                   <HiOutlineBell color="#403F4E" size="24px" />
                 </Badge>
               </Bell>
-              <ErrorBoundary>
-                <BudgetModal position={"absolute"} budgetOpen={budgetOpen} />
-              </ErrorBoundary>
+              <BudgetModal position={"absolute"} budgetOpen={budgetOpen} />
             </div>
             <div ref={node}>
               <Profile onClick={handleBox2Click}>
@@ -167,7 +164,6 @@ const SearchContainer = styled.div`
   &:focus-within {
     border-color: #2bde97; /* 포커스 시 보더 컬러 변경 */
   }
-  
 `;
 
 const SearchInput = styled.input`
@@ -185,7 +181,6 @@ const SearchInput = styled.input`
   &:focus::placeholder {
     opacity: 0;
   }
-
 `;
 
 const SearchButton = styled.button`

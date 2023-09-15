@@ -5,31 +5,31 @@ import "../../../fonts/Font.css";
 const continentData = [
   {
     id: 1,
-    imageSrc: "/img/아시아.jpg",
+    imageSrc: "/img/아시아.webp",
     textLine1: "아시아",
     textLine2: "한국, 태국, 필리핀, 베트남, 라오스",
   },
   {
     id: 2,
-    imageSrc: "/img/아프리카.jpg",
+    imageSrc: "/img/아프리카.webp",
     textLine1: "아프리카",
     textLine2: "모로코, 이집트, 케냐",
   },
   {
     id: 3,
-    imageSrc: "/img/유럽.jpg",
+    imageSrc: "/img/유럽.webp",
     textLine1: "유럽",
     textLine2: "영국, 프랑스, 이탈리아",
   },
   {
     id: 4,
-    imageSrc: "/img/오세아니아.jpg",
+    imageSrc: "/img/오세아니아.webp",
     textLine1: "오세아니아",
     textLine2: "호주, 뉴질랜드, 파푸아뉴기니",
   },
   {
     id: 5,
-    imageSrc: "/img/아메리카.jpg",
+    imageSrc: "/img/아메리카.webp",
     textLine1: "아메리카",
     textLine2: "미국, 캐나다, 멕시코, 브라질",
   },
