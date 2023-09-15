@@ -113,6 +113,7 @@ function BudgetModal({ position, budgetOpen }: selectForm) {
   }, [eventDataList]);
   // console.log("isLoggedIn", isLoggedIn);
   // console.log("AlertData", AlertData);
+  console.log("eventDataList", eventDataList);
 
   return (
     <>

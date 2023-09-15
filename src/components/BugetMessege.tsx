@@ -30,7 +30,7 @@ function BugetMessege({ items }: { items: NotificationFormValues }) {
     truncatedContents =
       contents.length > 40 ? `${contents.slice(0, 40)}...` : contents;
   }
-
+  console.log("items", items);
   const nickname = getCookie("nickname");
 
   //-----------------------------------------알림 삭제
